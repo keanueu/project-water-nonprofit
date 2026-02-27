@@ -1,0 +1,23 @@
+html{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 20px;
+}
+.follow{
+    text-align: center;
+    padding: 10px;
+}
+@media (max-width: 768px) {
+    .col-md-6.text-center {
+        order: 2;
+        margin-top: 20px;
+    }
+    .col-md-6 {
+        order: 1;
+    }
+}
+@media (max-width: 576px) {
+    .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}

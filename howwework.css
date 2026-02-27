@@ -1,0 +1,57 @@
+html{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 20px;
+}
+.how1{
+    text-align: center;
+    background-color: #2d6484;
+    color: white;
+}
+.howmid{
+    padding: 25px;
+    text-align: center;
+    background-color: #2d6484;
+    color: white;
+}
+.how-section{
+    padding: 50px;
+    color: black;
+    text-align: justify;
+    margin-left: 20%;
+}
+.hows2{
+    padding: 25px;
+    text-align: center;
+    background-color: #d75b30;
+    color: white;  
+}
+.card2{
+    margin-left: 30%;
+}
+.card-text{
+    margin-left: 10%;
+}
+.container > p{
+    text-align: justify;
+}
+.secf{
+    text-align: justify;
+}
+.text{
+    text-align: justify;
+}
+@media (max-width: 768px) {
+    .col-md-6.text-center {
+        order: 2;
+        margin-top: 20px;
+    }
+    .col-md-6 {
+        order: 1;
+    }
+}
+@media (max-width: 576px) {
+    .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
