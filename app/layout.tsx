@@ -1,6 +1,7 @@
 ﻿import type { Metadata } from 'next';
 import { Inter, Libre_Baskerville } from 'next/font/google';
 import SiteChrome from '@/components/SiteChrome';
+import { AuthProvider } from '@/lib/auth-context';
 import './globals.css';
 
 const libreBaskerville = Libre_Baskerville({
@@ -27,7 +28,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${libreBaskerville.variable} ${inter.variable} h-full`}>
       <body className="flex min-h-full flex-col bg-white text-[#091c37]">
-        <SiteChrome>{children}</SiteChrome>
+        <AuthProvider>
+          <SiteChrome>{children}</SiteChrome>
+        </AuthProvider>
       </body>
     </html>
   );

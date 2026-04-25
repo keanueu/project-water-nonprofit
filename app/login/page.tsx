@@ -5,9 +5,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, ArrowRight, Eye, EyeOff, Lock, Mail, ShieldCheck } from 'lucide-react';
+import { useAuth, UserRole } from '@/lib/auth-context';
 
 export default function LoginPage() {
   const router = useRouter();
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -27,8 +29,12 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       await new Promise((resolve) => setTimeout(resolve, 900));
-      // Demo auth: any admin@projectwater.org goes to admin; otherwise home
-      if (email.toLowerCase().startsWith('admin')) {
+      
+      // Demo auth logic
+      const role: UserRole = email.toLowerCase().startsWith('admin') ? 'admin' : 'donor';
+      login(email, role);
+
+      if (role === 'admin') {
         router.push('/admin');
       } else {
         router.push('/');
