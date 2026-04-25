@@ -1,0 +1,46 @@
+﻿@import "tailwindcss";
+
+:root {
+  --font-serif: var(--font-libre-baskerville), Georgia, 'Times New Roman', serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, Segoe UI, sans-serif;
+  --project-water-navy: #091c37;
+  --water-blue: #0369a1;
+  --water-blue-light: #0ea5e9;
+  --water-teal: #0d9488;
+  --water-deep: #0c4a6e;
+  --water-gold: #d97706;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--project-water-navy);
+  background-color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-brand-sans {
+  font-family: var(--font-sans);
+}
+
+.font-serif,
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-serif);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+::selection {
+  background-color: var(--project-water-navy);
+  color: #ffffff;
+}
