@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, ArrowRight, Eye, EyeOff, Lock, Mail, User } from 'lucide-react';
+import { useAuth } from '@/lib/auth-context';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -41,6 +42,8 @@ export default function SignupPage() {
     return map[score];
   })();
 
+  const { login } = useAuth();
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError('');
@@ -57,7 +60,10 @@ export default function SignupPage() {
     setIsLoading(true);
     try {
       await new Promise((r) => setTimeout(r, 900));
-      router.push('/login');
+      
+      // Auto-login after signup for demo purposes
+      login(email, 'donor');
+      router.push('/');
     } finally {
       setIsLoading(false);
     }

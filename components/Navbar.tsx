@@ -3,8 +3,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ChevronDown, Menu, X, ArrowRight } from 'lucide-react';
+import { ChevronDown, Menu, X, ArrowRight, User, LogOut, LogIn, UserPlus } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { useAuth } from '@/lib/auth-context';
 
 type NavChild = {
   label: string;
@@ -64,6 +65,7 @@ function isItemActive(pathname: string, item: NavItem) {
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { user, logout, isLoading } = useAuth();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [mobileGroupOpen, setMobileGroupOpen] = useState<string | null>(null);
   const [desktopGroupOpen, setDesktopGroupOpen] = useState<string | null>(null);
@@ -185,13 +187,59 @@ export default function Navbar() {
                   </Link>
                 );
               })}
-              
-              <Link
-                href="/take-action/donate"
-                className="ml-4 inline-flex items-center rounded-full bg-[#0369a1] px-6 py-2.5 text-sm font-semibold text-white transition-all hover:bg-[#0c4a6e]"
-              >
-                Donate
-              </Link>
+
+              <div className="ml-4 flex items-center gap-3 border-l border-slate-200 pl-6">
+                {!isLoading && (
+                  <>
+                    {!user ? (
+                      <>
+                        <Link
+                          href="/login"
+                          className="text-sm font-semibold text-slate-600 hover:text-[#0369a1] flex items-center gap-1.5"
+                        >
+                          <LogIn className="h-4 w-4" />
+                          Sign In
+                        </Link>
+                        <Link
+                          href="/signup"
+                          className="rounded-full border border-slate-200 px-5 py-2 text-sm font-semibold text-slate-700 hover:border-[#0369a1] hover:text-[#0369a1] flex items-center gap-1.5"
+                        >
+                          <UserPlus className="h-4 w-4" />
+                          Join
+                        </Link>
+                      </>
+                    ) : (
+                      <div className="flex items-center gap-4">
+                        <Link
+                          href={user.role === 'admin' ? '/admin' : '/dashboard'}
+                          className="flex items-center gap-2 text-sm font-semibold text-[#0369a1]"
+                        >
+                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-100 text-[#0369a1]">
+                            <User className="h-4 w-4" />
+                          </div>
+                          <span className="hidden xl:inline">
+                            {user.role === 'admin' ? 'Admin Panel' : 'My Account'}
+                          </span>
+                        </Link>
+                        <button
+                          onClick={logout}
+                          className="text-slate-500 hover:text-red-600 transition-colors"
+                          title="Logout"
+                        >
+                          <LogOut className="h-4 w-4" />
+                        </button>
+                      </div>
+                    )}
+                  </>
+                )}
+
+                <Link
+                  href="/take-action/donate"
+                  className="inline-flex items-center rounded-full bg-[#0369a1] px-6 py-2.5 text-sm font-semibold text-white transition-all hover:bg-[#0c4a6e] shadow-sm hover:shadow-md"
+                >
+                  Donate
+                </Link>
+              </div>
             </div>
 
             {/* Mobile Toggle */}
@@ -295,14 +343,59 @@ export default function Navbar() {
           </div>
 
           {/* Drawer Footer CTA */}
-          <div className="border-t border-slate-100 p-5">
+          <div className="mt-auto border-t border-slate-100 p-5 space-y-4">
+            {!isLoading && (
+              <div className="grid grid-cols-2 gap-3 mb-2">
+                {!user ? (
+                  <>
+                    <Link
+                      href="/login"
+                      className="flex items-center justify-center gap-2 rounded-2xl border border-slate-200 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50"
+                    >
+                      <LogIn className="h-4 w-4" />
+                      Sign In
+                    </Link>
+                    <Link
+                      href="/signup"
+                      className="flex items-center justify-center gap-2 rounded-2xl border border-slate-200 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50"
+                    >
+                      <UserPlus className="h-4 w-4" />
+                      Join
+                    </Link>
+                  </>
+                ) : (
+                  <div className="col-span-2 flex items-center justify-between rounded-2xl bg-slate-50 p-3">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 text-[#0369a1]">
+                        <User className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                          Logged in as
+                        </p>
+                        <p className="text-sm font-bold text-[#091c37] truncate max-w-[140px]">
+                          {user.email}
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={logout}
+                      className="rounded-xl bg-white p-2 text-slate-400 shadow-sm hover:text-red-500"
+                    >
+                      <LogOut className="h-5 w-5" />
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
             <Link
               href="/take-action/donate"
               className="flex w-full items-center justify-center rounded-full bg-[#0369a1] py-4 text-base font-bold text-white shadow-lg transition-transform duration-200 hover:bg-[#0c4a6e] active:scale-95"
             >
               Donate Now
             </Link>
-            <p className="mt-4 text-center text-sm text-slate-500">
+            <p className="text-center text-sm text-slate-500">
               Project Water — Every drop counts.
             </p>
           </div>
