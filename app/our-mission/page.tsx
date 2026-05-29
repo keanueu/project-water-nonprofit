@@ -1,15 +1,9 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faChartColumn, faDroplet, faHandshakeAngle, faShieldHalved, faUsers, faWrench, faShield, faHeart, faUser } from '@fortawesome/free-solid-svg-icons';
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowRight,
-  BarChart3,
-  Droplets,
-  HeartHandshake,
-  ShieldCheck,
-  Users,
-  Wrench,
-} from "lucide-react";
+
 
 import CTASection from "@/components/CTASection";
 import HeroSection from "@/components/HeroSection";
@@ -52,19 +46,19 @@ const accountabilityItems = [
     title: "Thoughtful project selection",
     description:
       "Different communities need different solutions. We prioritize context-aware choices over one-size-fits-all responses.",
-    icon: Droplets,
+    icon: faDroplet,
   },
   {
     title: "Steady communication",
     description:
       "We believe in helping donors understand what their gifts support, where work is happening, and why it matters.",
-    icon: BarChart3,
+    icon: faChartColumn,
   },
   {
     title: "Respect for local ownership",
     description:
       "Solutions are stronger when local leadership, training, and responsibility are built into the process.",
-    icon: Users,
+    icon: faUsers,
   },
 ];
 
@@ -73,19 +67,19 @@ const donorImpact = [
     title: "Health and dignity",
     description:
       "Reliable clean water helps reduce water-related illness and gives families greater safety and dignity in everyday life.",
-    icon: HeartHandshake,
+    icon: faHandshakeAngle,
   },
   {
     title: "Time returned to communities",
     description:
       "When water sources are closer and safer, time spent walking and waiting can be redirected toward school, work, caregiving, and rest.",
-    icon: ShieldCheck,
+    icon: faShieldHalved,
   },
   {
     title: "Systems that last",
     description:
       "Donor support makes it possible to invest in solutions with sustainability in view, including upkeep, local management, and practical resilience.",
-    icon: Wrench,
+    icon: faWrench,
   },
 ];
 
@@ -127,7 +121,7 @@ export default function OurMissionPage() {
                 className="inline-flex items-center gap-2 rounded-full bg-cyan-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-cyan-700"
               >
                 See our work
-                <ArrowRight className="h-4 w-4" />
+                <FontAwesomeIcon icon={faArrowRight} className="h-4 w-4" />
               </Link>
               <Link
                 href="/take-action/solve-water-crisis"
@@ -217,21 +211,21 @@ export default function OurMissionPage() {
 
           <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
             <div className="grid gap-5">
-              {accountabilityItems.map(({ title, description, icon: Icon }) => (
+              {accountabilityItems.map((item) => (
                 <div
-                  key={title}
+                  key={item.title}
                   className="rounded-3xl border border-slate-200 bg-slate-50 p-6"
                 >
                   <div className="flex items-start gap-4">
                     <div className="inline-flex rounded-2xl bg-white p-3 text-cyan-700 shadow-sm">
-                      <Icon className="h-5 w-5" />
+                      <FontAwesomeIcon icon={item.icon} className="h-5 w-5" />
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-slate-900">
-                        {title}
+                        {item.title}
                       </h3>
                       <p className="mt-2 leading-7 text-slate-600">
-                        {description}
+                        {item.description}
                       </p>
                     </div>
                   </div>
@@ -258,16 +252,16 @@ export default function OurMissionPage() {
           </div>
 
           <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {donorImpact.map(({ title, description, icon: Icon }) => (
+            {donorImpact.map((item) => (
               <div
-                key={title}
+                key={item.title}
                 className="rounded-3xl border border-white/10 bg-white/5 p-8"
               >
                 <div className="inline-flex rounded-2xl bg-cyan-500/15 p-3 text-cyan-200">
-                  <Icon className="h-6 w-6" />
+                  <FontAwesomeIcon icon={item.icon} className="h-6 w-6" />
                 </div>
-                <h3 className="mt-6 text-xl font-semibold">{title}</h3>
-                <p className="mt-3 leading-7 text-slate-300">{description}</p>
+                <h3 className="mt-6 text-xl font-semibold">{item.title}</h3>
+                <p className="mt-3 leading-7 text-slate-300">{item.description}</p>
               </div>
             ))}
           </div>

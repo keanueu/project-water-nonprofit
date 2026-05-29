@@ -1,7 +1,9 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faMapLocationDot, faShieldHalved, faUsers, faWrench, faShield, faUser, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 ﻿import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, MapPinned, ShieldCheck, Users, Wrench } from 'lucide-react';
+
 
 export const metadata: Metadata = {
   title: 'Where We Work | Project Water',
@@ -45,18 +47,18 @@ const operatingPrinciples = [
     title: 'Concentrated geography',
     description:
       'Working deeply in defined regions strengthens partner relationships and improves long-term reliability.',
-    icon: MapPinned,
+    icon: faMapLocationDot,
   },
   {
     title: 'Local leadership first',
     description:
       'Programs are shaped by local teams, community voices, and practical implementation realities.',
-    icon: Users,
+    icon: faUsers,
   },
   {
     title: 'Stewardship after construction',
     description: 'Repair planning and monitoring are treated as core delivery commitments, not optional extras.',
-    icon: Wrench,
+    icon: faWrench,
   },
 ];
 
@@ -131,11 +133,11 @@ export default function WhereWeWorkPage() {
 
           <div className="mt-10 grid gap-5 md:grid-cols-3">
             {operatingPrinciples.map((item) => {
-              const Icon = item.icon;
+              
               return (
                 <article key={item.title} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
                   <span className="inline-flex rounded-2xl bg-sky-100 p-3 text-[#0369a1]">
-                    <Icon className="h-5 w-5" />
+                    <FontAwesomeIcon icon={item.icon} className="h-5 w-5" />
                   </span>
                   <h3 className="mt-4 text-xl font-semibold text-[#091c37]">{item.title}</h3>
                   <p className="mt-3 text-sm leading-7 text-slate-600">{item.description}</p>
@@ -160,14 +162,14 @@ export default function WhereWeWorkPage() {
               className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-[#091c37] transition hover:bg-slate-100"
             >
               View impact
-              <ShieldCheck className="h-4 w-4" />
+              <FontAwesomeIcon icon={faShieldHalved} className="h-4 w-4" />
             </Link>
             <Link
               href="/take-action/donate"
               className="inline-flex items-center gap-2 rounded-full border border-white/30 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
             >
               Donate now
-              <ArrowRight className="h-4 w-4" />
+              <FontAwesomeIcon icon={faArrowRight} className="h-4 w-4" />
             </Link>
           </div>
         </div>

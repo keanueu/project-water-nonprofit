@@ -1,9 +1,12 @@
+import { faCircleCheck, faCalendarDays } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faMagnifyingGlass, faHeartPulse, faShieldHalved, faWrench, faShield, faHeart } from '@fortawesome/free-solid-svg-icons';
 ﻿'use client';
 
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, CalendarClock, CheckCircle2, FileSearch, HeartPulse, ShieldCheck, Wrench } from 'lucide-react';
+
 import { AnimatePresence, motion } from 'framer-motion';
 
 type StoryCard = {
@@ -20,25 +23,25 @@ const outcomeStats = [
     value: '95%+',
     label: 'Target water-point functionality',
     detail: 'Performance is tracked and repair response is planned in advance.',
-    icon: Wrench,
+    icon: faWrench,
   },
   {
     value: '100%',
     label: 'Project-level reporting commitment',
     detail: 'Donors can follow where support goes and what outcomes are delivered.',
-    icon: FileSearch,
+    icon: faMagnifyingGlass,
   },
   {
     value: '600+',
     label: 'Communities reached across focus regions',
     detail: 'Long-term partnership enables deeper support over time.',
-    icon: HeartPulse,
+    icon: faHeartPulse,
   },
   {
     value: '5+ years',
     label: 'Repair and continuity planning horizon',
     detail: 'Reliability is designed into project stewardship from the start.',
-    icon: ShieldCheck,
+    icon: faShieldHalved,
   },
 ];
 
@@ -133,7 +136,7 @@ export default function WaterImpactPage() {
               className="inline-flex items-center gap-2 rounded-full bg-sky-400 px-5 py-2.5 text-sm font-semibold text-[#08203d] transition hover:bg-sky-300"
             >
               Support this impact
-              <ArrowRight className="h-4 w-4" />
+              <FontAwesomeIcon icon={faArrowRight} className="h-4 w-4" />
             </Link>
             <Link
               href="/our-work/stories"
@@ -148,11 +151,11 @@ export default function WaterImpactPage() {
       <section className="mx-auto max-w-7xl px-6 py-16 sm:px-8 lg:px-12">
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
           {outcomeStats.map((item) => {
-            const Icon = item.icon;
+            
             return (
               <article key={item.label} className="rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
                 <span className="inline-flex rounded-2xl bg-sky-100 p-2.5 text-[#0369a1]">
-                  <Icon className="h-5 w-5" />
+                  <FontAwesomeIcon icon={item.icon} className="h-5 w-5" />
                 </span>
                 <p className="mt-4 text-3xl font-semibold tracking-tight text-[#091c37]">{item.value}</p>
                 <h2 className="mt-2 text-lg font-semibold text-[#091c37]">{item.label}</h2>
@@ -277,7 +280,7 @@ export default function WaterImpactPage() {
               className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-[#091c37] transition hover:bg-slate-100"
             >
               Donate now
-              <ArrowRight className="h-4 w-4" />
+              <FontAwesomeIcon icon={faArrowRight} className="h-4 w-4" />
             </Link>
             <Link
               href="/our-work/stories"
@@ -288,11 +291,11 @@ export default function WaterImpactPage() {
           </div>
 
           <div className="mt-6 flex items-center gap-2 text-sm text-slate-200">
-            <CalendarClock className="h-4 w-4 text-sky-200" />
+            <FontAwesomeIcon icon={faCalendarDays} className="h-4 w-4 text-sky-200" />
             <span>Field reporting cadence is maintained to protect long-term functionality.</span>
           </div>
           <div className="mt-2 flex items-center gap-2 text-sm text-slate-200">
-            <CheckCircle2 className="h-4 w-4 text-sky-200" />
+            <FontAwesomeIcon icon={faCircleCheck} className="h-4 w-4 text-sky-200" />
             <span>Repair closure tracking helps ensure infrastructure stays operational.</span>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import type { LucideIcon } from 'lucide-react';
+import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 export type Message = {
   id: string;
@@ -8,5 +8,5 @@ export type Message = {
 
 export type ChatAction = {
   label: string;
-  icon: LucideIcon;
+  icon: IconDefinition;
 };

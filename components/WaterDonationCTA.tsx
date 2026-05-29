@@ -1,9 +1,10 @@
-﻿'use client';
+'use client';
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 export default function WaterDonationCTA() {
   const [visible, setVisible] = useState(false);
@@ -45,7 +46,7 @@ export default function WaterDonationCTA() {
                 className="inline-flex items-center gap-1 rounded-xl border border-white/20 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10"
               >
                 Custom gift
-                <ArrowRight className="h-4 w-4" />
+                <FontAwesomeIcon icon={faArrowRight} className="h-3.5 w-3.5" />
               </Link>
             </div>
           </div>

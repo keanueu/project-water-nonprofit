@@ -1,6 +1,8 @@
-﻿import Image from 'next/image';
+import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Droplet, Facebook, Mail, MapPin, Phone, Twitter, Youtube } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faLocationDot, faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faYoutube, faXTwitter, faFacebookF } from '@fortawesome/free-brands-svg-icons';
 
 const footerLinks = {
   explore: [
@@ -51,14 +53,14 @@ export default function Footer() {
               className="inline-flex items-center justify-center gap-2 rounded-xl bg-sky-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-400"
             >
               Donate now
-              <ArrowRight className="h-4 w-4" />
+              <FontAwesomeIcon icon={faArrowRight} className="h-3.5 w-3.5" />
             </Link>
             <Link
               href="/projects/water/impact"
               className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
             >
               View impact
-              <ArrowRight className="h-4 w-4" />
+              <FontAwesomeIcon icon={faArrowRight} className="h-3.5 w-3.5" />
             </Link>
           </div>
         </div>
@@ -126,7 +128,7 @@ export default function Footer() {
             {/* Wrapper div removed here as requested */}
             <div className="space-y-3">
               <div className="flex items-start gap-3">
-                <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-sky-200" />
+                <FontAwesomeIcon icon={faLocationDot} className="mt-0.5 h-4 w-4 flex-shrink-0 text-sky-200" />
                 <address className="not-italic text-sm leading-relaxed text-slate-300">
                   17 Depot Street, 2nd Floor
                   <br />
@@ -136,13 +138,13 @@ export default function Footer() {
                 </address>
               </div>
               <div className="flex items-center gap-3">
-                <Mail className="h-4 w-4 flex-shrink-0 text-sky-200" />
+                <FontAwesomeIcon icon={faEnvelope} className="h-4 w-4 flex-shrink-0 text-sky-200" />
                 <a href="mailto:contact@projectwater.org" className="text-sm text-slate-300 transition hover:text-white">
                   contact@projectwater.org
                 </a>
               </div>
               <div className="flex items-center gap-3">
-                <Phone className="h-4 w-4 flex-shrink-0 text-sky-200" />
+                <FontAwesomeIcon icon={faPhone} className="h-4 w-4 flex-shrink-0 text-sky-200" />
                 <a href="tel:+16035550123" className="text-sm text-slate-300 transition hover:text-white">
                   +1 (603) 555-0123
                 </a>
@@ -155,21 +157,21 @@ export default function Footer() {
                 aria-label="YouTube"
                 className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-white/30 hover:text-white"
               >
-                <Youtube className="h-4 w-4" />
+                <FontAwesomeIcon icon={faYoutube} className="h-4 w-4" />
               </a>
               <a
                 href="https://twitter.com/"
                 aria-label="Twitter"
                 className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-white/30 hover:text-white"
               >
-                <Twitter className="h-4 w-4" />
+                <FontAwesomeIcon icon={faXTwitter} className="h-4 w-4" />
               </a>
               <a
                 href="https://www.facebook.com/"
                 aria-label="Facebook"
                 className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-white/30 hover:text-white"
               >
-                <Facebook className="h-4 w-4" />
+                <FontAwesomeIcon icon={faFacebookF} className="h-4 w-4" />
               </a>
             </div>
           </div>

@@ -1,7 +1,9 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faKitchenSet, faDroplet, faSeedling } from '@fortawesome/free-solid-svg-icons';
 ﻿import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, CookingPot, Droplets, Sprout } from 'lucide-react';
+
 
 export const metadata: Metadata = {
   title: 'Hunger and Water Access | Project Water',
@@ -12,17 +14,17 @@ const hungerLinks = [
   {
     title: 'Food preparation reliability',
     description: 'Safe nearby water helps households cook consistently and safely.',
-    icon: CookingPot,
+    icon: faKitchenSet,
   },
   {
     title: 'Household nutrition stability',
     description: 'Lower water stress supports healthier daily routines for children and caregivers.',
-    icon: Droplets,
+    icon: faDroplet,
   },
   {
     title: 'Livelihood support',
     description: 'Water reliability can strengthen small-scale food production and local resilience.',
-    icon: Sprout,
+    icon: faSeedling,
   },
 ];
 
@@ -50,11 +52,11 @@ export default function HungerPage() {
       <section className="mx-auto max-w-7xl px-6 py-18 sm:px-8 lg:px-12">
         <div className="grid gap-6 md:grid-cols-3">
           {hungerLinks.map((item) => {
-            const Icon = item.icon;
+            
             return (
               <article key={item.title} className="rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
                 <span className="inline-flex rounded-2xl bg-sky-100 p-3 text-[#0369a1]">
-                  <Icon className="h-5 w-5" />
+                  <FontAwesomeIcon icon={item.icon} className="h-5 w-5" />
                 </span>
                 <h2 className="mt-4 text-xl font-semibold text-[#091c37]">{item.title}</h2>
                 <p className="mt-3 text-sm leading-7 text-slate-600">{item.description}</p>
@@ -96,7 +98,7 @@ export default function HungerPage() {
         <div className="mx-auto flex max-w-7xl flex-wrap gap-3">
           <Link href="/take-action/learn" className="inline-flex items-center gap-2 rounded-full bg-[#0369a1] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0c4a6e]">
             Back to learning hub
-            <ArrowRight className="h-4 w-4" />
+            <FontAwesomeIcon icon={faArrowRight} className="h-4 w-4" />
           </Link>
           <Link href="/take-action/donate" className="inline-flex items-center gap-2 rounded-full border border-slate-300 px-5 py-2.5 text-sm font-semibold text-[#091c37] transition hover:bg-slate-50">
             Support food and water security

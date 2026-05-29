@@ -4,8 +4,9 @@ import { FormEvent, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, ArrowRight, Eye, EyeOff, Lock, Mail, User } from 'lucide-react';
-import { useAuth } from '@/lib/auth-context';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faArrowRight, faEye, faEyeSlash, faLock, faEnvelope, faUser } from '@fortawesome/free-solid-svg-icons';
+import { supabase } from '@/lib/supabase';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -42,8 +43,6 @@ export default function SignupPage() {
     return map[score];
   })();
 
-  const { login } = useAuth();
-
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError('');
@@ -59,11 +58,24 @@ export default function SignupPage() {
 
     setIsLoading(true);
     try {
-      await new Promise((r) => setTimeout(r, 900));
-      
-      // Auto-login after signup for demo purposes
-      login(email, 'donor');
-      router.push('/');
+      const { error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+          },
+        },
+      });
+
+      if (signUpError) {
+        setError(signUpError.message);
+      } else {
+        router.push('/');
+      }
+    } catch (err: any) {
+      setError(err?.message || 'An error occurred during sign up.');
     } finally {
       setIsLoading(false);
     }
@@ -111,7 +123,7 @@ export default function SignupPage() {
                 <div>
                   <label className="mb-2 block text-sm font-semibold text-slate-900">First name</label>
                   <div className="relative">
-                    <User className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                    <FontAwesomeIcon icon={faUser} className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
                     <input
                       type="text"
                       value={form.firstName}
@@ -136,7 +148,7 @@ export default function SignupPage() {
               <div>
                 <label className="mb-2 block text-sm font-semibold text-slate-900">Email address</label>
                 <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                  <FontAwesomeIcon icon={faEnvelope} className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
                   <input
                     type="email"
                     value={form.email}
@@ -150,7 +162,7 @@ export default function SignupPage() {
               <div>
                 <label className="mb-2 block text-sm font-semibold text-slate-900">Password</label>
                 <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                  <FontAwesomeIcon icon={faLock} className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     value={form.password}
@@ -164,7 +176,7 @@ export default function SignupPage() {
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                     aria-label="Toggle password"
                   >
-                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    {showPassword ? <FontAwesomeIcon icon={faEyeSlash} className="h-5 w-5" /> : <FontAwesomeIcon icon={faEye} className="h-5 w-5" />}
                   </button>
                 </div>
                 {form.password && (
@@ -183,7 +195,7 @@ export default function SignupPage() {
               <div>
                 <label className="mb-2 block text-sm font-semibold text-slate-900">Confirm password</label>
                 <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                  <FontAwesomeIcon icon={faLock} className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     value={form.confirm}
@@ -227,7 +239,7 @@ export default function SignupPage() {
                 ) : (
                   <>
                     Create account
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    <FontAwesomeIcon icon={faArrowRight} className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </>
                 )}
               </button>
@@ -255,7 +267,7 @@ export default function SignupPage() {
           <div className="absolute inset-0 bg-gradient-to-bl from-[#091c37]/90 via-[#0c4a6e]/70 to-[#0d9488]/50" />
           <div className="relative flex h-full flex-col justify-between p-12">
             <Link href="/" className="inline-flex items-center gap-2 text-sm font-semibold text-white/80 transition hover:text-white">
-              <ArrowLeft className="h-4 w-4" />
+              <FontAwesomeIcon icon={faArrowLeft} className="h-4 w-4" />
               Back to site
             </Link>
             <div className="max-w-md">

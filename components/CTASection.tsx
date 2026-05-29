@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { Heart } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
 interface CTASectionProps {
   title: string;
@@ -21,7 +22,7 @@ export default function CTASection({
       <div className="mx-auto max-w-5xl text-center">
         {/* Icon */}
         <div className="mb-6 inline-flex p-4 rounded-full bg-[#0ea5e9]/20 text-[#0ea5e9]">
-          <Heart className="w-8 h-8" />
+          <FontAwesomeIcon icon={faHeart} className="w-8 h-8" />
         </div>
 
         {/* Title */}
@@ -37,10 +38,10 @@ export default function CTASection({
         {/* CTA Button */}
         <Link
           href={buttonHref}
-          className="group inline-flex items-center justify-center gap-2 px-10 py-4 bg-[#0ea5e9] text-[#091c37] font-bold rounded-lg shadow-lg hover:shadow-xl hover:bg-white transition-all duration-300 ease-out transform hover:scale-105"
+          className="group inline-flex items-center justify-center gap-2 px-10 py-4 bg-white text-[#091c37] font-bold transition-colors duration-300 hover:bg-[#091c37] hover:text-white"
         >
           {buttonText}
-          <Heart className="w-5 h-5 group-hover:scale-110 transition-transform" />
+          <FontAwesomeIcon icon={faHeart} className="w-4 h-4" />
         </Link>
       </div>
     </section>

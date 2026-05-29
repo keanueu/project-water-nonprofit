@@ -1,6 +1,7 @@
 'use client';
 
-import { Zap, Eye, Wrench } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBolt, faEye, faWrench } from '@fortawesome/free-solid-svg-icons';
 
 interface Proposition {
   icon: React.ReactNode;
@@ -10,19 +11,19 @@ interface Proposition {
 
 const propositions: Proposition[] = [
   {
-    icon: <Zap className="w-8 h-8" />,
+    icon: <FontAwesomeIcon icon={faBolt} className="w-7 h-7" />,
     title: 'Enabled by Technology',
     description:
       'Local teams use smartphone-based reporting to log source condition, GPS location, and field photography in near real time for complete transparency.',
   },
   {
-    icon: <Eye className="w-8 h-8" />,
+    icon: <FontAwesomeIcon icon={faEye} className="w-7 h-7" />,
     title: 'Built on Visibility',
     description:
       'Every water point is tracked and monitored. Public accountability keeps the repair loop active and ensures long-term sustainability.',
   },
   {
-    icon: <Wrench className="w-8 h-8" />,
+    icon: <FontAwesomeIcon icon={faWrench} className="w-7 h-7" />,
     title: 'Focused on Repair',
     description:
       'When infrastructure fails, visibility and maintenance capacity matter as much as construction. We reserve funding for repairs.',
@@ -51,7 +52,7 @@ export default function ValueProposition() {
           {propositions.map((prop, index) => (
             <div
               key={index}
-              className="group rounded-lg p-8 bg-gradient-to-br from-white to-slate-50 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 ease-out hover:border-[#0369a1]/20"
+              className="group p-8 bg-white border border-gray-200 hover:border-[#0369a1] transition-colors duration-300"
             >
               {/* Icon */}
               <div className="mb-6 inline-flex p-3 rounded-lg bg-[#0369a1]/10 text-[#0369a1] group-hover:bg-[#0369a1] group-hover:text-white transition-colors duration-300">

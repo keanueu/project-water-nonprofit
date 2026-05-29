@@ -1,13 +1,8 @@
+import { faUserPlus, faCircleCheck, faEllipsis, faClock } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass, faEnvelope, faShield, faUser } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
-import { 
-  Search, 
-  MoreHorizontal, 
-  UserPlus, 
-  Mail, 
-  Shield,
-  CheckCircle2,
-  Clock
-} from 'lucide-react';
+
 
 export default function UsersPage() {
   return (
@@ -18,7 +13,7 @@ export default function UsersPage() {
           <p className="text-gray-500">Manage administrators, staff, and volunteer accounts.</p>
         </div>
         <button className="flex items-center gap-2 px-4 py-2 bg-indigo-600 rounded-lg text-sm font-medium text-white hover:bg-indigo-700 transition-colors shadow-sm">
-          <UserPlus size={18} />
+          <FontAwesomeIcon icon={faUserPlus} className="w-5 h-5" />
           Invite User
         </button>
       </div>
@@ -27,7 +22,7 @@ export default function UsersPage() {
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
         <div className="p-4 border-b border-gray-200 bg-gray-50 flex items-center gap-4">
           <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+            <FontAwesomeIcon icon={faMagnifyingGlass} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"  />
             <input 
               type="text" 
               placeholder="Search users..." 
@@ -76,7 +71,7 @@ export default function UsersPage() {
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-1.5 text-gray-700">
-                    <Shield size={14} className="text-gray-400" />
+                    <FontAwesomeIcon icon={faShield}  className="text-gray-400" />
                     {user.role}
                   </div>
                 </td>
@@ -86,7 +81,7 @@ export default function UsersPage() {
                     user.status === 'Pending' ? 'bg-yellow-100 text-yellow-700' : 
                     'bg-gray-100 text-gray-700'
                   }`}>
-                    {user.status === 'Active' ? <CheckCircle2 size={12} /> : <Clock size={12} />}
+                    {user.status === 'Active' ? <FontAwesomeIcon icon={faCircleCheck} className="w-5 h-5" /> : <FontAwesomeIcon icon={faClock} className="w-3 h-3" />}
                     {user.status}
                   </span>
                 </td>
@@ -95,7 +90,7 @@ export default function UsersPage() {
                 </td>
                 <td className="px-6 py-4 text-right">
                   <button className="text-gray-400 hover:text-gray-600 transition-colors">
-                    <MoreHorizontal size={18} />
+                    <FontAwesomeIcon icon={faEllipsis} className="w-5 h-5" />
                   </button>
                 </td>
               </tr>

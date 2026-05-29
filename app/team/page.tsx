@@ -1,7 +1,9 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faLightbulb, faUsers, faEarthAmericas, faAward, faGlobe, faUser } from '@fortawesome/free-solid-svg-icons';
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Lightbulb, Users, Globe2, Award } from "lucide-react";
+
 
 export const metadata: Metadata = {
   title: "Our Team | Project Water",
@@ -13,22 +15,22 @@ const teamValues = [
   {
     title: "Local leadership",
     description: "We trust and empower teams on the ground who understand community needs and sustainable solutions.",
-    icon: Globe2,
+    icon: faEarthAmericas,
   },
   {
     title: "Collaborative approach",
     description: "Our work succeeds because diverse perspectives and shared commitment create stronger outcomes.",
-    icon: Users,
+    icon: faUsers,
   },
   {
     title: "Continuous learning",
     description: "We stay humble, measure results, and adapt our methods based on what communities teach us.",
-    icon: Lightbulb,
+    icon: faLightbulb,
   },
   {
     title: "Excellence and integrity",
     description: "Every team member upholds the highest standards of stewardship and transparent reporting.",
-    icon: Award,
+    icon: faAward,
   },
 ];
 
@@ -112,11 +114,11 @@ export default function TeamPage() {
 
         <div className="mt-12 grid gap-8 md:grid-cols-2 xl:grid-cols-4">
           {teamValues.map((value) => {
-            const Icon = value.icon;
+            
             return (
               <article key={value.title} className="rounded-3xl border border-slate-200 bg-slate-50 p-8 shadow-sm">
                 <div className="inline-flex rounded-2xl bg-cyan-100 p-3 text-cyan-700">
-                  <Icon className="h-6 w-6" />
+                  <FontAwesomeIcon icon={value.icon} className="h-6 w-6" />
                 </div>
                 <h3 className="mt-6 text-xl font-semibold text-slate-900">{value.title}</h3>
                 <p className="mt-3 text-base leading-7 text-slate-600">{value.description}</p>

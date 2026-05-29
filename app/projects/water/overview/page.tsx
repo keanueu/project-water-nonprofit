@@ -1,17 +1,8 @@
-﻿import type { Metadata } from 'next';
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import {
-  ArrowRight,
-  BriefcaseBusiness,
-  Clock3,
-  Globe2,
-  GraduationCap,
-  HeartPulse,
-  ShieldCheck,
-  ShieldAlert,
-  Wrench,
-} from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faBriefcase, faClock, faEarthAmericas, faHeartPulse, faShieldHalved, faWrench, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
 
 export const metadata: Metadata = {
   title: 'Water Crisis Overview | Project Water',
@@ -24,25 +15,25 @@ const headlineStats = [
     value: '785M',
     label: 'People still lack safe drinking water',
     detail: 'Reliable water access remains one of the most urgent global equity gaps.',
-    icon: Globe2,
+    icon: faEarthAmericas,
   },
   {
     value: '6 HRS',
     label: 'Average collection burden each day',
     detail: 'Long walks for water remove time from school, work, and family care.',
-    icon: Clock3,
+    icon: faClock,
   },
   {
     value: '80%',
     label: 'Water-related illness in vulnerable settings',
     detail: 'Unsafe sources increase preventable disease and long-term health costs.',
-    icon: HeartPulse,
+    icon: faHeartPulse,
   },
   {
     value: '95%',
     label: 'Target functionality through repair planning',
     detail: 'Maintenance strategy is designed as part of each project, not after.',
-    icon: Wrench,
+    icon: faWrench,
   },
 ];
 
@@ -52,21 +43,21 @@ const crisisImpacts = [
     description:
       'When children spend hours collecting water, attendance and classroom focus drop. Nearby safe water returns time to learning and rest.',
     proof: 'Schools with reliable sources report stronger attendance retention year-round.',
-    icon: GraduationCap,
+    icon: faGraduationCap,
   },
   {
     title: 'Family health outcomes',
     description:
       'Unsafe sources increase exposure to pathogens and recurring illness. Clean water reduces preventable disease and clinic burden.',
     proof: 'Safe-point access lowers household illness risk and improves daily resilience.',
-    icon: ShieldAlert,
+    icon: faShieldHalved,
   },
   {
     title: 'Economic opportunity',
     description:
       'Lost time and health costs reduce household income capacity. Reliable water supports productivity, small business, and local agriculture.',
     proof: 'Communities report more hours available for work and income-generating activity.',
-    icon: BriefcaseBusiness,
+    icon: faBriefcase,
   },
 ];
 
@@ -162,7 +153,7 @@ export default function WaterOverviewPage() {
               className="inline-flex items-center gap-2 rounded-full bg-sky-400 px-5 py-2.5 text-sm font-semibold text-[#08203d] transition hover:bg-sky-300"
             >
               Explore solutions
-              <ArrowRight className="h-4 w-4" />
+              <FontAwesomeIcon icon={faArrowRight} className="h-4 w-4" />
             </Link>
             <Link
               href="/take-action/donate"
@@ -177,11 +168,10 @@ export default function WaterOverviewPage() {
       <section className="mx-auto max-w-7xl px-6 py-16 sm:px-8 lg:px-12">
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
           {headlineStats.map((stat) => {
-            const Icon = stat.icon;
             return (
               <article key={stat.label} className="rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
                 <div className="inline-flex rounded-2xl bg-sky-100 p-2.5 text-[#0369a1]">
-                  <Icon className="h-5 w-5" />
+                  <FontAwesomeIcon icon={stat.icon} className="h-5 w-5" />
                 </div>
                 <p className="mt-4 text-3xl font-semibold tracking-tight text-[#091c37]">{stat.value}</p>
                 <h2 className="mt-2 text-lg font-semibold text-[#091c37]">{stat.label}</h2>
@@ -203,11 +193,10 @@ export default function WaterOverviewPage() {
 
           <div className="mt-10 grid gap-6 lg:grid-cols-3">
             {crisisImpacts.map((item) => {
-              const Icon = item.icon;
               return (
                 <article key={item.title} className="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm">
                   <div className="inline-flex rounded-2xl bg-slate-100 p-3 text-[#0c4a6e]">
-                    <Icon className="h-5 w-5" />
+                    <FontAwesomeIcon icon={item.icon} className="h-5 w-5" />
                   </div>
                   <h3 className="mt-5 text-xl font-semibold text-[#091c37]">{item.title}</h3>
                   <p className="mt-3 text-sm leading-7 text-slate-600">{item.description}</p>
@@ -299,7 +288,7 @@ export default function WaterOverviewPage() {
               className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-[#091c37] transition hover:bg-slate-100"
             >
               See measured impact
-              <ShieldCheck className="h-4 w-4" />
+              <FontAwesomeIcon icon={faShieldHalved} className="h-4 w-4" />
             </Link>
             <Link
               href="/take-action/donate"

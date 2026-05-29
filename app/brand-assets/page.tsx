@@ -1,7 +1,8 @@
 ﻿import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Download, ImageIcon } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faDownload, faImage } from '@fortawesome/free-solid-svg-icons';
 
 export const metadata: Metadata = {
   title: 'Brand and Visual Assets | Project Water',
@@ -62,7 +63,7 @@ export default function BrandAssetsPage() {
       <section className="bg-slate-50 px-6 py-14 sm:px-8 lg:px-12">
         <div className="mx-auto max-w-7xl">
           <div className="flex items-center gap-2">
-            <ImageIcon className="h-5 w-5 text-sky-700" />
+            <FontAwesomeIcon icon={faImage} className="h-5 w-5 text-sky-700" />
             <h2 className="text-2xl font-semibold text-[#091c37]">Hero and campaign visuals</h2>
           </div>
           <div className="mt-6 grid gap-5 md:grid-cols-3">
@@ -117,11 +118,11 @@ export default function BrandAssetsPage() {
         <div className="flex flex-wrap gap-3">
           <Link href="/take-action/learn" className="inline-flex items-center gap-2 rounded-full bg-[#0369a1] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0c4a6e]">
             Back to learning hub
-            <ArrowRight className="h-4 w-4" />
+            <FontAwesomeIcon icon={faArrowRight} className="h-4 w-4" />
           </Link>
           <Link href="/contact-us" className="inline-flex items-center gap-2 rounded-full border border-slate-300 px-5 py-2.5 text-sm font-semibold text-[#091c37] transition hover:bg-slate-50">
             Request media pack
-            <Download className="h-4 w-4" />
+            <FontAwesomeIcon icon={faDownload} className="h-4 w-4" />
           </Link>
         </div>
       </section>

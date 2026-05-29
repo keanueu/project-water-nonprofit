@@ -1,22 +1,24 @@
-﻿'use client';
+'use client';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
-import { BarChart3, Droplets, HeartPulse } from 'lucide-react';
-import type { ComponentType, ReactNode } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChartColumn, faDroplet, faHeartPulse } from '@fortawesome/free-solid-svg-icons';
+import type { IconProp } from '@fortawesome/fontawesome-svg-core';
+import type { ReactNode } from 'react';
 import WaterDonationCTA from '@/components/WaterDonationCTA';
 
 type SubNavItem = {
   href: string;
   label: string;
-  icon: ComponentType<{ className?: string }>;
+  icon: IconProp;
 };
 
 const subNav: SubNavItem[] = [
-  { href: '/projects/water/overview', label: 'Overview', icon: BarChart3 },
-  { href: '/projects/water/solutions', label: 'Solutions', icon: Droplets },
-  { href: '/projects/water/impact', label: 'Impact', icon: HeartPulse },
+  { href: '/projects/water/overview', label: 'Overview', icon: faChartColumn },
+  { href: '/projects/water/solutions', label: 'Solutions', icon: faDroplet },
+  { href: '/projects/water/impact', label: 'Impact', icon: faHeartPulse },
 ];
 
 export default function ProjectWaterLayout({ children }: { children: ReactNode }) {
@@ -36,7 +38,6 @@ export default function ProjectWaterLayout({ children }: { children: ReactNode }
 
           <nav className="flex flex-wrap gap-2 pb-3" aria-label="Water project sections">
             {subNav.map((item) => {
-              const Icon = item.icon;
               const active = pathname === item.href;
 
               return (
@@ -49,7 +50,7 @@ export default function ProjectWaterLayout({ children }: { children: ReactNode }
                       : 'border-slate-200 bg-white text-slate-600 hover:border-sky-200 hover:text-[#091c37]'
                   }`}
                 >
-                  <Icon className="h-4 w-4" />
+                  <FontAwesomeIcon icon={item.icon} className="h-4 w-4" />
                   {item.label}
                   {active && (
                     <motion.span

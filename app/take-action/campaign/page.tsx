@@ -1,7 +1,9 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faCalendarDays, faDroplet, faHandshakeAngle, faBullhorn, faSchool, faWandMagicSparkles, faUsers, faHeart, faUser } from '@fortawesome/free-solid-svg-icons';
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, CalendarDays, Droplets, HeartHandshake, Megaphone, School, Sparkles, Users } from "lucide-react";
+
 
 export const metadata: Metadata = {
   title: "Start a Campaign | Every Drop Counts",
@@ -14,19 +16,19 @@ const campaignSteps = [
     title: "Choose your moment",
     description:
       "Turn a birthday, classroom project, team event, memorial gift, or neighborhood challenge into a clear fundraising goal with a meaningful story behind it.",
-    icon: CalendarDays,
+    icon: faCalendarDays,
   },
   {
     title: "Share why it matters",
     description:
       "We give you a simple message framework, water facts, and campaign inspiration so your supporters understand exactly how their gifts help fund lasting access.",
-    icon: Megaphone,
+    icon: faBullhorn,
   },
   {
     title: "Celebrate the impact",
     description:
       "As your campaign grows, you can thank donors, post updates, and show how collective action helps move a water project from need to completion.",
-    icon: HeartHandshake,
+    icon: faHandshakeAngle,
   },
 ];
 
@@ -34,22 +36,22 @@ const campaignIdeas = [
   {
     title: "Birthday or milestone fundraiser",
     description: "Invite friends and family to mark a personal milestone by giving clean water instead of gifts.",
-    icon: Sparkles,
+    icon: faWandMagicSparkles,
   },
   {
     title: "School or campus challenge",
     description: "Help students connect learning with action through a service campaign tied to global water access.",
-    icon: School,
+    icon: faSchool,
   },
   {
     title: "Workplace giving drive",
     description: "Bring your team together around a practical, high-trust cause with a shared fundraising target.",
-    icon: Users,
+    icon: faUsers,
   },
   {
     title: "Faith or community group effort",
     description: "Mobilize your congregation, club, or neighborhood to support a specific season of generosity.",
-    icon: Droplets,
+    icon: faDroplet,
   },
 ];
 
@@ -95,7 +97,7 @@ export default function CampaignPage() {
                 className="inline-flex items-center rounded-full bg-cyan-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
               >
                 Start your campaign
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <FontAwesomeIcon icon={faArrowRight} className="ml-2 h-4 w-4" />
               </Link>
               <Link
                 href="/take-action/donate"
@@ -135,7 +137,7 @@ export default function CampaignPage() {
 
         <div className="mt-12 grid gap-6 lg:grid-cols-3">
           {campaignSteps.map((step) => {
-            const Icon = step.icon;
+            
 
             return (
               <article
@@ -143,7 +145,7 @@ export default function CampaignPage() {
                 className="rounded-3xl border border-slate-200 bg-slate-50 p-8 shadow-sm shadow-slate-200/60"
               >
                 <div className="inline-flex rounded-2xl bg-cyan-100 p-3 text-cyan-700">
-                  <Icon className="h-6 w-6" />
+                  <FontAwesomeIcon icon={step.icon} className="h-6 w-6" />
                 </div>
                 <h3 className="mt-6 text-xl font-semibold text-slate-900">{step.title}</h3>
                 <p className="mt-3 text-base leading-7 text-slate-600">{step.description}</p>
@@ -177,12 +179,12 @@ export default function CampaignPage() {
 
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
               {campaignIdeas.map((idea) => {
-                const Icon = idea.icon;
+                
 
                 return (
                   <div key={idea.title} className="rounded-3xl border border-white/10 bg-white/5 p-5">
                     <div className="inline-flex rounded-2xl bg-cyan-500/15 p-3 text-cyan-300">
-                      <Icon className="h-5 w-5" />
+                      <FontAwesomeIcon icon={idea.icon} className="h-5 w-5" />
                     </div>
                     <h3 className="mt-4 text-lg font-semibold">{idea.title}</h3>
                     <p className="mt-2 text-sm leading-7 text-slate-300">{idea.description}</p>

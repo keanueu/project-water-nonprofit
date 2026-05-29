@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { ChevronRight } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 interface HeroSectionProps {
   headline: string;
@@ -47,19 +48,19 @@ export default function HeroSection({
           {/* Primary Button */}
           <Link
             href={primaryButtonHref}
-            className="group inline-flex items-center justify-center gap-2 px-8 sm:px-10 py-4 bg-[#0369a1] text-white font-semibold rounded-lg shadow-lg hover:shadow-xl hover:bg-[#0c4a6e] transition-all duration-300 ease-out transform hover:scale-105"
+            className="group inline-flex items-center justify-center gap-2 px-8 sm:px-10 py-4 bg-[#0369a1] text-white font-semibold transition-colors duration-300 hover:bg-[#091c37]"
           >
             {primaryButtonText}
-            <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <FontAwesomeIcon icon={faChevronRight} className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
 
           {/* Secondary Button */}
           <Link
             href={secondaryButtonHref}
-            className="group inline-flex items-center justify-center gap-2 px-8 sm:px-10 py-4 bg-white/10 text-white font-semibold rounded-lg border-2 border-white/20 hover:bg-white/20 hover:border-white/40 transition-all duration-300 ease-out backdrop-blur-sm"
+            className="group inline-flex items-center justify-center gap-2 px-8 sm:px-10 py-4 bg-white/10 text-white font-semibold border border-white/30 hover:bg-white hover:text-[#091c37] transition-colors duration-300 backdrop-blur-sm"
           >
             {secondaryButtonText}
-            <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <FontAwesomeIcon icon={faChevronRight} className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
       </div>

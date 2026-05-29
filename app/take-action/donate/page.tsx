@@ -1,9 +1,14 @@
-﻿'use client';
+'use client';
 
-import { useMemo, useState } from 'react';
+import { faCircleCheck, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHandshakeAngle, faShieldHalved, faWallet, faShield, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from '@/lib/auth-context';
+import { supabase } from '@/lib/supabase';
+
+import { useMemo, useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { CheckCircle2, HeartHandshake, ShieldCheck, Wallet } from 'lucide-react';
 
 type Frequency = 'once' | 'monthly';
 
@@ -23,17 +28,17 @@ const trustHighlights = [
   {
     title: 'Transparent project reporting',
     detail: 'Field updates and location-backed records support donor visibility.',
-    icon: ShieldCheck,
+    icon: faShieldHalved,
   },
   {
     title: 'Lifecycle reliability approach',
     detail: 'Budgets include monitoring and repair pathways, not only installation.',
-    icon: Wallet,
+    icon: faWallet,
   },
   {
     title: 'Community-led implementation',
     detail: 'Local teams shape project delivery and long-term maintenance ownership.',
-    icon: HeartHandshake,
+    icon: faHandshakeAngle,
   },
 ];
 
@@ -83,13 +88,29 @@ function getImpactSummary(amount: number, frequency: Frequency) {
 }
 
 export default function DonatePage() {
+  const { user } = useAuth();
   const [frequency, setFrequency] = useState<Frequency>('once');
   const [selectedAmount, setSelectedAmount] = useState<number | null>(100);
   const [customAmount, setCustomAmount] = useState('');
   const [showPreview, setShowPreview] = useState(false);
 
+  // Database insertion states
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [dbError, setDbError] = useState('');
+
   const activeAmount = selectedAmount ?? (customAmount ? Number(customAmount) : 0);
   const impactSummary = useMemo(() => getImpactSummary(activeAmount, frequency), [activeAmount, frequency]);
+
+  useEffect(() => {
+    if (user) {
+      setName(`${user.firstName || ''} ${user.lastName || ''}`.trim());
+      setEmail(user.email || '');
+    }
+  }, [user]);
 
   const estimatedPeople = useMemo(() => {
     if (activeAmount <= 0) {
@@ -99,6 +120,35 @@ export default function DonatePage() {
     const annualizedAmount = frequency === 'monthly' ? activeAmount * 12 : activeAmount;
     return Math.max(Math.floor(annualizedAmount / 34), 1);
   }, [activeAmount, frequency]);
+
+  const submitDonation = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setDbError('');
+    setSubmitting(true);
+
+    try {
+      const { error } = await supabase
+        .from('donations')
+        .insert([
+          {
+            name,
+            email,
+            amount: activeAmount,
+            message,
+          },
+        ]);
+
+      if (error) {
+        setDbError(error.message);
+      } else {
+        setIsSubmitted(true);
+      }
+    } catch (err: any) {
+      setDbError(err?.message || 'Failed to save donation to database.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <main className="bg-white text-[#091c37]">
@@ -138,12 +188,11 @@ export default function DonatePage() {
 
           <div className="mt-8 space-y-4">
             {trustHighlights.map((item) => {
-              const Icon = item.icon;
               return (
                 <article key={item.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-5 shadow-sm">
                   <div className="flex items-start gap-3">
                     <span className="mt-1 inline-flex rounded-xl bg-sky-100 p-2 text-[#0369a1]">
-                      <Icon className="h-4 w-4" />
+                      <FontAwesomeIcon icon={item.icon} className="h-4 w-4" />
                     </span>
                     <div>
                       <h3 className="text-lg font-semibold text-[#091c37]">{item.title}</h3>
@@ -186,6 +235,7 @@ export default function DonatePage() {
                 setSelectedAmount(100);
                 setCustomAmount('');
                 setShowPreview(false);
+                setIsSubmitted(false);
               }}
               className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
                 frequency === 'once' ? 'bg-white text-[#091c37]' : 'text-slate-200 hover:text-white'
@@ -200,6 +250,7 @@ export default function DonatePage() {
                 setSelectedAmount(60);
                 setCustomAmount('');
                 setShowPreview(false);
+                setIsSubmitted(false);
               }}
               className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
                 frequency === 'monthly' ? 'bg-white text-[#091c37]' : 'text-slate-200 hover:text-white'
@@ -218,6 +269,7 @@ export default function DonatePage() {
                   setSelectedAmount(amount);
                   setCustomAmount('');
                   setShowPreview(false);
+                  setIsSubmitted(false);
                 }}
                 className={`rounded-xl border px-3 py-3 text-sm font-semibold transition ${
                   selectedAmount === amount
@@ -246,6 +298,7 @@ export default function DonatePage() {
                   setCustomAmount(sanitized);
                   setSelectedAmount(null);
                   setShowPreview(false);
+                  setIsSubmitted(false);
                 }}
                 placeholder="Enter amount"
                 className="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-slate-300 focus:border-sky-200 focus:outline-none"
@@ -264,37 +317,113 @@ export default function DonatePage() {
             )}
           </div>
 
-          <button
-            type="button"
-            disabled={activeAmount <= 0}
-            onClick={() => setShowPreview(true)}
-            className="mt-6 w-full rounded-xl bg-sky-400 px-4 py-3 text-sm font-semibold text-[#08203d] transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {activeAmount > 0
-              ? `Continue with ${frequency === 'monthly' ? `${formatCurrency(activeAmount)}/month` : formatCurrency(activeAmount)}`
-              : 'Select an amount to continue'}
-          </button>
+          {!showPreview && (
+            <button
+              type="button"
+              disabled={activeAmount <= 0}
+              onClick={() => setShowPreview(true)}
+              className="mt-6 w-full rounded-xl bg-sky-400 px-4 py-3 text-sm font-semibold text-[#08203d] transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {activeAmount > 0
+                ? `Continue with ${frequency === 'monthly' ? `${formatCurrency(activeAmount)}/month` : formatCurrency(activeAmount)}`
+                : 'Select an amount to continue'}
+            </button>
+          )}
 
-          {showPreview && activeAmount > 0 && (
-            <div className="mt-5 rounded-2xl border border-emerald-300/40 bg-emerald-400/10 p-4 text-sm text-emerald-100">
-              <p className="font-semibold">Selection saved</p>
-              <p className="mt-1">
-                {frequency === 'monthly' ? 'Monthly' : 'One-time'} gift of{' '}
-                <span className="font-semibold">
-                  {frequency === 'monthly' ? `${formatCurrency(activeAmount)}/month` : formatCurrency(activeAmount)}
-                </span>{' '}
-                is ready.
-              </p>
-              <p className="mt-2 text-emerald-50">In a production flow, this is where secure payment checkout would start.</p>
-              <div className="mt-3">
-                <Link
-                  href="/contact-us"
-                  className="inline-flex items-center gap-2 rounded-full border border-emerald-200/40 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-emerald-50 transition hover:bg-emerald-200/15"
-                >
-                  Share giving intent
-                  <CheckCircle2 className="h-3.5 w-3.5" />
-                </Link>
+          {showPreview && activeAmount > 0 && !isSubmitted && (
+            <form onSubmit={submitDonation} className="mt-6 space-y-4 border-t border-white/10 pt-6">
+              <h3 className="text-lg font-semibold text-white">Complete your donation</h3>
+              
+              {dbError && (
+                <div className="rounded-xl border border-red-300/30 bg-red-400/10 p-3 text-sm text-red-200">
+                  {dbError}
+                </div>
+              )}
+
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-[0.12em] text-sky-200 mb-1">
+                  Your Name
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="e.g. Ken"
+                  className="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-2 text-sm text-white placeholder:text-slate-400 focus:border-sky-200 focus:outline-none"
+                />
               </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-[0.12em] text-sky-200 mb-1">
+                  Email address
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="ken@gmail.com"
+                  className="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-2 text-sm text-white placeholder:text-slate-400 focus:border-sky-200 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-[0.12em] text-sky-200 mb-1">
+                  Message (Optional)
+                </label>
+                <textarea
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="Hope this helps!"
+                  rows={2}
+                  className="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-2 text-sm text-white placeholder:text-slate-400 focus:border-sky-200 focus:outline-none resize-none"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={submitting}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-sky-400 px-4 py-3 text-sm font-semibold text-[#08203d] transition hover:bg-sky-300 disabled:opacity-50"
+              >
+                {submitting ? (
+                  <>
+                    <FontAwesomeIcon icon={faSpinner} className="animate-spin h-4 w-4" />
+                    Processing...
+                  </>
+                ) : (
+                  `Donate ${formatCurrency(activeAmount)}`
+                )}
+              </button>
+            </form>
+          )}
+
+          {isSubmitted && (
+            <div className="mt-6 rounded-2xl border border-emerald-300/40 bg-emerald-400/10 p-5 text-sm text-emerald-100 space-y-3">
+              <div className="flex items-center gap-2">
+                <FontAwesomeIcon icon={faCircleCheck} className="h-5 w-5 text-emerald-300" />
+                <p className="font-semibold text-base text-emerald-300">Donation saved!</p>
+              </div>
+              <p className="text-emerald-50">
+                Thank you, <span className="font-semibold">{name}</span>! Your {frequency === 'monthly' ? 'Monthly' : 'One-time'} gift of{' '}
+                <span className="font-semibold">{formatCurrency(activeAmount)}</span> has been successfully logged to our Supabase database.
+              </p>
+              <p className="text-xs text-emerald-200">
+                Your generosity directly supports sustainable clean water infrastructure and community empowerment.
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsSubmitted(false);
+                  setShowPreview(false);
+                  setSelectedAmount(100);
+                  setCustomAmount('');
+                  setMessage('');
+                }}
+                className="mt-2 w-full rounded-xl border border-emerald-300/30 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-emerald-50 hover:bg-emerald-300/10 transition"
+              >
+                Make another gift
+              </button>
             </div>
           )}
 

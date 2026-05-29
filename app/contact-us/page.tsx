@@ -1,15 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  ArrowRight,
-  Building2,
-  Clock3,
-  Handshake,
-  Mail,
-  MapPin,
-  Phone,
-  ShieldCheck,
-} from "lucide-react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faBuilding, faClock, faEnvelope, faLocationDot, faPhone, faShieldHalved, faHandshake } from '@fortawesome/free-solid-svg-icons';
 
 import CTASection from "@/components/CTASection";
 import HeroSection from "@/components/HeroSection";
@@ -24,19 +16,19 @@ const contactDetails = [
   {
     title: "Office address",
     value: "PO Box 3353, Concord, NH 03302",
-    icon: MapPin,
+    icon: faLocationDot,
     href: "https://maps.google.com/?q=PO+Box+3353+Concord+NH+03302",
   },
   {
     title: "Email",
     value: "info@thewaterproject.org",
-    icon: Mail,
+    icon: faEnvelope,
     href: "mailto:info@thewaterproject.org",
   },
   {
     title: "Phone",
     value: "(800) 460-6030",
-    icon: Phone,
+    icon: faPhone,
     href: "tel:+18004606030",
   },
 ];
@@ -46,19 +38,19 @@ const inquiryTypes = [
     title: "Partnership inquiries",
     description:
       "If you are exploring a collaboration, church campaign, school initiative, or corporate giving opportunity, our team can help identify the best next step.",
-    icon: Handshake,
+    icon: faHandshake,
   },
   {
     title: "Donor support",
     description:
       "Questions about giving, campaigns, receipts, recurring support, or project updates are welcome. We want supporters to feel informed and cared for.",
-    icon: ShieldCheck,
+    icon: faShieldHalved,
   },
   {
     title: "Organizational questions",
     description:
       "Need more detail about our model, our mission, or how water projects are selected and communicated? We are happy to point you to the right resources.",
-    icon: Building2,
+    icon: faBuilding,
   },
 ];
 
@@ -109,7 +101,7 @@ export default function ContactUsPage() {
             </p>
 
             <div className="mt-8 space-y-4">
-              {contactDetails.map(({ title, value, icon: Icon, href }) => (
+              {contactDetails.map(({ title, value, icon, href }) => (
                 <a
                   key={title}
                   href={href}
@@ -118,7 +110,7 @@ export default function ContactUsPage() {
                   className="flex items-start gap-4 rounded-3xl border border-slate-200 bg-white p-5 transition hover:border-cyan-200 hover:shadow-sm"
                 >
                   <div className="inline-flex rounded-2xl bg-slate-100 p-3 text-slate-700">
-                    <Icon className="h-5 w-5" />
+                    <FontAwesomeIcon icon={icon} className="h-5 w-5" />
                   </div>
                   <div>
                     <p className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">
@@ -148,7 +140,7 @@ export default function ContactUsPage() {
                 >
                   <div className="flex items-start gap-4">
                     <div className="inline-flex rounded-2xl bg-white p-3 text-cyan-700 shadow-sm">
-                      <Clock3 className="h-5 w-5" />
+                      <FontAwesomeIcon icon={faClock} className="h-5 w-5" />
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-slate-900">
@@ -175,7 +167,7 @@ export default function ContactUsPage() {
                   className="inline-flex items-center gap-2 rounded-full bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
                 >
                   Donate
-                  <ArrowRight className="h-4 w-4" />
+                  <FontAwesomeIcon icon={faArrowRight} className="h-4 w-4" />
                 </Link>
                 <Link
                   href="/take-action/campaign"
@@ -205,13 +197,13 @@ export default function ContactUsPage() {
           </div>
 
           <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {inquiryTypes.map(({ title, description, icon: Icon }) => (
+            {inquiryTypes.map(({ title, description, icon }) => (
               <div
                 key={title}
                 className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm"
               >
                 <div className="inline-flex rounded-2xl bg-cyan-50 p-3 text-cyan-700">
-                  <Icon className="h-6 w-6" />
+                  <FontAwesomeIcon icon={icon} className="h-6 w-6" />
                 </div>
                 <h3 className="mt-6 text-xl font-semibold text-slate-900">
                   {title}

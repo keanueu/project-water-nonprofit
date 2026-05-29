@@ -1,7 +1,9 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faHeartPulse, faShieldHalved, faSyringe, faShield, faHeart } from '@fortawesome/free-solid-svg-icons';
 ﻿import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, HeartPulse, ShieldCheck, Syringe } from 'lucide-react';
+
 
 export const metadata: Metadata = {
   title: 'Health and Water Access | Project Water',
@@ -12,17 +14,17 @@ const healthDrivers = [
   {
     title: 'Lower exposure risk',
     description: 'Protected sources reduce contact with contamination pathways common in open water collection.',
-    icon: ShieldCheck,
+    icon: faShieldHalved,
   },
   {
     title: 'Better household resilience',
     description: 'Fewer water-related illnesses improve family stability and reduce repeated treatment burden.',
-    icon: HeartPulse,
+    icon: faHeartPulse,
   },
   {
     title: 'Stronger public health routines',
     description: 'Reliable water supports hygiene, sanitation practice, and school/clinic continuity.',
-    icon: Syringe,
+    icon: faSyringe,
   },
 ];
 
@@ -50,11 +52,11 @@ export default function HealthPage() {
       <section className="mx-auto max-w-7xl px-6 py-18 sm:px-8 lg:px-12">
         <div className="grid gap-6 md:grid-cols-3">
           {healthDrivers.map((item) => {
-            const Icon = item.icon;
+            
             return (
               <article key={item.title} className="rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
                 <span className="inline-flex rounded-2xl bg-sky-100 p-3 text-[#0369a1]">
-                  <Icon className="h-5 w-5" />
+                  <FontAwesomeIcon icon={item.icon} className="h-5 w-5" />
                 </span>
                 <h2 className="mt-4 text-xl font-semibold text-[#091c37]">{item.title}</h2>
                 <p className="mt-3 text-sm leading-7 text-slate-600">{item.description}</p>
@@ -106,7 +108,7 @@ export default function HealthPage() {
             <div className="mt-6 flex flex-wrap gap-3">
               <Link href="/take-action/learn" className="inline-flex items-center gap-2 rounded-full bg-[#0369a1] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0c4a6e]">
                 Back to learning hub
-                <ArrowRight className="h-4 w-4" />
+                <FontAwesomeIcon icon={faArrowRight} className="h-4 w-4" />
               </Link>
               <Link href="/take-action/donate" className="inline-flex items-center gap-2 rounded-full border border-slate-300 px-5 py-2.5 text-sm font-semibold text-[#091c37] transition hover:bg-slate-50">
                 Support health outcomes

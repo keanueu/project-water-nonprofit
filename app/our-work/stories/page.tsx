@@ -1,7 +1,9 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faBookOpen, faHeartPulse, faSchool, faShieldHalved, faShield, faHeart } from '@fortawesome/free-solid-svg-icons';
 ﻿import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, BookOpen, HeartPulse, School, ShieldCheck } from 'lucide-react';
+
 
 export const metadata: Metadata = {
   title: 'Stories | Project Water',
@@ -52,17 +54,17 @@ const themes = [
   {
     title: 'Health and safety',
     detail: 'Protected sources reduce contamination risk and unsafe collection journeys.',
-    icon: HeartPulse,
+    icon: faHeartPulse,
   },
   {
     title: 'Education continuity',
     detail: 'Nearby reliable water helps schools maintain attendance and classroom focus.',
-    icon: School,
+    icon: faSchool,
   },
   {
     title: 'Transparent follow-through',
     detail: 'Field updates and project visibility help supporters see sustained outcomes.',
-    icon: ShieldCheck,
+    icon: faShieldHalved,
   },
 ];
 
@@ -132,11 +134,11 @@ export default function StoriesPage() {
 
           <div className="mt-10 grid gap-5 md:grid-cols-3">
             {themes.map((theme) => {
-              const Icon = theme.icon;
+              
               return (
                 <article key={theme.title} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
                   <span className="inline-flex rounded-2xl bg-sky-100 p-3 text-[#0369a1]">
-                    <Icon className="h-5 w-5" />
+                    <FontAwesomeIcon icon={theme.icon} className="h-5 w-5" />
                   </span>
                   <h3 className="mt-4 text-xl font-semibold text-[#091c37]">{theme.title}</h3>
                   <p className="mt-3 text-sm leading-7 text-slate-600">{theme.detail}</p>
@@ -161,14 +163,14 @@ export default function StoriesPage() {
               className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-[#091c37] transition hover:bg-slate-100"
             >
               Donate now
-              <ArrowRight className="h-4 w-4" />
+              <FontAwesomeIcon icon={faArrowRight} className="h-4 w-4" />
             </Link>
             <Link
               href="/projects/water/impact"
               className="inline-flex items-center gap-2 rounded-full border border-white/30 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
             >
               Impact dashboard
-              <BookOpen className="h-4 w-4" />
+              <FontAwesomeIcon icon={faBookOpen} className="h-4 w-4" />
             </Link>
           </div>
         </div>

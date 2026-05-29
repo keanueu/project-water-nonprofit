@@ -4,12 +4,12 @@ import { FormEvent, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, ArrowRight, Eye, EyeOff, Lock, Mail, ShieldCheck } from 'lucide-react';
-import { useAuth, UserRole } from '@/lib/auth-context';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faArrowRight, faEye, faEyeSlash, faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { supabase } from '@/lib/supabase';
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -28,16 +28,20 @@ export default function LoginPage() {
 
     setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 900));
-      
-      // Demo auth logic
-      const role: UserRole = email.toLowerCase().startsWith('admin') ? 'admin' : 'donor';
-      login(email, role);
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-      if (role === 'admin') {
-        router.push('/admin');
+      if (signInError) {
+        setError(signInError.message);
       } else {
-        router.push('/');
+        const role = email.toLowerCase().startsWith('admin') ? 'admin' : 'donor';
+        if (role === 'admin') {
+          router.push('/admin');
+        } else {
+          router.push('/');
+        }
       }
     } catch {
       setError('An error occurred. Please try again.');
@@ -62,7 +66,7 @@ export default function LoginPage() {
           <div className="absolute inset-0 bg-gradient-to-br from-[#091c37]/90 via-[#0c4a6e]/70 to-[#0369a1]/60" />
           <div className="relative flex h-full flex-col justify-between p-12">
             <Link href="/" className="inline-flex items-center gap-2 text-sm font-semibold text-white/80 transition hover:text-white">
-              <ArrowLeft className="h-4 w-4" />
+              <FontAwesomeIcon icon={faArrowLeft} className="h-3.5 w-3.5" />
               Back to site
             </Link>
 
@@ -143,7 +147,7 @@ export default function LoginPage() {
                   Email address
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                  <FontAwesomeIcon icon={faEnvelope} className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                   <input
                     id="email"
                     type="email"
@@ -170,7 +174,7 @@ export default function LoginPage() {
                   </Link>
                 </div>
                 <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                  <FontAwesomeIcon icon={faLock} className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                   <input
                     id="password"
                     type={showPassword ? 'text' : 'password'}
@@ -187,7 +191,7 @@ export default function LoginPage() {
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-600"
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                   >
-                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    {showPassword ? <FontAwesomeIcon icon={faEyeSlash} className="h-4 w-4" /> : <FontAwesomeIcon icon={faEye} className="h-4 w-4" />}
                   </button>
                 </div>
               </div>
@@ -215,29 +219,10 @@ export default function LoginPage() {
                 ) : (
                   <>
                     Sign in
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    <FontAwesomeIcon icon={faArrowRight} className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                   </>
                 )}
               </button>
-
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-slate-200" />
-                </div>
-                <div className="relative flex justify-center text-xs">
-                  <span className="bg-white px-3 font-medium uppercase tracking-[0.2em] text-slate-400">
-                    or
-                  </span>
-                </div>
-              </div>
-
-              <Link
-                href="/admin"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-[#0369a1] hover:text-[#0369a1]"
-              >
-                <ShieldCheck className="h-4 w-4" />
-                Continue to admin dashboard (demo)
-              </Link>
             </form>
 
             <p className="mt-8 text-center text-sm text-slate-600">

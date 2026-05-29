@@ -1,8 +1,8 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
 
 :root {
   --font-serif: var(--font-libre-baskerville), Georgia, 'Times New Roman', serif;
-  --font-sans: var(--font-inter), system-ui, -apple-system, Segoe UI, sans-serif;
+  --font-sans: var(--font-raleway), system-ui, -apple-system, Segoe UI, sans-serif;
   --project-water-navy: #091c37;
   --water-blue: #0369a1;
   --water-blue-light: #0ea5e9;

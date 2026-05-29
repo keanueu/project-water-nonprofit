@@ -1,7 +1,10 @@
+import { faCertificate } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faBookOpen, faBuilding, faDroplet, faFileLines, faHandHoldingHeart, faUsers, faUser } from '@fortawesome/free-solid-svg-icons';
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, BadgeCheck, BookOpen, Building2, Droplets, FileText, HandHeart, Users } from "lucide-react";
+
 
 export const metadata: Metadata = {
   title: "Sponsor a Community | Every Drop Counts",
@@ -14,19 +17,19 @@ const sponsorshipSupports = [
     title: "Water infrastructure",
     description:
       "Sponsorship helps fund practical systems that improve reliable access to clean water where need is highest.",
-    icon: Droplets,
+    icon: faDroplet,
   },
   {
     title: "Local training and care",
     description:
       "Strong projects include orientation, ownership, and the skills needed to monitor and care for systems over time.",
-    icon: Users,
+    icon: faUsers,
   },
   {
     title: "Reporting and stewardship",
     description:
       "Transparent updates help supporters understand what is being built, who is being served, and how the work is progressing.",
-    icon: FileText,
+    icon: faFileLines,
   },
 ];
 
@@ -41,17 +44,17 @@ const sponsorPaths = [
   {
     title: "Family or individual sponsorship",
     description: "Create a personal giving commitment that supports a community with meaningful consistency.",
-    icon: HandHeart,
+    icon: faHandHoldingHeart,
   },
   {
     title: "School, church, or civic partnership",
     description: "Invite a wider community to support a shared sponsorship goal and follow the story together.",
-    icon: BookOpen,
+    icon: faBookOpen,
   },
   {
     title: "Business or corporate support",
     description: "Align your organization with practical, high-trust impact that employees and customers can understand.",
-    icon: Building2,
+    icon: faBuilding,
   },
 ];
 
@@ -122,7 +125,7 @@ export default function SponsorPage() {
 
           <div className="grid gap-6 sm:grid-cols-3">
             {sponsorshipSupports.map((item) => {
-              const Icon = item.icon;
+              
 
               return (
                 <article
@@ -130,7 +133,7 @@ export default function SponsorPage() {
                   className="rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-sm shadow-slate-200/60"
                 >
                   <div className="inline-flex rounded-2xl bg-cyan-100 p-3 text-cyan-700">
-                    <Icon className="h-6 w-6" />
+                    <FontAwesomeIcon icon={item.icon} className="h-6 w-6" />
                   </div>
                   <h3 className="mt-5 text-lg font-semibold text-slate-900">{item.title}</h3>
                   <p className="mt-2 text-sm leading-7 text-slate-600">{item.description}</p>
@@ -194,7 +197,7 @@ export default function SponsorPage() {
                 {sponsorBenefits.map((benefit) => (
                   <li key={benefit} className="flex gap-4 text-sm leading-7 text-slate-200">
                     <div className="mt-1 rounded-full bg-cyan-500/20 p-1.5 text-cyan-300">
-                      <BadgeCheck className="h-4 w-4" />
+                      <FontAwesomeIcon icon={faCertificate} className="h-4 w-4" />
                     </div>
                     <span>{benefit}</span>
                   </li>
@@ -204,12 +207,12 @@ export default function SponsorPage() {
 
             <div className="grid gap-4">
               {sponsorPaths.map((path) => {
-                const Icon = path.icon;
+                
 
                 return (
                   <article key={path.title} className="rounded-3xl border border-white/10 bg-white/5 p-6">
                     <div className="inline-flex rounded-2xl bg-cyan-500/15 p-3 text-cyan-300">
-                      <Icon className="h-5 w-5" />
+                      <FontAwesomeIcon icon={path.icon} className="h-5 w-5" />
                     </div>
                     <h3 className="mt-4 text-lg font-semibold">{path.title}</h3>
                     <p className="mt-2 text-sm leading-7 text-slate-300">{path.description}</p>
@@ -247,7 +250,7 @@ export default function SponsorPage() {
                 className="inline-flex items-center rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-900 transition hover:bg-white"
               >
                 Make a gift today
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <FontAwesomeIcon icon={faArrowRight} className="ml-2 h-4 w-4" />
               </Link>
             </div>
           </div>

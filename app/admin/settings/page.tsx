@@ -1,14 +1,7 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faBell, faLock, faGlobe, faPalette, faCreditCard, faEnvelope, faShieldHalved, faShield } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
-import { 
-  User, 
-  Bell, 
-  Lock, 
-  Globe, 
-  Palette, 
-  CreditCard,
-  Mail,
-  ShieldCheck
-} from 'lucide-react';
+
 
 export default function SettingsPage() {
   return (
@@ -23,12 +16,12 @@ export default function SettingsPage() {
         <aside className="md:col-span-1">
           <nav className="space-y-1">
             {[
-              { label: 'General', icon: Globe, active: true },
-              { label: 'Profile', icon: User, active: false },
-              { label: 'Notifications', icon: Bell, active: false },
-              { label: 'Security', icon: Lock, active: false },
-              { label: 'Appearance', icon: Palette, active: false },
-              { label: 'Billing', icon: CreditCard, active: false },
+              { label: 'General', icon: faGlobe, active: true },
+              { label: 'Profile', icon: faUser, active: false },
+              { label: 'Notifications', icon: faBell, active: false },
+              { label: 'Security', icon: faLock, active: false },
+              { label: 'Appearance', icon: faPalette, active: false },
+              { label: 'Billing', icon: faCreditCard, active: false },
             ].map((item, i) => (
               <button 
                 key={i}
@@ -38,7 +31,7 @@ export default function SettingsPage() {
                     : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                 }`}
               >
-                <item.icon size={18} />
+                <FontAwesomeIcon icon={item.icon} className="w-[18px] h-[18px]" />
                 {item.label}
               </button>
             ))}
@@ -66,7 +59,7 @@ export default function SettingsPage() {
                 <div className="space-y-1">
                   <label className="text-sm font-medium text-gray-700">Support Email</label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                    <FontAwesomeIcon icon={faEnvelope} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"  />
                     <input 
                       type="email" 
                       defaultValue="support@globalcharity.org" 
@@ -109,7 +102,7 @@ export default function SettingsPage() {
               <div className="p-6 flex items-center justify-between">
                 <div className="flex items-start gap-3">
                   <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
-                    <ShieldCheck size={20} />
+                    <FontAwesomeIcon icon={faShieldHalved} className="w-5 h-5" />
                   </div>
                   <div>
                     <h3 className="text-sm font-bold text-gray-900">Two-factor Authentication</h3>
@@ -123,7 +116,7 @@ export default function SettingsPage() {
               <div className="p-6 flex items-center justify-between">
                 <div className="flex items-start gap-3">
                   <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
-                    <Lock size={20} />
+                    <FontAwesomeIcon icon={faLock} className="w-5 h-5" />
                   </div>
                   <div>
                     <h3 className="text-sm font-bold text-gray-900">Password Policy</h3>
