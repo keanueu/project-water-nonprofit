@@ -1,13 +1,6 @@
 import React from 'react';
-import { 
-  Users, 
-  DollarSign, 
-  Target, 
-  TrendingUp,
-  Calendar,
-  ArrowUpRight,
-  ArrowDownRight
-} from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUsers, faDollarSign, faBullseye, faArrowTrendUp, faCalendar, faArrowUpRightFromSquare, faArrowTrendDown } from '@fortawesome/free-solid-svg-icons';
 
 export default function AdminOverview() {
   return (
@@ -20,19 +13,19 @@ export default function AdminOverview() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
-          { label: 'Total Donations', value: '$124,592', icon: DollarSign, change: '+12.5%', positive: true },
-          { label: 'Active Campaigns', value: '12', icon: Target, change: '+2', positive: true },
-          { label: 'Total Volunteers', value: '843', icon: Users, change: '-4', positive: false },
-          { label: 'Avg. Donation', value: '$148', icon: TrendingUp, change: '+5.2%', positive: true },
+          { label: 'Total Donations', value: '$124,592', icon: faDollarSign, change: '+12.5%', positive: true },
+          { label: 'Active Campaigns', value: '12', icon: faBullseye, change: '+2', positive: true },
+          { label: 'Total Volunteers', value: '843', icon: faUsers, change: '-4', positive: false },
+          { label: 'Avg. Donation', value: '$148', icon: faArrowTrendUp, change: '+5.2%', positive: true },
         ].map((stat, i) => (
           <div key={i} className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
-                <stat.icon size={24} />
+                <FontAwesomeIcon icon={stat.icon} className="h-6 w-6" />
               </div>
               <span className={`text-sm font-medium flex items-center ${stat.positive ? 'text-green-600' : 'text-red-600'}`}>
                 {stat.change}
-                {stat.positive ? <ArrowUpRight size={16} /> : <ArrowDownRight size={16} />}
+                {stat.positive ? <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="ml-1 h-4 w-4" /> : <FontAwesomeIcon icon={faArrowTrendDown} className="ml-1 h-4 w-4" />}
               </span>
             </div>
             <h3 className="text-gray-500 text-sm font-medium">{stat.label}</h3>
@@ -96,7 +89,7 @@ export default function AdminOverview() {
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="font-bold text-gray-900">Upcoming Events</h2>
-            <Calendar size={20} className="text-gray-400" />
+            <FontAwesomeIcon icon={faCalendar} className="h-5 w-5 text-gray-400" />
           </div>
           <div className="space-y-6">
             {[

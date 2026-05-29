@@ -1,9 +1,10 @@
-﻿'use client';
+'use client';
 
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ChevronDown, Menu, X, ArrowRight, User, LogOut, LogIn, UserPlus } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown, faBars, faXmark, faArrowRight, faUser, faRightFromBracket, faRightToBracket, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 
@@ -148,13 +149,13 @@ export default function Navbar() {
                         }`}
                       >
                         {item.label}
-                        <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`} />
+                        <FontAwesomeIcon icon={faChevronDown} className={`h-3 w-3 transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`} />
                         {isActive && <span className="absolute bottom-0 left-0 h-0.5 w-full bg-[#0369a1]" />}
                       </button>
 
                       {expanded && (
                         <div className="absolute left-0 top-full w-64 pt-0">
-                          <div className="rounded-b-2xl border border-t-0 border-slate-200 bg-white p-2 shadow-xl shadow-slate-300/20">
+                          <div className="border border-t-0 border-slate-200 bg-white p-2">
                             {item.children?.map((child) => (
                               <Link
                                 key={child.href}
@@ -197,14 +198,14 @@ export default function Navbar() {
                           href="/login"
                           className="text-sm font-semibold text-slate-600 hover:text-[#0369a1] flex items-center gap-1.5"
                         >
-                          <LogIn className="h-4 w-4" />
+                          <FontAwesomeIcon icon={faRightToBracket} className="h-3.5 w-3.5" />
                           Sign In
                         </Link>
                         <Link
                           href="/signup"
                           className="rounded-full border border-slate-200 px-5 py-2 text-sm font-semibold text-slate-700 hover:border-[#0369a1] hover:text-[#0369a1] flex items-center gap-1.5"
                         >
-                          <UserPlus className="h-4 w-4" />
+                          <FontAwesomeIcon icon={faUserPlus} className="h-3.5 w-3.5" />
                           Join
                         </Link>
                       </>
@@ -215,7 +216,7 @@ export default function Navbar() {
                           className="flex items-center gap-2 text-sm font-semibold text-[#0369a1]"
                         >
                           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-100 text-[#0369a1]">
-                            <User className="h-4 w-4" />
+                            <FontAwesomeIcon icon={faUser} className="h-3.5 w-3.5" />
                           </div>
                           <span className="hidden xl:inline">
                             {user.role === 'admin' ? 'Admin Panel' : 'My Account'}
@@ -226,7 +227,7 @@ export default function Navbar() {
                           className="text-slate-500 hover:text-red-600 transition-colors"
                           title="Logout"
                         >
-                          <LogOut className="h-4 w-4" />
+                          <FontAwesomeIcon icon={faRightFromBracket} className="h-3.5 w-3.5" />
                         </button>
                       </div>
                     )}
@@ -235,7 +236,7 @@ export default function Navbar() {
 
                 <Link
                   href="/take-action/donate"
-                  className="inline-flex items-center rounded-full bg-[#0369a1] px-6 py-2.5 text-sm font-semibold text-white transition-all hover:bg-[#0c4a6e] shadow-sm hover:shadow-md"
+                  className="inline-flex items-center bg-[#0369a1] px-6 py-2.5 text-sm font-semibold text-white transition-colors duration-300 hover:bg-[#091c37]"
                 >
                   Donate
                 </Link>
@@ -248,7 +249,7 @@ export default function Navbar() {
               className="p-2 text-slate-700 lg:hidden"
               aria-label="Open menu"
             >
-              <Menu className="h-7 w-7" />
+              <FontAwesomeIcon icon={faBars} className="h-6 w-6" />
             </button>
           </div>
         </div>
@@ -286,7 +287,7 @@ export default function Navbar() {
               className="rounded-full p-2 text-slate-500 transition hover:bg-slate-100"
               aria-label="Close menu"
             >
-              <X className="h-6 w-6" />
+              <FontAwesomeIcon icon={faXmark} className="h-5 w-5" />
             </button>
           </div>
 
@@ -306,7 +307,7 @@ export default function Navbar() {
                         }`}
                       >
                         {item.label}
-                        <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`} />
+                        <FontAwesomeIcon icon={faChevronDown} className={`h-4 w-4 transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`} />
                       </button>
                       {expanded && (
                         <div className="space-y-1 border-t border-slate-200 bg-white px-4 py-3">
@@ -319,7 +320,7 @@ export default function Navbar() {
                               }`}
                             >
                               {child.label}
-                              <ArrowRight className="h-4 w-4 opacity-40" />
+                              <FontAwesomeIcon icon={faArrowRight} className="h-3 w-3 opacity-40" />
                             </Link>
                           ))}
                         </div>
@@ -352,14 +353,14 @@ export default function Navbar() {
                       href="/login"
                       className="flex items-center justify-center gap-2 rounded-2xl border border-slate-200 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50"
                     >
-                      <LogIn className="h-4 w-4" />
+                      <FontAwesomeIcon icon={faRightToBracket} className="h-3.5 w-3.5" />
                       Sign In
                     </Link>
                     <Link
                       href="/signup"
                       className="flex items-center justify-center gap-2 rounded-2xl border border-slate-200 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50"
                     >
-                      <UserPlus className="h-4 w-4" />
+                      <FontAwesomeIcon icon={faUserPlus} className="h-3.5 w-3.5" />
                       Join
                     </Link>
                   </>
@@ -367,7 +368,7 @@ export default function Navbar() {
                   <div className="col-span-2 flex items-center justify-between rounded-2xl bg-slate-50 p-3">
                     <div className="flex items-center gap-3">
                       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 text-[#0369a1]">
-                        <User className="h-5 w-5" />
+                        <FontAwesomeIcon icon={faUser} className="h-4 w-4" />
                       </div>
                       <div>
                         <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
@@ -382,7 +383,7 @@ export default function Navbar() {
                       onClick={logout}
                       className="rounded-xl bg-white p-2 text-slate-400 shadow-sm hover:text-red-500"
                     >
-                      <LogOut className="h-5 w-5" />
+                      <FontAwesomeIcon icon={faRightFromBracket} className="h-4 w-4" />
                     </button>
                   </div>
                 )}
@@ -391,7 +392,7 @@ export default function Navbar() {
 
             <Link
               href="/take-action/donate"
-              className="flex w-full items-center justify-center rounded-full bg-[#0369a1] py-4 text-base font-bold text-white shadow-lg transition-transform duration-200 hover:bg-[#0c4a6e] active:scale-95"
+              className="flex w-full items-center justify-center bg-[#0369a1] py-4 text-base font-bold text-white transition-colors duration-300 hover:bg-[#091c37]"
             >
               Donate Now
             </Link>

@@ -1,7 +1,10 @@
+import { faBolt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faBriefcase, faEarthAmericas, faHeart, faUsers, faGlobe, faUser } from '@fortawesome/free-solid-svg-icons';
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Briefcase, Globe2, Heart, Users, Zap } from "lucide-react";
+
 
 export const metadata: Metadata = {
   title: "Volunteer With Us | Project Water",
@@ -13,22 +16,22 @@ const volunteerRoles = [
   {
     title: "Professional skills volunteer",
     description: "Engineers, fundraisers, marketers, accountants, and other professionals who contribute expertise to strengthen our impact.",
-    icon: Briefcase,
+    icon: faBriefcase,
   },
   {
     title: "Community organizer",
     description: "Help start campaigns in your community, organize fundraisers, and inspire others to support clean water access.",
-    icon: Users,
+    icon: faUsers,
   },
   {
     title: "Field supporter",
     description: "Travel to communities we serve to help with project implementation, assessment, or follow-up monitoring.",
-    icon: Globe2,
+    icon: faEarthAmericas,
   },
   {
     title: "Advocate & educator",
     description: "Share the water access mission through speaking, social media, events, and conversations that build awareness.",
-    icon: Heart,
+    icon: faHeart,
   },
 ];
 
@@ -124,11 +127,11 @@ export default function VolunteerPage() {
 
         <div className="mt-12 grid gap-8 md:grid-cols-2 xl:grid-cols-4">
           {volunteerRoles.map((role) => {
-            const Icon = role.icon;
+            
             return (
               <article key={role.title} className="rounded-3xl border border-slate-200 bg-slate-50 p-8 shadow-sm">
                 <div className="inline-flex rounded-2xl bg-cyan-100 p-3 text-cyan-700">
-                  <Icon className="h-6 w-6" />
+                  <FontAwesomeIcon icon={role.icon} className="h-6 w-6" />
                 </div>
                 <h3 className="mt-6 text-xl font-semibold text-slate-900">{role.title}</h3>
                 <p className="mt-3 text-base leading-7 text-slate-600">{role.description}</p>
@@ -162,7 +165,7 @@ export default function VolunteerPage() {
             <ul className="mt-8 space-y-4">
               {volunteerBenefits.map((benefit, idx) => (
                 <li key={idx} className="flex gap-3 text-base text-slate-700">
-                  <Zap className="h-5 w-5 text-cyan-600 flex-shrink-0 mt-0.5" />
+                  <FontAwesomeIcon icon={faBolt} className="h-5 w-5 text-cyan-600 flex-shrink-0 mt-0.5" />
                   <span>{benefit}</span>
                 </li>
               ))}
@@ -174,7 +177,7 @@ export default function VolunteerPage() {
                 className="inline-flex items-center rounded-full bg-cyan-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
               >
                 Get started
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <FontAwesomeIcon icon={faArrowRight} className="ml-2 h-4 w-4" />
               </Link>
             </div>
           </div>

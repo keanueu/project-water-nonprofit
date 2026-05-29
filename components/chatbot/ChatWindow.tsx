@@ -1,7 +1,8 @@
 'use client';
 
 import { FormEvent, useEffect, useRef, useState } from 'react';
-import { ArrowRight, X } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useChatbot } from './ChatbotProvider';
 import MessageBubble from './MessageBubble';
 import QuickActions from './QuickActions';
@@ -66,7 +67,7 @@ export default function ChatWindow() {
           aria-label="Close chat window"
           className="inline-flex h-10 w-10 items-center justify-center rounded-2xl text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-300"
         >
-          <X className="h-5 w-5" aria-hidden="true" />
+          <FontAwesomeIcon icon={faXmark} className="h-4 w-4" aria-hidden="true" />
         </button>
       </div>
 
@@ -102,10 +103,10 @@ export default function ChatWindow() {
         />
         <button
           type="submit"
-          className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#0ea5e9] text-white shadow-lg transition duration-200 ease-in-out hover:scale-105 focus:outline-none focus:ring-2 focus:ring-cyan-300"
+          className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#0ea5e9] text-white transition-colors duration-300 hover:bg-[#0369a1] focus:outline-none focus:ring-2 focus:ring-cyan-300"
           aria-label="Send message"
         >
-          <ArrowRight className="h-5 w-5" aria-hidden="true" />
+          <FontAwesomeIcon icon={faArrowRight} className="h-4 w-4" aria-hidden="true" />
         </button>
       </form>
     </div>

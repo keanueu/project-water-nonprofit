@@ -1,7 +1,9 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faChartColumn, faFileLines, faShield, faArrowTrendUp } from '@fortawesome/free-solid-svg-icons';
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, BarChart3, FileText, Shield, TrendingUp } from "lucide-react";
+
 
 export const metadata: Metadata = {
   title: "Transparency & Reports | Project Water",
@@ -13,22 +15,22 @@ const transparencyPrinciples = [
   {
     title: "Open reporting",
     description: "We publish detailed annual reports showing how funds are used, where projects are implemented, and what results have been achieved.",
-    icon: FileText,
+    icon: faFileLines,
   },
   {
     title: "Financial accountability",
     description: "Independent audits, clear financial statements, and third-party evaluations ensure responsible stewardship of every donation.",
-    icon: BarChart3,
+    icon: faChartColumn,
   },
   {
     title: "Impact measurement",
     description: "We track and report on the metrics that matter: communities served, water systems installed, people affected, and long-term outcomes.",
-    icon: TrendingUp,
+    icon: faArrowTrendUp,
   },
   {
     title: "Data security",
     description: "Community information is protected with the highest privacy and security standards, handled with respect and dignity.",
-    icon: Shield,
+    icon: faShield,
   },
 ];
 
@@ -131,11 +133,11 @@ export default function TransparencyPage() {
 
         <div className="mt-12 grid gap-8 md:grid-cols-2 xl:grid-cols-4">
           {transparencyPrinciples.map((principle) => {
-            const Icon = principle.icon;
+            
             return (
               <article key={principle.title} className="rounded-3xl border border-slate-200 bg-slate-50 p-8 shadow-sm">
                 <div className="inline-flex rounded-2xl bg-cyan-100 p-3 text-cyan-700">
-                  <Icon className="h-6 w-6" />
+                  <FontAwesomeIcon icon={principle.icon} className="h-6 w-6" />
                 </div>
                 <h3 className="mt-6 text-xl font-semibold text-slate-900">{principle.title}</h3>
                 <p className="mt-3 text-base leading-7 text-slate-600">{principle.description}</p>
@@ -172,7 +174,7 @@ export default function TransparencyPage() {
                 </div>
                 <button className="mt-6 inline-flex items-center text-sm font-semibold text-cyan-600 transition hover:text-cyan-700">
                   Download report
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  <FontAwesomeIcon icon={faArrowRight} className="ml-2 h-4 w-4" />
                 </button>
               </div>
             ))}

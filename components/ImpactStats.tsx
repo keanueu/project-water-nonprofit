@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Users, Droplet, Heart, Globe } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUsers, faDroplet, faHeart, faGlobe } from '@fortawesome/free-solid-svg-icons';
 
 interface Stat {
   icon: React.ReactNode;
@@ -12,25 +13,25 @@ interface Stat {
 
 const stats: Stat[] = [
   {
-    icon: <Users className="w-8 h-8" />,
+    icon: <FontAwesomeIcon icon={faUsers} className="w-7 h-7" />,
     value: '785M',
     label: 'People Reached',
     description: 'Safe water access across communities',
   },
   {
-    icon: <Droplet className="w-8 h-8" />,
+    icon: <FontAwesomeIcon icon={faDroplet} className="w-7 h-7" />,
     value: '95%',
     label: 'Long-Term Success',
     description: 'Water points remaining functional',
   },
   {
-    icon: <Heart className="w-8 h-8" />,
+    icon: <FontAwesomeIcon icon={faHeart} className="w-7 h-7" />,
     value: '600+',
     label: 'Communities',
     description: 'Transformed through our work',
   },
   {
-    icon: <Globe className="w-8 h-8" />,
+    icon: <FontAwesomeIcon icon={faGlobe} className="w-7 h-7" />,
     value: '5YR+',
     label: 'Repair Guarantee',
     description: 'Maintenance funding reserved',
@@ -87,7 +88,7 @@ export default function ImpactStats() {
               }}
             >
               {/* Background Accent */}
-              <div className="absolute top-0 right-0 w-20 h-20 bg-[#0369a1]/5 rounded-full transform translate-x-8 -translate-y-8 group-hover:translate-x-4 group-hover:-translate-y-4 transition-transform duration-500" />
+              <div className="absolute top-0 right-0 w-20 h-20 bg-[#0369a1]/5 rounded-full transform translate-x-8 -translate-y-8" />
 
               {/* Icon */}
               <div className="relative mb-6 inline-flex p-3 rounded-lg bg-[#0369a1]/10 text-[#0369a1] group-hover:bg-[#0369a1] group-hover:text-white transition-colors duration-300">
@@ -110,7 +111,7 @@ export default function ImpactStats() {
               </p>
 
               {/* Hover Border */}
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#0369a1] to-[#0d9488] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#0369a1] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
             </div>
           ))}
         </div>

@@ -1,7 +1,9 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faBookOpen, faCompass, faDroplet, faMagnifyingGlass, faEarthAmericas, faHandshakeAngle, faLightbulb, faHeart, faGlobe } from '@fortawesome/free-solid-svg-icons';
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, BookOpen, Compass, Droplets, FileSearch, Globe2, HeartHandshake, Lightbulb } from "lucide-react";
+
 
 export const metadata: Metadata = {
   title: "Learn About the Water Crisis | Every Drop Counts",
@@ -14,25 +16,25 @@ const learningPillars = [
     title: "Understand the challenge",
     description:
       "Learn how water access affects health, education, dignity, and time across entire communities.",
-    icon: Droplets,
+    icon: faDroplet,
   },
   {
     title: "See the field context",
     description:
       "Explore stories and examples that show why local leadership and maintenance planning matter so much.",
-    icon: Globe2,
+    icon: faEarthAmericas,
   },
   {
     title: "Follow practical solutions",
     description:
       "Understand how water projects move from assessment and design to installation, stewardship, and reporting.",
-    icon: Compass,
+    icon: faCompass,
   },
   {
     title: "Act with confidence",
     description:
       "Use what you learn to donate, sponsor, advocate, or launch a campaign rooted in real understanding.",
-    icon: HeartHandshake,
+    icon: faHandshakeAngle,
   },
 ];
 
@@ -41,25 +43,25 @@ const featuredResources = [
     title: "Water overview",
     description: "A stronger look at how our water work is structured and why sustainable systems matter.",
     href: "/projects/water/overview",
-    icon: FileSearch,
+    icon: faMagnifyingGlass,
   },
   {
     title: "Field stories",
     description: "Read community-centered stories that help put the mission into human context.",
     href: "/our-work",
-    icon: BookOpen,
+    icon: faBookOpen,
   },
   {
     title: "Our mission",
     description: "See the values, commitments, and operating principles that guide the work.",
     href: "/our-mission",
-    icon: Lightbulb,
+    icon: faLightbulb,
   },
   {
     title: "Brand and visual assets",
     description: "Reference logos and visual assets used for consistent content building across the site.",
     href: "/brand-assets",
-    icon: Compass,
+    icon: faCompass,
   },
 ];
 
@@ -165,7 +167,7 @@ export default function LearnPage() {
 
         <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           {learningPillars.map((pillar) => {
-            const Icon = pillar.icon;
+            
 
             return (
               <article
@@ -173,7 +175,7 @@ export default function LearnPage() {
                 className="rounded-3xl border border-slate-200 bg-slate-50 p-8 shadow-sm shadow-slate-200/60"
               >
                 <div className="inline-flex rounded-2xl bg-cyan-100 p-3 text-cyan-700">
-                  <Icon className="h-6 w-6" />
+                  <FontAwesomeIcon icon={pillar.icon} className="h-6 w-6" />
                 </div>
                 <h3 className="mt-6 text-xl font-semibold text-slate-900">{pillar.title}</h3>
                 <p className="mt-3 text-base leading-7 text-slate-600">{pillar.description}</p>
@@ -245,7 +247,7 @@ export default function LearnPage() {
                 <p className="text-sm leading-6 text-slate-600">{item.description}</p>
                 <span className="mt-3 inline-flex items-center text-sm font-semibold text-cyan-700">
                   Open guide
-                  <ArrowRight className="ml-1.5 h-4 w-4 transition group-hover:translate-x-1" />
+                  <FontAwesomeIcon icon={faArrowRight} className="ml-1.5 h-4 w-4 transition group-hover:translate-x-1" />
                 </span>
               </div>
             </Link>
@@ -268,7 +270,7 @@ export default function LearnPage() {
 
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {featuredResources.map((resource) => {
-              const Icon = resource.icon;
+              
 
               return (
                 <Link
@@ -277,13 +279,13 @@ export default function LearnPage() {
                   className="group rounded-3xl border border-white/10 bg-white/5 p-8 transition hover:-translate-y-1 hover:bg-white/10"
                 >
                   <div className="inline-flex rounded-2xl bg-cyan-500/15 p-3 text-cyan-300">
-                    <Icon className="h-6 w-6" />
+                    <FontAwesomeIcon icon={resource.icon} className="h-6 w-6" />
                   </div>
                   <h3 className="mt-6 text-xl font-semibold">{resource.title}</h3>
                   <p className="mt-3 text-base leading-7 text-slate-300">{resource.description}</p>
                   <span className="mt-6 inline-flex items-center text-sm font-semibold text-cyan-300">
                     Visit page
-                    <ArrowRight className="ml-2 h-4 w-4 transition group-hover:translate-x-1" />
+                    <FontAwesomeIcon icon={faArrowRight} className="ml-2 h-4 w-4 transition group-hover:translate-x-1" />
                   </span>
                 </Link>
               );

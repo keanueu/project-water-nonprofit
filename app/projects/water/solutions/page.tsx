@@ -1,17 +1,8 @@
-﻿import type { Metadata } from 'next';
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import {
-  ArrowRight,
-  CheckCircle2,
-  ClipboardCheck,
-  DraftingCompass,
-  Drill,
-  Gauge,
-  HandCoins,
-  ShieldCheck,
-  Wrench,
-} from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faCircleCheck, faCoins, faShieldHalved, faWrench, faClipboardCheck, faCompassDrafting, faScrewdriverWrench, faGauge } from '@fortawesome/free-solid-svg-icons';
 
 export const metadata: Metadata = {
   title: 'Water Solutions | Project Water',
@@ -93,22 +84,22 @@ const implementationSteps = [
   {
     title: 'Context survey and baseline',
     description: 'Field teams validate source conditions, demand, and risk factors before design approval.',
-    icon: ClipboardCheck,
+    icon: faClipboardCheck,
   },
   {
     title: 'Solution design and budgeting',
     description: 'Engineers and local leaders align on technology, timeline, and full-cost stewardship plan.',
-    icon: DraftingCompass,
+    icon: faCompassDrafting,
   },
   {
     title: 'Construction and commissioning',
     description: 'Local crews deliver the build while community members are trained in practical system care.',
-    icon: Drill,
+    icon: faScrewdriverWrench,
   },
   {
     title: 'Monitoring and repair response',
     description: 'Performance checks and maintenance workflows protect continuity beyond launch day.',
-    icon: Wrench,
+    icon: faWrench,
   },
 ];
 
@@ -116,17 +107,17 @@ const qualitySignals = [
   {
     label: 'Functional uptime target',
     value: '95%+',
-    icon: Gauge,
+    icon: faGauge,
   },
   {
     label: 'Lifecycle budgeting commitment',
     value: 'End-to-end',
-    icon: HandCoins,
+    icon: faCoins,
   },
   {
     label: 'Community maintenance readiness',
     value: 'Required',
-    icon: ShieldCheck,
+    icon: faShieldHalved,
   },
 ];
 
@@ -161,7 +152,7 @@ export default function WaterSolutionsPage() {
               className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-5 py-2.5 text-sm font-semibold text-[#08203d] transition hover:bg-cyan-300"
             >
               See outcomes
-              <ArrowRight className="h-4 w-4" />
+              <FontAwesomeIcon icon={faArrowRight} className="h-4 w-4" />
             </Link>
             <Link
               href="/take-action/donate"
@@ -199,7 +190,7 @@ export default function WaterSolutionsPage() {
                 <ul className="mt-4 space-y-2">
                   {item.highlights.map((highlight) => (
                     <li key={highlight} className="flex items-start gap-2 text-sm leading-6 text-slate-600">
-                      <CheckCircle2 className="mt-1 h-4 w-4 flex-shrink-0 text-cyan-600" />
+                      <FontAwesomeIcon icon={faCircleCheck} className="mt-1 h-4 w-4 flex-shrink-0 text-cyan-600" />
                       {highlight}
                     </li>
                   ))}
@@ -246,11 +237,10 @@ export default function WaterSolutionsPage() {
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-700">Quality signals</p>
               <div className="mt-4 grid gap-3 sm:grid-cols-3">
                 {qualitySignals.map((item) => {
-                  const Icon = item.icon;
                   return (
                     <div key={item.label} className="rounded-2xl bg-slate-50 p-4 text-center">
                       <span className="mx-auto inline-flex rounded-full bg-sky-100 p-2 text-[#0c4a6e]">
-                        <Icon className="h-4 w-4" />
+                        <FontAwesomeIcon icon={item.icon} className="h-4 w-4" />
                       </span>
                       <p className="mt-2 text-lg font-semibold text-[#091c37]">{item.value}</p>
                       <p className="mt-1 text-xs leading-5 text-slate-600">{item.label}</p>
@@ -274,12 +264,11 @@ export default function WaterSolutionsPage() {
 
           <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {implementationSteps.map((item, index) => {
-              const Icon = item.icon;
               return (
                 <article key={item.title} className="rounded-2xl border border-white/10 bg-white/5 p-5">
                   <p className="text-sm font-semibold text-cyan-200">Phase {index + 1}</p>
                   <span className="mt-3 inline-flex rounded-2xl bg-white/10 p-3 text-cyan-100">
-                    <Icon className="h-5 w-5" />
+                    <FontAwesomeIcon icon={item.icon} className="h-5 w-5" />
                   </span>
                   <h3 className="mt-4 text-lg font-semibold">{item.title}</h3>
                   <p className="mt-2 text-sm leading-7 text-slate-200">{item.description}</p>
@@ -294,7 +283,7 @@ export default function WaterSolutionsPage() {
               className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-[#091c37] transition hover:bg-slate-100"
             >
               Read impact stories
-              <ArrowRight className="h-4 w-4" />
+              <FontAwesomeIcon icon={faArrowRight} className="h-4 w-4" />
             </Link>
             <Link
               href="/take-action/donate"

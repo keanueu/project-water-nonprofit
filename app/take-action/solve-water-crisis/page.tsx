@@ -1,7 +1,9 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faDroplet, faCoins, faHandshakeAngle, faShieldHalved, faBullseye, faWrench, faShield, faHeart } from '@fortawesome/free-solid-svg-icons';
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Droplets, HandCoins, HeartHandshake, ShieldCheck, Target, Wrench } from "lucide-react";
+
 
 export const metadata: Metadata = {
   title: "Help Solve the Water Crisis | Every Drop Counts",
@@ -14,19 +16,19 @@ const coreChallenges = [
     title: "Infrastructure gaps",
     description:
       "Communities are too often asked to rely on distant, unsafe, or unreliable water sources because core infrastructure has never been built or maintained.",
-    icon: Droplets,
+    icon: faDroplet,
   },
   {
     title: "Health and time burdens",
     description:
       "When water is scarce, families lose time, schools lose attendance, and health outcomes suffer in ways that affect every part of community life.",
-    icon: ShieldCheck,
+    icon: faShieldHalved,
   },
   {
     title: "Short-term solutions",
     description:
       "Temporary fixes can create initial hope, but without maintenance systems, local ownership, and follow-through, progress rarely lasts.",
-    icon: Wrench,
+    icon: faWrench,
   },
 ];
 
@@ -58,19 +60,19 @@ const actionPaths = [
     title: "Donate now",
     description: "Support active water access work with an immediate gift that helps fund practical implementation.",
     href: "/take-action/donate",
-    icon: HandCoins,
+    icon: faCoins,
   },
   {
     title: "Launch a campaign",
     description: "Mobilize friends, students, coworkers, or your community around a shared fundraising goal.",
     href: "/take-action/campaign",
-    icon: HeartHandshake,
+    icon: faHandshakeAngle,
   },
   {
     title: "Explore water solutions",
     description: "See how our water work is structured from planning and implementation through long-term stewardship.",
     href: "/projects/water/overview",
-    icon: Target,
+    icon: faBullseye,
   },
 ];
 
@@ -135,7 +137,7 @@ export default function SolveWaterCrisisPage() {
 
         <div className="mt-12 grid gap-6 lg:grid-cols-3">
           {coreChallenges.map((challenge) => {
-            const Icon = challenge.icon;
+            
 
             return (
               <article
@@ -143,7 +145,7 @@ export default function SolveWaterCrisisPage() {
                 className="rounded-3xl border border-slate-200 bg-slate-50 p-8 shadow-sm shadow-slate-200/60"
               >
                 <div className="inline-flex rounded-2xl bg-cyan-100 p-3 text-cyan-700">
-                  <Icon className="h-6 w-6" />
+                  <FontAwesomeIcon icon={challenge.icon} className="h-6 w-6" />
                 </div>
                 <h3 className="mt-6 text-xl font-semibold text-slate-900">{challenge.title}</h3>
                 <p className="mt-3 text-base leading-7 text-slate-600">{challenge.description}</p>
@@ -240,7 +242,7 @@ export default function SolveWaterCrisisPage() {
 
         <div className="mt-12 grid gap-6 lg:grid-cols-3">
           {actionPaths.map((path) => {
-            const Icon = path.icon;
+            
 
             return (
               <Link
@@ -249,13 +251,13 @@ export default function SolveWaterCrisisPage() {
                 className="group rounded-3xl border border-slate-200 bg-white p-8 shadow-sm shadow-slate-200/60 transition hover:-translate-y-1 hover:shadow-xl hover:shadow-cyan-100/80"
               >
                 <div className="inline-flex rounded-2xl bg-cyan-100 p-3 text-cyan-700">
-                  <Icon className="h-6 w-6" />
+                  <FontAwesomeIcon icon={path.icon} className="h-6 w-6" />
                 </div>
                 <h3 className="mt-6 text-xl font-semibold text-slate-900">{path.title}</h3>
                 <p className="mt-3 text-base leading-7 text-slate-600">{path.description}</p>
                 <span className="mt-6 inline-flex items-center text-sm font-semibold text-cyan-700">
                   Explore this path
-                  <ArrowRight className="ml-2 h-4 w-4 transition group-hover:translate-x-1" />
+                  <FontAwesomeIcon icon={faArrowRight} className="ml-2 h-4 w-4 transition group-hover:translate-x-1" />
                 </span>
               </Link>
             );

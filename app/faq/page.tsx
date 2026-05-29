@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ChevronDown } from "lucide-react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 export const metadata: Metadata = {
   title: "FAQ | Project Water",
@@ -171,7 +172,7 @@ export default function FAQPage() {
                 >
                   <summary className="flex cursor-pointer items-center justify-between font-semibold text-slate-900">
                     {item.q}
-                    <ChevronDown className="h-5 w-5 text-slate-400 transition group-open:rotate-180" />
+                    <FontAwesomeIcon icon={faChevronDown} className="h-5 w-5 text-slate-400 transition group-open:rotate-180" />
                   </summary>
                   <p className="mt-4 text-slate-600 leading-relaxed">{item.a}</p>
                 </details>

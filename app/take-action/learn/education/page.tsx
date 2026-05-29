@@ -1,7 +1,9 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faBookOpenReader, faClock, faSchool, faBookOpen } from '@fortawesome/free-solid-svg-icons';
 ﻿import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, BookOpenCheck, Clock3, School } from 'lucide-react';
+
 
 export const metadata: Metadata = {
   title: 'Education and Water Access | Project Water',
@@ -12,17 +14,17 @@ const educationEffects = [
   {
     title: 'Attendance gains',
     description: 'When water is closer and safer, fewer school days are lost to long collection routines.',
-    icon: School,
+    icon: faSchool,
   },
   {
     title: 'Learning continuity',
     description: 'Reliable school water supports hygiene and classroom consistency throughout the year.',
-    icon: BookOpenCheck,
+    icon: faBookOpenReader,
   },
   {
     title: 'Recovered time',
     description: 'Students and caregivers regain hours that can be redirected to study and family stability.',
-    icon: Clock3,
+    icon: faClock,
   },
 ];
 
@@ -59,12 +61,12 @@ export default function EducationPage() {
 
           <div className="mt-7 space-y-4">
             {educationEffects.map((item) => {
-              const Icon = item.icon;
+              
               return (
                 <article key={item.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-5 shadow-sm">
                   <div className="flex items-start gap-3">
                     <span className="mt-1 inline-flex rounded-xl bg-sky-100 p-2 text-[#0369a1]">
-                      <Icon className="h-4 w-4" />
+                      <FontAwesomeIcon icon={item.icon} className="h-4 w-4" />
                     </span>
                     <div>
                       <h3 className="text-lg font-semibold text-[#091c37]">{item.title}</h3>
@@ -94,7 +96,7 @@ export default function EducationPage() {
         <div className="mx-auto flex max-w-7xl flex-wrap gap-3">
           <Link href="/take-action/learn" className="inline-flex items-center gap-2 rounded-full bg-[#0369a1] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0c4a6e]">
             Back to learning hub
-            <ArrowRight className="h-4 w-4" />
+            <FontAwesomeIcon icon={faArrowRight} className="h-4 w-4" />
           </Link>
           <Link href="/take-action/donate" className="inline-flex items-center gap-2 rounded-full border border-slate-300 px-5 py-2.5 text-sm font-semibold text-[#091c37] transition hover:bg-white">
             Support education impact

@@ -1,16 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { HelpCircle, Mail, MessageCircle, Users, BookOpen, HeartPulse } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleQuestion, faEnvelope, faCommentDots, faUsers, faBookOpen, faHeartPulse } from '@fortawesome/free-solid-svg-icons';
 import { useChatbot } from './ChatbotProvider';
 import SpeedDialMenu from './SpeedDialMenu';
 
 const actionItems = [
-  { label: 'Donate Now', icon: HeartPulse },
-  { label: 'Get Help', icon: HelpCircle },
-  { label: 'Volunteer', icon: Users },
-  { label: 'Contact Us', icon: Mail },
-  { label: 'FAQs', icon: BookOpen },
+  { label: 'Donate Now', icon: faHeartPulse },
+  { label: 'Get Help', icon: faCircleQuestion },
+  { label: 'Volunteer', icon: faUsers },
+  { label: 'Contact Us', icon: faEnvelope },
+  { label: 'FAQs', icon: faBookOpen },
 ];
 
 export default function FloatingChatButton() {
@@ -60,9 +61,9 @@ export default function FloatingChatButton() {
         onClick={handleFabClick}
         aria-expanded={chatOpen || speedDialOpen}
         aria-label="Open support assistant"
-        className="group inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#0369a1] text-white shadow-[0_18px_38px_rgba(15,23,42,0.18)] transition duration-200 ease-in-out hover:-translate-y-0.5 hover:bg-[#0c4a6e] focus:outline-none focus:ring-2 focus:ring-cyan-300"
+        className="group inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#0369a1] text-white transition-colors duration-300 hover:bg-[#091c37] focus:outline-none focus:ring-2 focus:ring-cyan-300"
       >
-        <MessageCircle className="h-7 w-7" aria-hidden="true" />
+        <FontAwesomeIcon icon={faCommentDots} className="h-6 w-6" aria-hidden="true" />
       </button>
     </div>
   );

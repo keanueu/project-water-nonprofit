@@ -1,13 +1,8 @@
+import { faDownload, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass, faFilter, faCreditCard, faUser } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
-import { 
-  Search, 
-  Filter, 
-  Download,
-  CreditCard,
-  User,
-  Calendar,
-  ExternalLink
-} from 'lucide-react';
+
 
 export default function DonationsPage() {
   return (
@@ -19,7 +14,7 @@ export default function DonationsPage() {
         </div>
         <div className="flex items-center gap-3">
           <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
-            <Download size={18} />
+            <FontAwesomeIcon icon={faDownload} className="w-5 h-5" />
             Export CSV
           </button>
           <button className="flex items-center gap-2 px-4 py-2 bg-indigo-600 rounded-lg text-sm font-medium text-white hover:bg-indigo-700 transition-colors shadow-sm">
@@ -31,7 +26,7 @@ export default function DonationsPage() {
       {/* Filters & Search */}
       <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+          <FontAwesomeIcon icon={faMagnifyingGlass} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"  />
           <input 
             type="text" 
             placeholder="Search by donor, email, or ID..." 
@@ -40,7 +35,7 @@ export default function DonationsPage() {
         </div>
         <div className="flex items-center gap-3">
           <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
-            <Filter size={18} />
+            <FontAwesomeIcon icon={faFilter} className="w-[18px] h-[18px]" />
             Filter
           </button>
           <select className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
@@ -86,7 +81,7 @@ export default function DonationsPage() {
                 <td className="px-6 py-4 font-semibold text-gray-900">{txn.amount}</td>
                 <td className="px-6 py-4 text-gray-500">
                   <div className="flex items-center gap-2">
-                    <CreditCard size={14} />
+                    <FontAwesomeIcon icon={faCreditCard} className="w-5 h-5" />
                     {txn.method}
                   </div>
                 </td>
@@ -102,7 +97,7 @@ export default function DonationsPage() {
                 </td>
                 <td className="px-6 py-4 text-right">
                   <button className="text-gray-400 hover:text-indigo-600 transition-colors p-1">
-                    <ExternalLink size={16} />
+                    <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="w-5 h-5" />
                   </button>
                 </td>
               </tr>

@@ -1,7 +1,9 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faClock, faDroplet, faShieldHalved, faShield } from '@fortawesome/free-solid-svg-icons';
 ﻿import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Clock3, Droplets, ShieldAlert } from 'lucide-react';
+
 
 export const metadata: Metadata = {
   title: 'Water Crisis Deep Dive | Project Water',
@@ -14,19 +16,19 @@ const crisisDimensions = [
     title: 'Health exposure',
     description:
       'Unsafe sources raise preventable disease risk and pressure local clinics and households.',
-    icon: ShieldAlert,
+    icon: faShieldHalved,
   },
   {
     title: 'Time burden',
     description:
       'Long collection trips remove hours from school, work, and caregiving.',
-    icon: Clock3,
+    icon: faClock,
   },
   {
     title: 'Service instability',
     description:
       'Short-term fixes without maintenance pathways often fail communities over time.',
-    icon: Droplets,
+    icon: faDroplet,
   },
 ];
 
@@ -81,12 +83,12 @@ export default function WaterCrisisPage() {
 
           <div className="mt-7 space-y-4">
             {crisisDimensions.map((item) => {
-              const Icon = item.icon;
+              
               return (
                 <article key={item.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-5 shadow-sm">
                   <div className="flex items-start gap-3">
                     <span className="mt-1 inline-flex rounded-xl bg-sky-100 p-2 text-[#0369a1]">
-                      <Icon className="h-4 w-4" />
+                      <FontAwesomeIcon icon={item.icon} className="h-4 w-4" />
                     </span>
                     <div>
                       <h3 className="text-lg font-semibold text-[#091c37]">{item.title}</h3>
@@ -142,7 +144,7 @@ export default function WaterCrisisPage() {
               className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-[#091c37] transition hover:bg-slate-100"
             >
               Explore the response model
-              <ArrowRight className="h-4 w-4" />
+              <FontAwesomeIcon icon={faArrowRight} className="h-4 w-4" />
             </Link>
             <Link
               href="/take-action/donate"

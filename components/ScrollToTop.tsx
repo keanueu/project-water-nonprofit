@@ -1,7 +1,8 @@
-﻿'use client';
+'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowUp } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 export default function ScrollToTop() {
   const [visible, setVisible] = useState(false);
@@ -36,7 +37,7 @@ export default function ScrollToTop() {
       type="button"
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       aria-label="Scroll to top"
-      className="fixed bottom-6 right-6 z-40 inline-flex h-16 w-16 items-center justify-center rounded-full border border-sky-200 bg-white/95 text-[#0c4a6e] shadow-lg backdrop-blur transition hover:border-sky-300 hover:text-[#0369a1] hover:shadow-xl hover:scale-110 animate-in fade-in slide-in-from-bottom-4 duration-300"
+      className="fixed bottom-6 right-6 z-40 inline-flex h-16 w-16 items-center justify-center rounded-full border border-sky-200 bg-white/95 text-[#0c4a6e] backdrop-blur transition-colors duration-300 hover:border-[#0369a1] hover:text-[#0369a1]"
     >
       <svg viewBox="0 0 48 48" className="absolute inset-0 h-full w-full -rotate-90">
         <circle cx="24" cy="24" r={radius} stroke="rgba(14, 165, 233, 0.2)" strokeWidth="3" fill="none" />
@@ -53,7 +54,7 @@ export default function ScrollToTop() {
           className="transition-[stroke-dashoffset] duration-150"
         />
       </svg>
-      <ArrowUp className="relative h-4 w-4" />
+      <FontAwesomeIcon icon={faArrowUp} className="relative h-4 w-4" />
     </button>
   );
 }

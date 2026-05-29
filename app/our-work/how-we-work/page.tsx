@@ -1,16 +1,8 @@
-﻿import type { Metadata } from 'next';
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import {
-  ArrowRight,
-  BookOpenCheck,
-  Handshake,
-  LineChart,
-  ShieldCheck,
-  Sparkles,
-  Users,
-  Wrench,
-} from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faBookOpenReader, faShieldHalved, faWandMagicSparkles, faUsers, faWrench, faHandshake, faChartLine } from '@fortawesome/free-solid-svg-icons';
 
 export const metadata: Metadata = {
   title: 'How We Work | Project Water',
@@ -23,25 +15,25 @@ const operatingModel = [
     title: 'Local partnership and listening',
     description:
       'We co-design programs with local organizations that know the geography, governance dynamics, and social context best.',
-    icon: Handshake,
+    icon: faHandshake,
   },
   {
     title: 'Context-fit solution planning',
     description:
       'Technology is selected based on hydrogeology, population demand, and maintenance feasibility instead of one-size-fits-all assumptions.',
-    icon: Sparkles,
+    icon: faWandMagicSparkles,
   },
   {
     title: 'Implementation with community ownership',
     description:
       'Construction is paired with training for local committees and practical responsibility for long-term system care.',
-    icon: Users,
+    icon: faUsers,
   },
   {
     title: 'Monitoring and continuous repair',
     description:
       'Functionality checks and repair workflows keep water points operational well beyond initial commissioning.',
-    icon: Wrench,
+    icon: faWrench,
   },
 ];
 
@@ -65,19 +57,19 @@ const capabilityAreas = [
     title: 'Training and local capacity',
     description:
       'We invest in practical training that helps local teams maintain systems, manage decisions, and respond to issues quickly.',
-    icon: BookOpenCheck,
+    icon: faBookOpenReader,
   },
   {
     title: 'Program performance management',
     description:
       'Monitoring structures support better prioritization, clearer accountability, and stronger continuity in service delivery.',
-    icon: LineChart,
+    icon: faChartLine,
   },
   {
     title: 'Transparent governance habits',
     description:
       'Clear process and visible reporting help preserve trust between communities, local partners, and supporters.',
-    icon: ShieldCheck,
+    icon: faShieldHalved,
   },
 ];
 
@@ -118,11 +110,10 @@ export default function HowWeWorkPage() {
 
         <div className="mt-10 grid gap-5 md:grid-cols-2">
           {operatingModel.map((item) => {
-            const Icon = item.icon;
             return (
               <article key={item.title} className="rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-sm">
                 <span className="inline-flex rounded-2xl bg-sky-100 p-3 text-[#0369a1]">
-                  <Icon className="h-5 w-5" />
+                  <FontAwesomeIcon icon={item.icon} className="h-5 w-5" />
                 </span>
                 <h3 className="mt-4 text-xl font-semibold text-[#091c37]">{item.title}</h3>
                 <p className="mt-3 text-sm leading-7 text-slate-600">{item.description}</p>
@@ -145,12 +136,11 @@ export default function HowWeWorkPage() {
 
             <div className="mt-7 space-y-4">
               {capabilityAreas.map((item) => {
-                const Icon = item.icon;
                 return (
                   <article key={item.title} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
                     <div className="flex items-start gap-3">
                       <span className="mt-1 inline-flex rounded-xl bg-slate-100 p-2 text-[#0c4a6e]">
-                        <Icon className="h-4 w-4" />
+                        <FontAwesomeIcon icon={item.icon} className="h-4 w-4" />
                       </span>
                       <div>
                         <h3 className="text-lg font-semibold text-[#091c37]">{item.title}</h3>
@@ -205,7 +195,7 @@ export default function HowWeWorkPage() {
               className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-[#091c37] transition hover:bg-slate-100"
             >
               Explore solutions
-              <ArrowRight className="h-4 w-4" />
+              <FontAwesomeIcon icon={faArrowRight} className="h-4 w-4" />
             </Link>
             <Link
               href="/take-action/donate"

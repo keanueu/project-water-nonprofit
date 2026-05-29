@@ -1,12 +1,12 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
-  Plus, 
-  MoreVertical, 
-  Target, 
-  Users, 
-  Calendar,
-  ChevronRight
-} from 'lucide-react';
+  faPlus, 
+  faEllipsisVertical, 
+  faUsers, 
+  faCalendarDays, 
+  faChevronRight 
+} from '@fortawesome/free-solid-svg-icons';
 
 export default function CampaignsPage() {
   return (
@@ -17,7 +17,7 @@ export default function CampaignsPage() {
           <p className="text-gray-500">Manage your fundraising initiatives and track their progress.</p>
         </div>
         <button className="flex items-center gap-2 px-4 py-2 bg-indigo-600 rounded-lg text-sm font-medium text-white hover:bg-indigo-700 transition-colors shadow-sm">
-          <Plus size={18} />
+          <FontAwesomeIcon icon={faPlus} className="w-[18px] h-[18px]" />
           Create Campaign
         </button>
       </div>
@@ -84,7 +84,7 @@ export default function CampaignsPage() {
                   {campaign.status}
                 </div>
                 <button className="text-gray-400 hover:text-gray-600 transition-colors">
-                  <MoreVertical size={18} />
+                  <FontAwesomeIcon icon={faEllipsisVertical} className="w-[18px] h-[18px]" />
                 </button>
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors">{campaign.title}</h3>
@@ -116,15 +116,15 @@ export default function CampaignsPage() {
             <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-between items-center text-xs">
               <div className="flex items-center gap-4 text-gray-500">
                 <div className="flex items-center gap-1">
-                  <Users size={14} />
+                  <FontAwesomeIcon icon={faUsers} className="w-3.5 h-3.5" />
                   <span>{campaign.donors} donors</span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <Calendar size={14} />
+                  <FontAwesomeIcon icon={faCalendarDays} className="w-3.5 h-3.5" />
                   <span>{campaign.daysLeft} days left</span>
                 </div>
               </div>
-              <ChevronRight size={16} className="text-gray-400" />
+              <FontAwesomeIcon icon={faChevronRight} className="text-gray-400" />
             </div>
           </div>
         ))}
@@ -132,7 +132,7 @@ export default function CampaignsPage() {
         {/* Add New Placeholder */}
         <button className="border-2 border-dashed border-gray-200 rounded-xl p-6 flex flex-col items-center justify-center text-gray-400 hover:border-indigo-300 hover:text-indigo-500 transition-all min-h-[300px]">
           <div className="p-3 bg-gray-50 rounded-full mb-4">
-            <Plus size={24} />
+            <FontAwesomeIcon icon={faPlus} className="w-6 h-6" />
           </div>
           <span className="font-medium">Create New Campaign</span>
         </button>

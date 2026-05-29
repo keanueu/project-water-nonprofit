@@ -1,16 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowRight,
-  BarChart3,
-  Droplets,
-  Handshake,
-  HeartHandshake,
-  ShieldCheck,
-  Users,
-  Wrench,
-} from "lucide-react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faChartColumn, faDroplet, faHandHoldingHeart, faShieldHalved, faUsers, faWrench, faHandshake } from '@fortawesome/free-solid-svg-icons';
 
 import CTASection from "@/components/CTASection";
 import HeroSection from "@/components/HeroSection";
@@ -26,19 +18,19 @@ const values = [
     title: "Community-led partnership",
     description:
       "We work with local leaders, schools, health clinics, and water committees so projects reflect each community's priorities and daily realities.",
-    icon: Handshake,
+    icon: faHandshake,
   },
   {
     title: "Durable water access",
     description:
       "Our focus is not just installation. We support solutions designed for maintenance, training, and long-term reliability.",
-    icon: Wrench,
+    icon: faWrench,
   },
   {
     title: "Transparent stewardship",
     description:
       "Donors deserve clarity. We share what gifts fund, how projects progress, and why measured impact matters.",
-    icon: ShieldCheck,
+    icon: faShieldHalved,
   },
 ];
 
@@ -72,19 +64,19 @@ const operatingModel = [
     title: "Identify the right solution",
     description:
       "We assess local conditions and work with field partners to determine whether a well rehabilitation, spring protection, rainwater catchment system, or another approach will serve people best.",
-    icon: Droplets,
+    icon: faDroplet,
   },
   {
     title: "Equip communities for sustainability",
     description:
       "Training and local oversight help ensure a project can be managed well after construction crews leave the site.",
-    icon: Users,
+    icon: faUsers,
   },
   {
     title: "Track progress and share impact",
     description:
       "We communicate what was built, why it matters, and how donor support is turning into healthier, more resilient communities.",
-    icon: BarChart3,
+    icon: faChartColumn,
   },
 ];
 
@@ -127,7 +119,7 @@ export default function AboutUsPage() {
                 className="inline-flex items-center gap-2 rounded-full bg-cyan-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-cyan-700"
               >
                 Explore our mission
-                <ArrowRight className="h-4 w-4" />
+                <FontAwesomeIcon icon={faArrowRight} className="h-4 w-4" />
               </Link>
               <Link
                 href="/our-work"
@@ -164,13 +156,13 @@ export default function AboutUsPage() {
           </div>
 
           <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {values.map(({ title, description, icon: Icon }) => (
+            {values.map(({ title, description, icon }) => (
               <div
                 key={title}
                 className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm"
               >
                 <div className="inline-flex rounded-2xl bg-cyan-50 p-3 text-cyan-700">
-                  <Icon className="h-6 w-6" />
+                  <FontAwesomeIcon icon={icon} className="h-6 w-6" />
                 </div>
                 <h3 className="mt-6 text-xl font-semibold text-slate-900">
                   {title}
@@ -225,14 +217,14 @@ export default function AboutUsPage() {
             </p>
 
             <div className="grid gap-4">
-              {operatingModel.map(({ title, description, icon: Icon }) => (
+              {operatingModel.map(({ title, description, icon }) => (
                 <div
                   key={title}
                   className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
                 >
                   <div className="flex items-start gap-4">
                     <div className="mt-1 inline-flex rounded-2xl bg-slate-100 p-3 text-slate-700">
-                      <Icon className="h-5 w-5" />
+                      <FontAwesomeIcon icon={icon} className="h-5 w-5" />
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-slate-900">
@@ -272,7 +264,7 @@ export default function AboutUsPage() {
                 className="rounded-3xl border border-white/10 bg-white/5 p-8"
               >
                 <div className="inline-flex rounded-2xl bg-cyan-500/15 p-3 text-cyan-200">
-                  <HeartHandshake className="h-6 w-6" />
+                  <FontAwesomeIcon icon={faHandHoldingHeart} className="h-6 w-6" />
                 </div>
                 <h3 className="mt-6 text-xl font-semibold">{principle.title}</h3>
                 <p className="mt-3 leading-7 text-slate-300">
