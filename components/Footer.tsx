@@ -50,14 +50,14 @@ export default function Footer() {
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
             <Link
               href="/take-action/donate"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-sky-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-400"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-sky-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-400"
             >
               Donate now
               <FontAwesomeIcon icon={faArrowRight} className="h-3.5 w-3.5" />
             </Link>
             <Link
               href="/projects/water/impact"
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
             >
               View impact
               <FontAwesomeIcon icon={faArrowRight} className="h-3.5 w-3.5" />

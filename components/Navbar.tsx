@@ -155,7 +155,7 @@ export default function Navbar() {
 
                       {expanded && (
                         <div className="absolute left-0 top-full w-64 pt-0">
-                          <div className="border border-t-0 border-slate-200 bg-white p-2">
+                          <div className="rounded-b-3xl border border-t-0 border-slate-200 bg-white p-2 shadow-lg overflow-hidden">
                             {item.children?.map((child) => (
                               <Link
                                 key={child.href}
@@ -215,8 +215,13 @@ export default function Navbar() {
                           href={user.role === 'admin' ? '/admin' : '/dashboard'}
                           className="flex items-center gap-2 text-sm font-semibold text-[#0369a1]"
                         >
-                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-100 text-[#0369a1]">
-                            <FontAwesomeIcon icon={faUser} className="h-3.5 w-3.5" />
+                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-100 text-[#0369a1] overflow-hidden">
+                            {user.avatarUrl ? (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img src={user.avatarUrl} alt="avatar" className="h-full w-full object-cover" />
+                            ) : (
+                              <FontAwesomeIcon icon={faUser} className="h-3.5 w-3.5" />
+                            )}
                           </div>
                           <span className="hidden xl:inline">
                             {user.role === 'admin' ? 'Admin Panel' : 'My Account'}
@@ -236,7 +241,7 @@ export default function Navbar() {
 
                 <Link
                   href="/take-action/donate"
-                  className="inline-flex items-center bg-[#0369a1] px-6 py-2.5 text-sm font-semibold text-white transition-colors duration-300 hover:bg-[#091c37]"
+                  className="inline-flex items-center rounded-full bg-[#0369a1] px-6 py-2.5 text-sm font-semibold text-white transition-colors duration-300 hover:bg-[#091c37]"
                 >
                   Donate
                 </Link>
@@ -271,7 +276,7 @@ export default function Navbar() {
         role="dialog"
         aria-modal="true"
         aria-label="Mobile navigation panel"
-        className={`fixed inset-y-0 right-0 z-[70] w-full max-w-[26rem] transform bg-white shadow-2xl transition-transform duration-300 ease-in-out lg:hidden ${
+        className={`fixed inset-y-0 right-0 z-[70] w-full max-w-[26rem] transform rounded-l-[2rem] bg-white shadow-2xl transition-transform duration-300 ease-in-out lg:hidden ${
           isDrawerOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -367,8 +372,13 @@ export default function Navbar() {
                 ) : (
                   <div className="col-span-2 flex items-center justify-between rounded-2xl bg-slate-50 p-3">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 text-[#0369a1]">
-                        <FontAwesomeIcon icon={faUser} className="h-4 w-4" />
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 text-[#0369a1] overflow-hidden">
+                        {user.avatarUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={user.avatarUrl} alt="avatar" className="h-full w-full object-cover" />
+                        ) : (
+                          <FontAwesomeIcon icon={faUser} className="h-4 w-4" />
+                        )}
                       </div>
                       <div>
                         <p className="text-xs font-bold uppercase tracking-wider text-slate-400">

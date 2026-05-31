@@ -80,7 +80,7 @@ export default function ImpactStats() {
           {stats.map((stat, index) => (
             <div
               key={index}
-              className={`group relative overflow-hidden rounded-lg bg-white p-8 shadow-sm hover:shadow-md transition-all duration-500 ease-out ${
+              className={`group relative overflow-hidden p-8 shadow-sm transition-all duration-500 ease-out ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
               style={{
@@ -91,7 +91,7 @@ export default function ImpactStats() {
               <div className="absolute top-0 right-0 w-20 h-20 bg-[#0369a1]/5 rounded-full transform translate-x-8 -translate-y-8" />
 
               {/* Icon */}
-              <div className="relative mb-6 inline-flex p-3 rounded-lg bg-[#0369a1]/10 text-[#0369a1] group-hover:bg-[#0369a1] group-hover:text-white transition-colors duration-300">
+              <div className="relative mb-6 inline-flex p-3 rounded-full bg-[#0369a1]/10 text-[#0369a1] group-hover:bg-[#0369a1] group-hover:text-white transition-colors duration-300">
                 {stat.icon}
               </div>
 

@@ -95,13 +95,34 @@ export function ChatbotProvider({ children }: { children: ReactNode }) {
     addMessage(userMessage);
     openChatWindow();
 
-    window.setTimeout(() => {
-      addMessage({
-        id: `bot-${createId()}`,
-        role: 'bot',
-        content: generateBotReply(trimmed),
-      });
-    }, 600);
+    // Insert a temporary bot message while we fetch the AI reply
+    const botId = `bot-${createId()}`;
+    addMessage({ id: botId, role: 'bot', content: 'Thinking...' });
+
+    (async () => {
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: trimmed }),
+        });
+
+        const data = await res.json().catch(() => null);
+        const reply = data?.reply || data?.error || generateBotReply(trimmed);
+
+        setMessages((current) =>
+          current.map((m) => (m.id === botId ? { ...m, content: reply } : m)),
+        );
+      } catch (err) {
+        setMessages((current) =>
+          current.map((m) =>
+            m.id === botId
+              ? { ...m, content: 'Sorry — I could not reach the assistant. Try again later.' }
+              : m,
+          ),
+        );
+      }
+    })();
   };
 
   const triggerQuickAction = (label: string) => {

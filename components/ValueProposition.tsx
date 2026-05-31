@@ -52,10 +52,10 @@ export default function ValueProposition() {
           {propositions.map((prop, index) => (
             <div
               key={index}
-              className="group p-8 bg-white border border-gray-200 hover:border-[#0369a1] transition-colors duration-300"
+              className="group rounded-3xl p-8 bg-white border border-gray-200 hover:border-[#0369a1] transition-colors duration-300"
             >
               {/* Icon */}
-              <div className="mb-6 inline-flex p-3 rounded-lg bg-[#0369a1]/10 text-[#0369a1] group-hover:bg-[#0369a1] group-hover:text-white transition-colors duration-300">
+              <div className="mb-6 inline-flex p-3 rounded-full bg-[#0369a1]/10 text-[#0369a1] group-hover:bg-[#0369a1] group-hover:text-white transition-colors duration-300">
                 {prop.icon}
               </div>
 

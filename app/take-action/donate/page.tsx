@@ -127,21 +127,109 @@ export default function DonatePage() {
     setSubmitting(true);
 
     try {
-      const { error } = await supabase
-        .from('donations')
-        .insert([
-          {
-            name,
-            email,
-            amount: activeAmount,
-            message,
-          },
-        ]);
+      // Attach authenticated user's id when available so RLS policies
+      // that require ownership (e.g. new.user_id = auth.uid()) pass.
+      const { data: sbUserData } = await supabase.auth.getUser();
+      const sbUser = sbUserData?.user;
+
+      const insertPayload: any = {
+        name,
+        email,
+        amount: activeAmount,
+        message,
+      };
+
+      if (sbUser?.id) insertPayload.user_id = sbUser.id;
+
+      // Helper to safely parse JSON responses and fall back to text on HTML errors
+      const parseApiResponse = async (res: Response) => {
+        const contentType = res.headers.get('content-type') || '';
+        if (contentType.includes('application/json')) {
+          return res.json();
+        }
+        // Return text for non-JSON responses so we can show a helpful error
+        const txt = await res.text();
+        throw new Error(`Unexpected non-JSON response: ${txt.slice(0, 200)}`);
+      };
+
+      // Use server-side endpoint to perform the insert with the service role key
+      // so Row Level Security (RLS) policies don't block the operation.
+      const insertRes = await fetch('/api/donations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(insertPayload),
+      });
+
+      let insertJson: any = null;
+      try {
+        insertJson = await parseApiResponse(insertRes);
+      } catch (parseErr: any) {
+        // Network or non-JSON body (likely HTML error page). Surface helpful error.
+        setDbError(parseErr?.message || 'Failed to parse donation API response');
+        setSubmitting(false);
+        return;
+      }
+
+      let error = insertJson?.error ? { message: insertJson.error } : null;
+
+      // If the insert failed because the `user_id` column doesn't exist in the
+      // database schema, retry the insert without that field so anonymous
+      // donations still work until the schema is updated.
+
+      if (error) {
+        const msg = String(error.message || '').toLowerCase();
+        const isMissingUserId = msg.includes('user_id') && (msg.includes('schema') || msg.includes('does not exist') || msg.includes('could not find'));
+        if (isMissingUserId) {
+          console.warn('donations.user_id column missing; retrying insert without user_id via server endpoint');
+          const retryRes = await fetch('/api/donations', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, amount: activeAmount, message }),
+          });
+          const retryJson = await retryRes.json();
+          error = retryJson?.error ? { message: retryJson.error } : null;
+        }
+      }
 
       if (error) {
         setDbError(error.message);
       } else {
-        setIsSubmitted(true);
+        // Create Stripe Checkout session and redirect
+        try {
+          const res = await fetch('/api/checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              amount: activeAmount,
+              description: `Donation by ${name || email}`,
+              email,
+              name,
+              message,
+              user_id: insertPayload?.user_id,
+            }),
+          });
+
+          let data: any = null;
+          try {
+            data = await parseApiResponse(res);
+          } catch (parseErr: any) {
+            setDbError(parseErr?.message || 'Failed to parse checkout response');
+            setIsSubmitted(true);
+            return;
+          }
+
+          if (data?.url) {
+            // redirect to Stripe Checkout
+            window.location.href = data.url;
+            return; // stop further processing — user is leaving page
+          } else {
+            setDbError(data?.error || 'Failed to create checkout session.');
+            setIsSubmitted(true);
+          }
+        } catch (err: any) {
+          setDbError(err?.message || 'Checkout error');
+          setIsSubmitted(true);
+        }
       }
     } catch (err: any) {
       setDbError(err?.message || 'Failed to save donation to database.');
