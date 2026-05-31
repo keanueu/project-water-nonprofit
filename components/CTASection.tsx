@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import Button from '@/components/ui/Button';
 
 interface CTASectionProps {
   title: string;
@@ -36,13 +37,13 @@ export default function CTASection({
         </p>
 
         {/* CTA Button */}
-        <Link
+        <Button
           href={buttonHref}
           className="group inline-flex items-center justify-center gap-2 px-10 py-4 bg-white text-[#091c37] font-bold transition-colors duration-300 hover:bg-[#091c37] hover:text-white"
         >
           {buttonText}
           <FontAwesomeIcon icon={faHeart} className="w-4 h-4" />
-        </Link>
+        </Button>
       </div>
     </section>
   );

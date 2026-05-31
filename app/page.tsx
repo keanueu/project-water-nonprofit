@@ -5,6 +5,8 @@ import HeroSection from '@/components/HeroSection';
 import ImpactStats from '@/components/ImpactStats';
 import ValueProposition from '@/components/ValueProposition';
 import CTASection from '@/components/CTASection';
+import Card from '@/components/ui/Card';
+import Button from '@/components/ui/Button';
 
 export const metadata: Metadata = {
   title: 'Project Water | Public, Proven, Reliable',
@@ -247,19 +249,13 @@ export default function HomePage() {
 
           <div className="grid gap-6 md:grid-cols-3">
             {actionCards.map((card) => (
-              <div
-                key={card.title}
-                className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-              >
+              <Card key={card.title} className="p-8 transition hover:-translate-y-1 hover:shadow-lg">
                 <h3 className="mb-4 text-2xl font-semibold text-[#091c37]">{card.title}</h3>
                 <p className="mb-6 text-slate-600 leading-relaxed">{card.description}</p>
-                <Link
-                  href={card.href}
-                  className="font-semibold text-[#0369a1] transition hover:text-[#0c4a6e]"
-                >
+                <Button href={card.href} className="inline-flex px-4 py-2 text-[#0369a1] bg-transparent hover:text-[#0c4a6e]">
                   Visit page →
-                </Link>
-              </div>
+                </Button>
+              </Card>
             ))}
           </div>
         </div>

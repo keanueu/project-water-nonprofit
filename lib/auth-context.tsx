@@ -11,6 +11,7 @@ interface User {
   role: UserRole;
   firstName?: string;
   lastName?: string;
+  avatarUrl?: string;
 }
 
 interface AuthContextType {
@@ -18,6 +19,7 @@ interface AuthContextType {
   login: (email: string, role: UserRole) => void; // for backwards compatibility
   logout: () => Promise<void>;
   isLoading: boolean;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -35,7 +37,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       role,
       firstName: sbUser.user_metadata?.first_name || '',
       lastName: sbUser.user_metadata?.last_name || '',
+      avatarUrl: sbUser.user_metadata?.avatar_url || sbUser.user_metadata?.avatar || undefined,
     };
+  };
+
+  // Refresh the current user object from Supabase (useful after updates)
+  const refreshUser = async () => {
+    try {
+      const { data } = await supabase.auth.getUser();
+      const sbUser = data?.user;
+      // debug: helps when metadata doesn't appear to update in the UI
+      // console.debug('refreshUser -> sbUser', sbUser);
+      if (sbUser) {
+        const mapped = mapFirebaseUser(sbUser);
+        setUser(mapped);
+        localStorage.setItem('pw_user', JSON.stringify(mapped));
+      } else {
+        setUser(null);
+        localStorage.removeItem('pw_user');
+      }
+    } catch (e) {
+      // noop
+    }
   };
 
   useEffect(() => {
@@ -90,7 +113,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLoading }}>
+    <AuthContext.Provider value={{ user, login, logout, isLoading, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

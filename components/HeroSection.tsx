@@ -48,7 +48,7 @@ export default function HeroSection({
           {/* Primary Button */}
           <Link
             href={primaryButtonHref}
-            className="group inline-flex items-center justify-center gap-2 px-8 sm:px-10 py-4 bg-[#0369a1] text-white font-semibold transition-colors duration-300 hover:bg-[#091c37]"
+            className="group inline-flex items-center justify-center gap-2 rounded-full px-8 sm:px-10 py-4 bg-[#0369a1] text-white font-semibold transition-colors duration-300 hover:bg-[#091c37]"
           >
             {primaryButtonText}
             <FontAwesomeIcon icon={faChevronRight} className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -57,7 +57,7 @@ export default function HeroSection({
           {/* Secondary Button */}
           <Link
             href={secondaryButtonHref}
-            className="group inline-flex items-center justify-center gap-2 px-8 sm:px-10 py-4 bg-white/10 text-white font-semibold border border-white/30 hover:bg-white hover:text-[#091c37] transition-colors duration-300 backdrop-blur-sm"
+            className="group inline-flex items-center justify-center gap-2 rounded-full px-8 sm:px-10 py-4 bg-white/10 text-white font-semibold border border-white/30 hover:bg-white hover:text-[#091c37] transition-colors duration-300 backdrop-blur-sm"
           >
             {secondaryButtonText}
             <FontAwesomeIcon icon={faChevronRight} className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
