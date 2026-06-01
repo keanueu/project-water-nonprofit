@@ -1,7 +1,8 @@
-import { faCircleCheck, faCalendarDays } from '@fortawesome/free-solid-svg-icons';
+'use client';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faMagnifyingGlass, faHeartPulse, faShieldHalved, faWrench, faShield, faHeart } from '@fortawesome/free-solid-svg-icons';
-﻿'use client';
+import { faCircleCheck, faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 
 import { useState } from 'react';
 import Image from 'next/image';
