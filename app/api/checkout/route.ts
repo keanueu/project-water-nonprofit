@@ -13,7 +13,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const stripe = new Stripe(stripeKey, { apiVersion: '2022-11-15' });
+    const stripe = new Stripe(stripeKey);
 
     const body = await req.json();
     const amount = Number(body?.amount ?? 0);
