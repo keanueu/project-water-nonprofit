@@ -9,6 +9,12 @@
   --water-teal: #0d9488;
   --water-deep: #0c4a6e;
   --water-gold: #d97706;
+
+  /* Rounding design tokens */
+  --radius-interactive: 9999px; /* rounded-full for buttons, FAB */
+  --radius-container: 1rem;     /* rounded-2xl for chat windows */
+  --radius-card: 1.5rem;        /* rounded-3xl for prominent cards */
+  --radius-icon: 0.5rem;        /* rounded-lg for icon backgrounds */
 }
 
 html {
