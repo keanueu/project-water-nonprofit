@@ -92,27 +92,62 @@ export async function POST(request: Request) {
               body: JSON.stringify(payload),
             });
 
-        const data = await res.json().catch(() => null);
+        // Read raw text first so we can surface helpful diagnostics for non-JSON responses
+        const raw = await res.text().catch(() => '');
+        let data: any = null;
+        try {
+          data = raw ? JSON.parse(raw) : null;
+        } catch (e) {
+          data = null;
+        }
+
+        // HTTP-level errors
+        if (!res.ok) {
+          const diag = data?.error?.message ?? data?.error ?? raw ?? `${res.status} ${res.statusText}`;
+          lastError = `HTTP ${res.status} ${res.statusText} from ${model}: ${String(diag).slice(0, 400)}`;
+          continue;
+        }
+
+        // API-level error object
+        if (data?.error) {
+          const diag = typeof data.error === 'string' ? data.error : data.error?.message ?? JSON.stringify(data.error);
+          lastError = `API error from ${model}: ${String(diag).slice(0, 400)}`;
+          continue;
+        }
 
         // Best-effort parsing for different generative API shapes.
         let reply = '';
-        if (!data) {
+        if (data) {
+          if (Array.isArray(data?.candidates) && data.candidates[0]?.output) {
+            reply = data.candidates[0].output;
+          } else if (typeof data?.output === 'string') {
+            reply = data.output;
+          } else if (Array.isArray(data?.output) && data.output[0]?.content) {
+            reply = data.output[0].content;
+          } else if (typeof data?.reply === 'string') {
+            reply = data.reply;
+          } else if (data?.choices && Array.isArray(data.choices) && (data.choices[0]?.message?.content || data.choices[0]?.text)) {
+            reply = data.choices[0]?.message?.content ?? data.choices[0]?.text ?? '';
+          } else if (Array.isArray(data?.responses) && data.responses[0]?.text) {
+            reply = data.responses[0].text;
+          } else {
+            lastError = `Unrecognized response shape for model ${model}: ${JSON.stringify(data).slice(0, 400)}`;
+            continue;
+          }
+        } else if (raw) {
+          // Fallback to raw text body when JSON parsing failed but text exists.
+          reply = raw.trim();
+          if (!reply) {
+            lastError = `Empty text response from ${model}`;
+            continue;
+          }
+        } else {
           lastError = `No response for model ${model}`;
           continue;
-        } else if (Array.isArray(data?.candidates) && data.candidates[0]?.output) {
-          reply = data.candidates[0].output;
-        } else if (typeof data?.output === 'string') {
-          reply = data.output;
-        } else if (Array.isArray(data?.output) && data.output[0]?.content) {
-          reply = data.output[0].content;
-        } else if (typeof data?.reply === 'string') {
-          reply = data.reply;
-        } else if (data?.choices && Array.isArray(data.choices) && data.choices[0]?.message?.content) {
-          // OpenAI-like shape
-          reply = data.choices[0].message.content;
-        } else {
-          // Not a recognized shape — keep as diagnostic
-          lastError = `Unrecognized response shape for model ${model}: ${JSON.stringify(data).slice(0, 400)}`;
+        }
+
+        if (!reply || typeof reply !== 'string') {
+          lastError = `Empty or invalid reply from ${model}`;
           continue;
         }
 

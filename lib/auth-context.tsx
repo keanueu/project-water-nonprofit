@@ -63,7 +63,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     // 1. Get active session on mount
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then((res: any) => {
+      const session = res?.data?.session;
       if (session?.user) {
         setUser(mapFirebaseUser(session.user));
       } else {
@@ -81,7 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     // 2. Listen to auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const onState = supabase.auth.onAuthStateChange((_event: any, session: any) => {
       if (session?.user) {
         const newUser = mapFirebaseUser(session.user);
         setUser(newUser);
@@ -93,8 +94,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(false);
     });
 
+    const subscription = (onState as any)?.data?.subscription;
+
     return () => {
-      subscription.unsubscribe();
+      subscription?.unsubscribe?.();
     };
   }, []);
 
