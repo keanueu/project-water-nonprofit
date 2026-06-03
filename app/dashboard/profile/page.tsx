@@ -78,7 +78,7 @@ export default function ProfilePage() {
       }
 
       const updatePayload: any = { data: { first_name: firstName.trim(), last_name: lastName.trim() } };
-      if (email && email !== user.email) updatePayload.email = email.trim();
+      if (email && email !== user?.email) updatePayload.email = email.trim();
       if (password) updatePayload.password = password;
       if (avatarUrl) updatePayload.data.avatar_url = avatarUrl;
 
@@ -273,7 +273,7 @@ export default function ProfilePage() {
                 />
                 <input
                   type="email"
-                  value={user.email}
+                  value={user?.email}
                   readOnly
                   disabled
                   className="w-full cursor-not-allowed rounded-xl border border-slate-100 bg-slate-50/80 py-3 pl-11 pr-4 text-sm text-slate-400"

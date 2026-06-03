@@ -24,7 +24,7 @@ export default function SpeedDialMenu({ actions, visible, onSelect }: SpeedDialM
             key={action.label}
             type="button"
             onClick={() => onSelect(action.label)}
-            className="inline-flex w-full items-center gap-3 border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 transition-colors duration-200 hover:bg-slate-50 hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-cyan-300"
+            className="inline-flex w-full items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 transition-colors duration-200 hover:bg-slate-50 hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-cyan-300"
             role="menuitem"
           >
             <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 text-slate-700">

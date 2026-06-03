@@ -40,14 +40,14 @@ export default function ChatWindow() {
 
   return (
     <div
-      className={`fixed bottom-24 right-6 z-50 w-[min(95vw,380px)] max-w-full rounded-[2rem] border border-slate-200 bg-white/98 shadow-[0_22px_65px_rgba(15,23,42,0.18)] backdrop-blur-xl transition-all duration-200 ease-in-out ${
+      className={`fixed bottom-24 right-6 z-50 w-[min(95vw,380px)] max-w-full rounded-2xl border border-slate-200 bg-white/98 shadow-[0_22px_65px_rgba(15,23,42,0.18)] backdrop-blur-xl transition-all duration-200 ease-in-out ${
         chatOpen ? 'opacity-100 translate-y-0' : 'pointer-events-none opacity-0 translate-y-6'
       }`}
       role="dialog"
       aria-label="Support Assistant chat window"
       aria-modal="false"
     >
-      <div className="flex items-center justify-between gap-3 rounded-[2rem] border-b border-slate-200 bg-white px-5 py-4">
+      <div className="flex items-center justify-between gap-3 rounded-t-2xl border-b border-slate-200 bg-white px-5 py-4">
         <div className="flex items-center gap-3">
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-50 text-[#0369a1] shadow-sm">
             <span className="text-lg font-bold">PW</span>
