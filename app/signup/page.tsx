@@ -4,12 +4,14 @@ import { FormEvent, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faEye, faEyeSlash, faLock, faEnvelope, faUser } from '@fortawesome/free-solid-svg-icons';
 import { supabase } from '@/lib/supabase';
 
 export default function SignupPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -72,7 +74,8 @@ export default function SignupPage() {
       if (signUpError) {
         setError(signUpError.message);
       } else {
-        router.push('/');
+        const next = searchParams?.get('next');
+        router.push(next || '/');
       }
     } catch (err: any) {
       setError(err?.message || 'An error occurred during sign up.');
@@ -97,7 +100,7 @@ export default function SignupPage() {
                   className="h-10 w-auto object-contain"
                 />
               </Link>
-              <Link href="/login" className="text-sm font-semibold text-[#0369a1] hover:text-[#0c4a6e]">
+              <Link href={searchParams?.get('next') ? `/login?next=${encodeURIComponent(searchParams.get('next') || '')}` : '/login'} className="text-sm font-semibold text-[#0369a1] hover:text-[#0c4a6e]">
                 Sign in
               </Link>
             </div>
@@ -247,7 +250,7 @@ export default function SignupPage() {
 
             <p className="mt-8 text-center text-sm text-slate-600">
               Already have an account?{' '}
-              <Link href="/login" className="font-semibold text-[#0369a1] hover:text-[#0c4a6e]">
+              <Link href={searchParams?.get('next') ? `/login?next=${encodeURIComponent(searchParams.get('next') || '')}` : '/login'} className="font-semibold text-[#0369a1] hover:text-[#0c4a6e]">
                 Sign in
               </Link>
             </p>

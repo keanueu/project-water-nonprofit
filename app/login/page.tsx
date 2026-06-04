@@ -4,12 +4,14 @@ import { FormEvent, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faEye, faEyeSlash, faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { supabase } from '@/lib/supabase';
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -36,12 +38,13 @@ export default function LoginPage() {
       if (signInError) {
         setError(signInError.message);
       } else {
-        const role = email.toLowerCase().startsWith('admin') ? 'admin' : 'donor';
-        if (role === 'admin') {
-          router.push('/admin');
-        } else {
-          router.push('/');
-        }
+          const role = email.toLowerCase().startsWith('admin') ? 'admin' : 'donor';
+          const next = searchParams?.get('next');
+          if (role === 'admin') {
+            router.push('/admin');
+          } else {
+            router.push(next || '/');
+          }
       }
     } catch {
       setError('An error occurred. Please try again.');
@@ -116,7 +119,7 @@ export default function LoginPage() {
                 />
               </Link>
               <Link
-                href="/signup"
+                href={searchParams?.get('next') ? `/signup?next=${encodeURIComponent(searchParams.get('next') || '')}` : '/signup'}
                 className="text-sm font-semibold text-[#0369a1] hover:text-[#0c4a6e]"
               >
                 Create account
@@ -227,7 +230,7 @@ export default function LoginPage() {
 
             <p className="mt-8 text-center text-sm text-slate-600">
               New to Project Water?{' '}
-              <Link href="/signup" className="font-semibold text-[#0369a1] hover:text-[#0c4a6e]">
+              <Link href={searchParams?.get('next') ? `/signup?next=${encodeURIComponent(searchParams.get('next') || '')}` : '/signup'} className="font-semibold text-[#0369a1] hover:text-[#0c4a6e]">
                 Create an account
               </Link>
             </p>
