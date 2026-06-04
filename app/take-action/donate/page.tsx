@@ -9,6 +9,7 @@ import { supabase } from '@/lib/supabase';
 import { useMemo, useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
 type Frequency = 'once' | 'monthly';
 
@@ -112,6 +113,27 @@ export default function DonatePage() {
     }
   }, [user]);
 
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Restore donation selection when redirected back via `next` query params
+  useEffect(() => {
+    try {
+      const amount = searchParams?.get('amount');
+      const custom = searchParams?.get('custom');
+      const freq = searchParams?.get('frequency');
+      const show = searchParams?.get('showPreview');
+
+      if (freq === 'monthly' || freq === 'once') setFrequency(freq as Frequency);
+      if (amount) setSelectedAmount(Number(amount));
+      if (custom) setCustomAmount(custom);
+      if (show === '1') setShowPreview(true);
+    } catch (e) {
+      // noop
+    }
+  }, [searchParams]);
+
   const estimatedPeople = useMemo(() => {
     if (activeAmount <= 0) {
       return 0;
@@ -125,6 +147,14 @@ export default function DonatePage() {
     e.preventDefault();
     setDbError('');
     setSubmitting(true);
+
+    // Require authentication before attempting to save or create a checkout session
+    if (!user) {
+      setSubmitting(false);
+      const target = `${pathname}?amount=${selectedAmount ?? ''}&custom=${encodeURIComponent(customAmount)}&frequency=${frequency}&showPreview=1`;
+      router.push(`/login?next=${encodeURIComponent(target)}`);
+      return;
+    }
 
     try {
       // Attach authenticated user's id when available so RLS policies
@@ -409,7 +439,15 @@ export default function DonatePage() {
             <button
               type="button"
               disabled={activeAmount <= 0}
-              onClick={() => setShowPreview(true)}
+              onClick={() => {
+                if (!user) {
+                  // preserve current selection in the `next` URL so we can restore after sign-in
+                  const target = `${pathname}?amount=${selectedAmount ?? ''}&custom=${encodeURIComponent(customAmount)}&frequency=${frequency}&showPreview=1`;
+                  router.push(`/login?next=${encodeURIComponent(target)}`);
+                  return;
+                }
+                setShowPreview(true);
+              }}
               className="mt-6 w-full rounded-xl bg-sky-400 px-4 py-3 text-sm font-semibold text-[#08203d] transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {activeAmount > 0
