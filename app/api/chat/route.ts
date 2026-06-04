@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { genRequestId, logRequest, logResponse, logError, maskKey } from '@/lib/llm-logger';
 import type { JWTInput } from 'google-auth-library';
 let GoogleAuth: any = null;
 try {
@@ -37,19 +38,20 @@ export async function POST(request: Request) {
     const candidates: string[] = process.env.GEMINI_MODEL
       ? [process.env.GEMINI_MODEL]
       : [
-          // Prioritize Gemini Flash variants first per user preference
-          'gemini-1.5-flash',
+          // Prefer broadly-available / stable models first to avoid gated-model 404s
           'gemini-1.5',
-          'gemini-1.5-mini',
-          // Fallbacks
-          'gemini-1.0',
+          'gemini-1.5-flash',
           'text-bison-001',
+          'gemini-1.5-mini',
+          // Less likely to be available to all projects; try last
+          'gemini-2.5-flash',
         ];
 
     const maxTokens = Number(process.env.GEMINI_MAX_TOKENS || '256');
 
     let lastError: any = null;
     for (const model of candidates) {
+      const requestId = genRequestId();
       try {
             const apiEndpoint =
               process.env.GEMINI_API_ENDPOINT ||
@@ -86,6 +88,21 @@ export async function POST(request: Request) {
               url = `${apiEndpoint}?key=${apiKey}`;
             }
 
+            // log request (mask sensitive values)
+            try {
+              await logRequest(requestId, {
+                model,
+                url,
+                headers: {
+                  Authorization: headers.Authorization ? '[REDACTED]' : null,
+                  apiKey: maskKey(apiKey),
+                },
+                payload,
+              });
+            } catch (e) {
+              // ignore logger failures
+            }
+
             const res = await fetch(url, {
               method: 'POST',
               headers,
@@ -105,6 +122,11 @@ export async function POST(request: Request) {
         if (!res.ok) {
           const diag = data?.error?.message ?? data?.error ?? raw ?? `${res.status} ${res.statusText}`;
           lastError = `HTTP ${res.status} ${res.statusText} from ${model}: ${String(diag).slice(0, 400)}`;
+          try {
+            await logError(requestId, { model, status: res.status, statusText: res.statusText, raw, diag });
+          } catch (e) {
+            // noop
+          }
           continue;
         }
 
@@ -112,6 +134,11 @@ export async function POST(request: Request) {
         if (data?.error) {
           const diag = typeof data.error === 'string' ? data.error : data.error?.message ?? JSON.stringify(data.error);
           lastError = `API error from ${model}: ${String(diag).slice(0, 400)}`;
+          try {
+            await logError(requestId, { model, diag, raw: raw });
+          } catch (e) {
+            // noop
+          }
           continue;
         }
 
@@ -148,13 +175,27 @@ export async function POST(request: Request) {
 
         if (!reply || typeof reply !== 'string') {
           lastError = `Empty or invalid reply from ${model}`;
+          try {
+            await logError(requestId, { model, diag: lastError, raw });
+          } catch (e) {
+            // noop
+          }
           continue;
         }
-
-        // Success
+        // Success - log response and return
+        try {
+          await logResponse(requestId, { model, status: res.status, statusText: res.statusText, raw, parsedKeys: data && typeof data === 'object' ? Object.keys(data).slice(0, 20) : null });
+        } catch (e) {
+          // noop
+        }
         return NextResponse.json({ reply, model });
       } catch (err: any) {
         lastError = err?.message ?? err;
+        try {
+          await logError(requestId, err);
+        } catch (e) {
+          // noop
+        }
         // try next candidate
       }
     }
