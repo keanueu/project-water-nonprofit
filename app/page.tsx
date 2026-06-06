@@ -82,7 +82,7 @@ export default function HomePage() {
               alt="Family members benefiting from clean water access"
               width={900}
               height={700}
-              className="h-[420px] w-full object-cover"
+              className="h-[420px] w-full object-cover rounded-3xl"
             />
           </div>
           <div>
@@ -148,7 +148,7 @@ export default function HomePage() {
               alt="Community water project in action"
               width={900}
               height={700}
-              className="h-[420px] w-full object-cover"
+              className="h-[420px] w-full object-cover rounded-3xl"
             />
           </div>
         </div>
@@ -176,7 +176,7 @@ export default function HomePage() {
                 alt="Updates and stories from field projects"
                 width={1100}
                 height={700}
-                className="h-[380px] w-full object-cover"
+                className="h-[380px] w-full object-cover rounded-3xl"
               />
             </div>
 
