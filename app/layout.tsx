@@ -1,3 +1,4 @@
+import React, { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { Raleway, Libre_Baskerville } from 'next/font/google';
 import SiteChrome from '@/components/SiteChrome';
@@ -29,7 +30,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${libreBaskerville.variable} ${raleway.variable} h-full`}>
       <body className="flex min-h-full flex-col bg-white text-[#091c37]">
         <AuthProvider>
-          <SiteChrome>{children}</SiteChrome>
+          <Suspense fallback={null}>
+            <SiteChrome>{children}</SiteChrome>
+          </Suspense>
         </AuthProvider>
       </body>
     </html>
