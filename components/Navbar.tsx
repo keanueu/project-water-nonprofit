@@ -67,6 +67,11 @@ function isItemActive(pathname: string, item: NavItem) {
 export default function Navbar() {
   const pathname = usePathname();
   const { user, logout, isLoading } = useAuth();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [mobileGroupOpen, setMobileGroupOpen] = useState<string | null>(null);
   const [desktopGroupOpen, setDesktopGroupOpen] = useState<string | null>(null);
@@ -192,49 +197,75 @@ export default function Navbar() {
               <div className="ml-4 flex items-center gap-3 border-l border-slate-200 pl-6">
                 {!isLoading && (
                   <>
-                    {!user ? (
+                    {mounted ? (
                       <>
-                        <Link
-                          href="/login"
-                          className="text-sm font-semibold text-slate-600 hover:text-[#0369a1] flex items-center gap-1.5"
-                        >
-                          <FontAwesomeIcon icon={faRightToBracket} className="h-3.5 w-3.5" />
-                          Sign In
-                        </Link>
-                        <Link
-                          href="/signup"
-                          className="rounded-full border border-slate-200 px-5 py-2 text-sm font-semibold text-slate-700 hover:border-[#0369a1] hover:text-[#0369a1] flex items-center gap-1.5"
-                        >
-                          <FontAwesomeIcon icon={faUserPlus} className="h-3.5 w-3.5" />
-                          Join
-                        </Link>
+                        {!user ? (
+                          <>
+                            <Link
+                              href="/login"
+                              className="text-sm font-semibold text-slate-600 hover:text-[#0369a1] flex items-center gap-1.5"
+                            >
+                              <FontAwesomeIcon icon={faRightToBracket} className="h-3.5 w-3.5" />
+                              Sign In
+                            </Link>
+                            <Link
+                              href="/signup"
+                              className="rounded-full border border-slate-200 px-5 py-2 text-sm font-semibold text-slate-700 hover:border-[#0369a1] hover:text-[#0369a1] flex items-center gap-1.5"
+                            >
+                              <FontAwesomeIcon icon={faUserPlus} className="h-3.5 w-3.5" />
+                              Join
+                            </Link>
+                          </>
+                        ) : (
+                          <div className="flex items-center gap-4">
+                            <Link
+                              href={user.role === 'admin' ? '/admin' : '/dashboard'}
+                              className="flex items-center gap-2 text-sm font-semibold text-[#0369a1]"
+                            >
+                              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-100 text-[#0369a1] overflow-hidden">
+                                {user.avatarUrl ? (
+                                  // eslint-disable-next-line @next/next/no-img-element
+                                  <img src={user.avatarUrl} alt="avatar" className="h-full w-full object-cover" />
+                                ) : (
+                                  <FontAwesomeIcon icon={faUser} className="h-3.5 w-3.5" />
+                                )}
+                              </div>
+                              <span className="hidden xl:inline">
+                                {user.role === 'admin' ? 'Admin Panel' : 'My Account'}
+                              </span>
+                            </Link>
+                            <button
+                              onClick={logout}
+                              className="text-slate-500 hover:text-red-600 transition-colors"
+                              title="Logout"
+                            >
+                              <FontAwesomeIcon icon={faRightFromBracket} className="h-3.5 w-3.5" />
+                            </button>
+                          </div>
+                        )}
                       </>
                     ) : (
-                      <div className="flex items-center gap-4">
-                        <Link
-                          href={user.role === 'admin' ? '/admin' : '/dashboard'}
-                          className="flex items-center gap-2 text-sm font-semibold text-[#0369a1]"
+                      // Server-side placeholder to match client DOM structure and avoid hydration mismatch
+                      <>
+                        <a
+                          href="#"
+                          aria-hidden="true"
+                          tabIndex={-1}
+                          className="text-sm font-semibold text-transparent flex items-center gap-1.5"
                         >
-                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-100 text-[#0369a1] overflow-hidden">
-                            {user.avatarUrl ? (
-                              // eslint-disable-next-line @next/next/no-img-element
-                              <img src={user.avatarUrl} alt="avatar" className="h-full w-full object-cover" />
-                            ) : (
-                              <FontAwesomeIcon icon={faUser} className="h-3.5 w-3.5" />
-                            )}
-                          </div>
-                          <span className="hidden xl:inline">
-                            {user.role === 'admin' ? 'Admin Panel' : 'My Account'}
-                          </span>
-                        </Link>
-                        <button
-                          onClick={logout}
-                          className="text-slate-500 hover:text-red-600 transition-colors"
-                          title="Logout"
+                          <span className="inline-block h-3.5 w-3.5 rounded bg-slate-200" />
+                          Sign In
+                        </a>
+                        <a
+                          href="#"
+                          aria-hidden="true"
+                          tabIndex={-1}
+                          className="rounded-full border border-slate-200 px-5 py-2 text-sm font-semibold text-transparent flex items-center gap-1.5"
                         >
-                          <FontAwesomeIcon icon={faRightFromBracket} className="h-3.5 w-3.5" />
-                        </button>
-                      </div>
+                          <span className="inline-block h-3.5 w-3.5 rounded bg-slate-200" />
+                          Join
+                        </a>
+                      </>
                     )}
                   </>
                 )}
@@ -350,7 +381,7 @@ export default function Navbar() {
 
           {/* Drawer Footer CTA */}
           <div className="mt-auto border-t border-slate-100 p-5 space-y-4">
-            {!isLoading && (
+            {mounted && !isLoading ? (
               <div className="grid grid-cols-2 gap-3 mb-2">
                 {!user ? (
                   <>
@@ -397,6 +428,18 @@ export default function Navbar() {
                     </button>
                   </div>
                 )}
+              </div>
+            ) : (
+              // server-side placeholder matching the grid layout to avoid hydration mismatch
+              <div className="grid grid-cols-2 gap-3 mb-2">
+                <div className="flex items-center justify-center gap-2 rounded-2xl border border-slate-200 py-3 text-sm font-bold text-transparent">
+                  <span className="inline-block h-3.5 w-3.5 rounded bg-slate-200" />
+                  Sign In
+                </div>
+                <div className="flex items-center justify-center gap-2 rounded-2xl border border-slate-200 py-3 text-sm font-bold text-transparent">
+                  <span className="inline-block h-3.5 w-3.5 rounded bg-slate-200" />
+                  Join
+                </div>
               </div>
             )}
 
