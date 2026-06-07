@@ -109,10 +109,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = async () => {
-    await supabase.auth.signOut();
+    console.debug('Starting logout');
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) console.error('Supabase signOut error', error);
+    } catch (e) {
+      console.error('Exception during signOut', e);
+    }
+
+    // Clear client state and storage
     setUser(null);
-    localStorage.removeItem('pw_user');
-    router.push('/');
+    try { localStorage.removeItem('pw_user'); } catch {}
+    try { await router.replace('/'); } catch {}
+
+    console.debug('Logout complete');
   };
 
   return (
