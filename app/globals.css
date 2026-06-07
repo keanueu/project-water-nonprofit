@@ -10,6 +10,10 @@
   --water-teal: #0d9488;
   --water-deep: #0c4a6e;
   --water-gold: #d97706;
+  /* Donate / admin theme color (canonical source from WaterDonationCTA) */
+  --donate-blue: #08203d;
+  --donate-blue-active: #0d6fa8;
+  --donate-blue-hover: #0a5580;
 
   /* Rounding design tokens */
   --radius-interactive: 9999px; /* rounded-full for buttons, FAB */

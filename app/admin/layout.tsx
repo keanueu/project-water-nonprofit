@@ -1,11 +1,12 @@
 'use client';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight, faChevronLeft, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight, faChevronLeft, faArrowRightFromBracket, faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faGauge, faHandshakeAngle, faBullhorn, faUsers, faGear, faBell, faMagnifyingGlass, faUser, faHeart } from '@fortawesome/free-solid-svg-icons';
 
 import React from 'react';
 import Link from 'next/link';
+import { useAuth } from '@/lib/auth-context';
 import { usePathname } from 'next/navigation';
 
 import { cn } from '@/lib/utils'; // Assuming this exists for tailwind classes merging
@@ -18,27 +19,82 @@ const sidebarItems = [
   { icon: faGear, label: 'Settings', href: '/admin/settings' },
 ];
 
+function LogoutButton({ isCollapsed }: { isCollapsed: boolean }) {
+  const { logout } = useAuth();
+  const [isLoggingOut, setIsLoggingOut] = React.useState(false);
+
+  const handleLogout = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (isLoggingOut) return;
+    setIsLoggingOut(true);
+    try { await logout(); } finally { setIsLoggingOut(false); }
+  };
+
+  return (
+    <button 
+      onClick={handleLogout} 
+      disabled={isLoggingOut}
+      className={cn(
+        "flex items-center p-3 rounded-lg text-sky-100 hover:bg-red-800 hover:text-white transition-colors group",
+        isLoggingOut && 'opacity-50 cursor-not-allowed'
+      )}
+      title="Logout"
+    >
+      <FontAwesomeIcon icon={faArrowRightFromBracket} className={cn(isCollapsed ? 'mx-auto' : 'mr-3')} />
+      {!isCollapsed && <span>{isLoggingOut ? 'Logging out...' : 'Logout'}</span>}
+      {isCollapsed && (
+        <div className="absolute left-20 bg-red-900 text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none ml-2 shadow-lg">
+          {isLoggingOut ? 'Logging out...' : 'Logout'}
+        </div>
+      )}
+    </button>
+  );
+}
+
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [isCollapsed, setIsCollapsed] = React.useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const pathname = usePathname();
+
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsMobileMenuOpen(false);
+    };
+    if (isMobileMenuOpen) window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isMobileMenuOpen]);
 
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
       {/* Sidebar */}
       <aside 
         className={cn(
-          "bg-indigo-900 text-white transition-all duration-300 flex flex-col",
-          isCollapsed ? "w-20" : "w-64"
+          "text-white transition-all duration-300 flex flex-col",
+          // Mobile: fixed drawer that overlays content, Desktop (lg): static in flow
+          isMobileMenuOpen ? "fixed inset-y-0 left-0 z-50 w-64 transform translate-x-0 lg:static lg:translate-x-0" : "fixed inset-y-0 left-0 z-50 w-64 transform -translate-x-full lg:translate-x-0 lg:static",
+          isCollapsed && 'lg:w-20 lg:overflow-hidden'
         )}
+        style={{ backgroundColor: 'var(--donate-blue)' }}
       >
         <div className="p-6 flex items-center justify-between">
           {!isCollapsed && <span className="font-bold text-xl">Charity OS</span>}
-          <button 
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className="p-1 hover:bg-indigo-800 rounded-md transition-colors"
-          >
-            {isCollapsed ? <FontAwesomeIcon icon={faChevronRight} className="w-5 h-5" /> : <FontAwesomeIcon icon={faChevronLeft} className="w-5 h-5" />}
-          </button>
+          <div className="flex items-center gap-2">
+            <button 
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className="p-1 rounded-md transition-colors hidden lg:inline-flex"
+              aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            >
+              {isCollapsed ? <FontAwesomeIcon icon={faChevronRight} className="w-5 h-5" /> : <FontAwesomeIcon icon={faChevronLeft} className="w-5 h-5" />}
+            </button>
+            <button
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="p-1 rounded-md lg:hidden"
+              aria-label="Close mobile menu"
+              style={{ display: isMobileMenuOpen ? 'inline-flex' : 'none' }}
+            >
+              <FontAwesomeIcon icon={faXmark} className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         <nav className="flex-1 px-4 py-4 space-y-2">
@@ -46,17 +102,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <Link
               key={item.href}
               href={item.href}
+              onClick={() => setIsMobileMenuOpen(false)}
               className={cn(
                 "flex items-center p-3 rounded-lg transition-colors group",
                 pathname === item.href 
-                  ? "bg-indigo-700 text-white" 
-                  : "text-indigo-100 hover:bg-indigo-800 hover:text-white"
+                  ? "text-white" 
+                  : "text-sky-100 hover:bg-[var(--donate-blue-hover)] hover:text-white"
               )}
+              style={ pathname === item.href ? { backgroundColor: 'var(--donate-blue-active)' } : undefined }
             >
               <FontAwesomeIcon icon={item.icon}  className={cn(isCollapsed ? "mx-auto" : "mr-3")} />
               {!isCollapsed && <span>{item.label}</span>}
               {isCollapsed && (
-                <div className="absolute left-20 bg-indigo-900 text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none ml-2 shadow-lg border border-indigo-700">
+                <div className="absolute left-20 px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none ml-2 shadow-lg"
+                  style={{ backgroundColor: 'var(--donate-blue)', border: '1px solid var(--donate-blue-active)', color: '#fff' }}>
                   {item.label}
                 </div>
               )}
@@ -64,28 +123,31 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           ))}
         </nav>
 
-        <div className="p-4 border-t border-indigo-800">
-          <Link
-            href="/"
-            className={cn(
-              "flex items-center p-3 rounded-lg text-indigo-100 hover:bg-red-800 hover:text-white transition-colors group"
-            )}
-          >
-            <FontAwesomeIcon icon={faArrowRightFromBracket}  className={cn(isCollapsed ? "mx-auto" : "mr-3")} />
-            {!isCollapsed && <span>Logout</span>}
-            {isCollapsed && (
-              <div className="absolute left-20 bg-red-900 text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none ml-2 shadow-lg">
-                Logout
-              </div>
-            )}
-          </Link>
+        <div className="p-4 border-t" style={{ borderColor: 'var(--donate-blue-hover)' }}>
+          {/* Use the Auth logout handler to ensure session is cleared */}
+          <LogoutButton isCollapsed={isCollapsed} />
         </div>
       </aside>
+
+      {/* Mobile overlay */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setIsMobileMenuOpen(false)} />
+      )}
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Header */}
         <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 z-10">
+          <div className="flex items-center lg:hidden mr-4">
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-expanded={isMobileMenuOpen}
+              aria-label="Toggle menu"
+              className="p-2 text-gray-500 hover:bg-gray-100 rounded-full"
+            >
+              <FontAwesomeIcon icon={isMobileMenuOpen ? faXmark : faBars} className="w-5 h-5" />
+            </button>
+          </div>
           <div className="flex items-center bg-gray-100 px-3 py-2 rounded-md w-96">
             <FontAwesomeIcon icon={faMagnifyingGlass}  className="text-gray-400 mr-2" />
             <input 
