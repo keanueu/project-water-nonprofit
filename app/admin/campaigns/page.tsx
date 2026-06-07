@@ -1,4 +1,5 @@
 import React from 'react';
+import TextWithNumbers from '../../../components/TextWithNumbers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faPlus, 
@@ -88,12 +89,12 @@ export default function CampaignsPage() {
                 </button>
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors">{campaign.title}</h3>
-              <p className="text-sm text-gray-500 mb-6 line-clamp-2">{campaign.description}</p>
+              <p className="text-sm text-gray-500 mb-6 line-clamp-2"><TextWithNumbers>{campaign.description}</TextWithNumbers></p>
               
               <div className="space-y-4">
                 <div className="flex justify-between text-sm mb-1">
                   <span className="text-gray-500 font-medium">Progress</span>
-                  <span className="text-gray-900 font-bold">{campaign.progress}%</span>
+                  <span className="text-gray-900 font-bold"><span className="numbers">{campaign.progress}</span>%</span>
                 </div>
                 <div className="w-full bg-gray-100 rounded-full h-2">
                   <div 
@@ -104,11 +105,11 @@ export default function CampaignsPage() {
                 <div className="flex justify-between items-end">
                   <div>
                     <p className="text-xs text-gray-500 font-medium">Raised</p>
-                    <p className="text-lg font-bold text-gray-900">{campaign.raised}</p>
+                    <p className="text-lg font-bold text-gray-900"><span className="numbers">{campaign.raised}</span></p>
                   </div>
                   <div className="text-right">
                     <p className="text-xs text-gray-500 font-medium">Goal</p>
-                    <p className="text-sm font-semibold text-gray-700">{campaign.goal}</p>
+                    <p className="text-sm font-semibold text-gray-700"><span className="numbers">{campaign.goal}</span></p>
                   </div>
                 </div>
               </div>
@@ -117,11 +118,11 @@ export default function CampaignsPage() {
               <div className="flex items-center gap-4 text-gray-500">
                 <div className="flex items-center gap-1">
                   <FontAwesomeIcon icon={faUsers} className="w-3.5 h-3.5" />
-                  <span>{campaign.donors} donors</span>
+                  <span><span className="numbers">{campaign.donors}</span> donors</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <FontAwesomeIcon icon={faCalendarDays} className="w-3.5 h-3.5" />
-                  <span>{campaign.daysLeft} days left</span>
+                  <span><span className="numbers">{campaign.daysLeft}</span> days left</span>
                 </div>
               </div>
               <FontAwesomeIcon icon={faChevronRight} className="text-gray-400" />

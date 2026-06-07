@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -15,6 +16,7 @@
   --radius-container: 1rem;     /* rounded-2xl for chat windows */
   --radius-card: 1.5rem;        /* rounded-3xl for prominent cards */
   --radius-icon: 0.5rem;        /* rounded-lg for icon backgrounds */
+  --font-montserrat: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 html {
@@ -34,6 +36,11 @@ body {
 
 .font-brand-sans {
   font-family: var(--font-sans);
+}
+
+/* Numbers utility: use Montserrat for numeric displays */
+.numbers {
+  font-family: var(--font-montserrat);
 }
 
 .font-serif,

@@ -1,4 +1,5 @@
 import React from 'react';
+import TextWithNumbers from '../../components/TextWithNumbers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers, faDollarSign, faBullseye, faArrowTrendUp, faCalendar, faArrowUpRightFromSquare, faArrowTrendDown } from '@fortawesome/free-solid-svg-icons';
 
@@ -24,12 +25,12 @@ export default function AdminOverview() {
                 <FontAwesomeIcon icon={stat.icon} className="h-6 w-6" />
               </div>
               <span className={`text-sm font-medium flex items-center ${stat.positive ? 'text-green-600' : 'text-red-600'}`}>
-                {stat.change}
+                <span className="numbers">{stat.change}</span>
                 {stat.positive ? <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="ml-1 h-4 w-4" /> : <FontAwesomeIcon icon={faArrowTrendDown} className="ml-1 h-4 w-4" />}
               </span>
             </div>
             <h3 className="text-gray-500 text-sm font-medium">{stat.label}</h3>
-            <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+            <p className="text-2xl font-bold text-gray-900"><span className="numbers">{stat.value}</span></p>
           </div>
         ))}
       </div>
@@ -69,7 +70,7 @@ export default function AdminOverview() {
                       </div>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500">{row.campaign}</td>
-                    <td className="px-6 py-4 text-sm font-semibold text-gray-900">{row.amount}</td>
+                    <td className="px-6 py-4 text-sm font-semibold text-gray-900"><span className="numbers">{row.amount}</span></td>
                     <td className="px-6 py-4">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                         row.status === 'Completed' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
@@ -77,7 +78,7 @@ export default function AdminOverview() {
                         {row.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-500">{row.date}</td>
+                    <td className="px-6 py-4 text-sm text-gray-500"><TextWithNumbers>{row.date}</TextWithNumbers></td>
                   </tr>
                 ))}
               </tbody>
@@ -100,11 +101,11 @@ export default function AdminOverview() {
               <div key={i} className="flex space-x-4">
                 <div className="flex-shrink-0 w-12 h-12 bg-indigo-50 text-indigo-600 rounded-lg flex flex-col items-center justify-center">
                   <span className="text-xs font-bold uppercase">{event.date.split(' ')[0]}</span>
-                  <span className="text-sm font-bold">{event.date.split(' ')[1].replace(',', '')}</span>
+                  <span className="text-sm font-bold"><TextWithNumbers>{event.date.split(' ')[1].replace(',', '')}</TextWithNumbers></span>
                 </div>
                 <div>
                   <h4 className="text-sm font-bold text-gray-900">{event.title}</h4>
-                  <p className="text-xs text-gray-500">{event.time} • {event.type}</p>
+                  <p className="text-xs text-gray-500"><TextWithNumbers>{event.time}</TextWithNumbers> • {event.type}</p>
                 </div>
               </div>
             ))}

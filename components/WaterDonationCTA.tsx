@@ -39,7 +39,7 @@ export default function WaterDonationCTA() {
                 href="/take-action/donate"
                 className="inline-flex items-center rounded-xl bg-white px-4 py-2 text-sm font-semibold text-[#08203d] transition hover:bg-sky-50"
               >
-                Give $34
+                Give <span className="numbers">$34</span>
               </Link>
               <Link
                 href="/take-action/donate"

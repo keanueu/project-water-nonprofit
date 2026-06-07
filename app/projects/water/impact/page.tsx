@@ -158,7 +158,7 @@ export default function WaterImpactPage() {
                 <span className="inline-flex rounded-2xl bg-sky-100 p-2.5 text-[#0369a1]">
                   <FontAwesomeIcon icon={item.icon} className="h-5 w-5" />
                 </span>
-                <p className="mt-4 text-3xl font-semibold tracking-tight text-[#091c37]">{item.value}</p>
+                <p className="mt-4 text-3xl font-semibold tracking-tight text-[#091c37]"><span className="numbers">{item.value}</span></p>
                 <h2 className="mt-2 text-lg font-semibold text-[#091c37]">{item.label}</h2>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600">{item.detail}</p>
               </article>

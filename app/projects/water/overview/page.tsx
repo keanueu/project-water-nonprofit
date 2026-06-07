@@ -173,7 +173,7 @@ export default function WaterOverviewPage() {
                 <div className="inline-flex rounded-2xl bg-sky-100 p-2.5 text-[#0369a1]">
                   <FontAwesomeIcon icon={stat.icon} className="h-5 w-5" />
                 </div>
-                <p className="mt-4 text-3xl font-semibold tracking-tight text-[#091c37]">{stat.value}</p>
+                <p className="mt-4 text-3xl font-semibold tracking-tight text-[#091c37]"><span className="numbers">{stat.value}</span></p>
                 <h2 className="mt-2 text-lg font-semibold text-[#091c37]">{stat.label}</h2>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600">{stat.detail}</p>
               </article>

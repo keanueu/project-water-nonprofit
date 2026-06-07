@@ -97,7 +97,7 @@ export default function ImpactStats() {
 
               {/* Value */}
               <div className="mb-2">
-                <p className="text-4xl sm:text-3xl lg:text-4xl font-serif font-bold text-[#091c37] group-hover:text-[#0369a1] transition-colors duration-300">
+                <p className="text-4xl sm:text-3xl lg:text-4xl font-bold text-[#091c37] group-hover:text-[#0369a1] transition-colors duration-300 numbers">
                   {stat.value}
                 </p>
               </div>

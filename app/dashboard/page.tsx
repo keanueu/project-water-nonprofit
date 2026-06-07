@@ -16,6 +16,7 @@ import {
   faCircleCheck
 } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '@/lib/auth-context';
+import TextWithNumbers from '../../components/TextWithNumbers';
 import { supabase } from '@/lib/supabase';
 
 interface DonationRecord {
@@ -107,10 +108,10 @@ export default function DashboardPage() {
             </div>
             <div>
               <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Total Contribution</p>
-              <p className="mt-1 text-3xl font-bold text-slate-900">
+              <p className="mt-1 text-3xl font-bold text-slate-900 numbers">
                 {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(totalDonated)}
               </p>
-              <p className="mt-1 text-xs text-slate-500">Across {donations.length} {donations.length === 1 ? 'gift' : 'gifts'}</p>
+              <p className="mt-1 text-xs text-slate-500">Across <span className="numbers">{donations.length}</span> {donations.length === 1 ? 'gift' : 'gifts'}</p>
             </div>
           </div>
 
@@ -120,7 +121,7 @@ export default function DashboardPage() {
             </div>
             <div>
               <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Estimated Reach</p>
-              <p className="mt-1 text-3xl font-bold text-slate-900">~{estimatedImpact} People</p>
+              <p className="mt-1 text-3xl font-bold text-slate-900">~<span className="numbers">{estimatedImpact}</span> People</p>
               <p className="mt-1 text-xs text-slate-500">Supported with reliable water access</p>
             </div>
           </div>
@@ -145,7 +146,7 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <h2 className="text-xl font-bold text-[#091c37]">My Donations</h2>
               <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600">
-                {donations.length} records
+                <span className="numbers">{donations.length}</span> records
               </span>
             </div>
 
@@ -165,7 +166,7 @@ export default function DashboardPage() {
                 {donations.map((item) => (
                   <div key={item.id} className="py-4 first:pt-0 last:pb-0 flex items-center justify-between gap-4">
                     <div className="space-y-1">
-                      <p className="text-base font-semibold text-slate-900">
+                      <p className="text-base font-semibold text-slate-900 numbers">
                         {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(item.amount)}
                       </p>
                       {item.message && (
@@ -173,9 +174,9 @@ export default function DashboardPage() {
                           &ldquo;{item.message}&rdquo;
                         </p>
                       )}
-                      <p className="text-xs text-slate-400 flex items-center gap-1">
+                        <p className="text-xs text-slate-400 flex items-center gap-1">
                         <FontAwesomeIcon icon={faCalendarDays} className="h-3 w-3" />
-                        {new Date(item.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
+                        <TextWithNumbers>{new Date(item.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</TextWithNumbers>
                       </p>
                     </div>
                     <div className="flex items-center gap-2 text-emerald-600 font-semibold text-sm">

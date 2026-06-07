@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faLocationDot, faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { faYoutube, faXTwitter, faFacebookF } from '@fortawesome/free-brands-svg-icons';
+import TextWithNumbers from './TextWithNumbers';
 
 const footerLinks = {
   explore: [
@@ -79,7 +80,7 @@ export default function Footer() {
               We build and maintain reliable water systems with local partners across sub-Saharan Africa.
             </p>
             <p className="mt-4 text-xs font-medium uppercase tracking-[0.16em] text-slate-400">
-              501(c)(3) nonprofit | EIN 26-1455510
+              <TextWithNumbers>501(c)(3) nonprofit | EIN 26-1455510</TextWithNumbers>
             </p>
           </div>
 
@@ -130,9 +131,9 @@ export default function Footer() {
               <div className="flex items-start gap-3">
                 <FontAwesomeIcon icon={faLocationDot} className="mt-0.5 h-4 w-4 flex-shrink-0 text-sky-200" />
                 <address className="not-italic text-sm leading-relaxed text-slate-300">
-                  17 Depot Street, 2nd Floor
+                  <TextWithNumbers>17 Depot Street, 2nd Floor</TextWithNumbers>
                   <br />
-                  Concord, NH 03301
+                  <TextWithNumbers>Concord, NH 03301</TextWithNumbers>
                   <br />
                   United States
                 </address>
@@ -146,7 +147,7 @@ export default function Footer() {
               <div className="flex items-center gap-3">
                 <FontAwesomeIcon icon={faPhone} className="h-4 w-4 flex-shrink-0 text-sky-200" />
                 <a href="tel:+16035550123" className="text-sm text-slate-300 transition hover:text-white">
-                  +1 (603) 555-0123
+                  <TextWithNumbers>+1 (603) 555-0123</TextWithNumbers>
                 </a>
               </div>
             </div>
@@ -179,7 +180,7 @@ export default function Footer() {
 
         <div className="mt-12 border-t border-white/10 pt-6">
           <div className="flex flex-col gap-3 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
-            <p>Copyright {new Date().getFullYear()} Project Water. All rights reserved.</p>
+            <p>Copyright <TextWithNumbers>{new Date().getFullYear()}</TextWithNumbers> Project Water. All rights reserved.</p>
             <div className="flex flex-wrap gap-6">
               <Link href="/transparency" className="transition hover:text-white">
                 Transparency
