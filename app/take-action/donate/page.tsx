@@ -379,7 +379,7 @@ export default function DonatePage() {
           </div>
 
           <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {amountPresets[frequency].map((amount) => (
+              {amountPresets[frequency].map((amount) => (
               <button
                 key={`${frequency}-${amount}`}
                 type="button"
@@ -395,7 +395,7 @@ export default function DonatePage() {
                     : 'border-white/20 bg-white/5 text-white hover:border-white/35 hover:bg-white/10'
                 }`}
               >
-                {formatCurrency(amount)}
+                <span className="numbers">{formatCurrency(amount)}</span>
               </button>
             ))}
           </div>
@@ -430,7 +430,7 @@ export default function DonatePage() {
             <p className="mt-2 text-sm leading-7 text-slate-200">{impactSummary.body}</p>
             {activeAmount > 0 && (
               <p className="mt-3 text-sm font-medium text-sky-100">
-                Estimated reach: about {estimatedPeople} {estimatedPeople === 1 ? 'person' : 'people'} supported through annualized giving assumptions.
+                Estimated reach: about <span className="numbers">{estimatedPeople}</span> {estimatedPeople === 1 ? 'person' : 'people'} supported through annualized giving assumptions.
               </p>
             )}
           </div>
@@ -450,9 +450,20 @@ export default function DonatePage() {
               }}
               className="mt-6 w-full rounded-xl bg-sky-400 px-4 py-3 text-sm font-semibold text-[#08203d] transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {activeAmount > 0
-                ? `Continue with ${frequency === 'monthly' ? `${formatCurrency(activeAmount)}/month` : formatCurrency(activeAmount)}`
-                : 'Select an amount to continue'}
+              {activeAmount > 0 ? (
+                  <>
+                    Continue with{' '}
+                    {frequency === 'monthly' ? (
+                      <>
+                        <span className="numbers">{formatCurrency(activeAmount)}</span>/month
+                      </>
+                    ) : (
+                      <span className="numbers">{formatCurrency(activeAmount)}</span>
+                    )}
+                  </>
+                ) : (
+                  'Select an amount to continue'
+                )}
             </button>
           )}
 
@@ -518,7 +529,9 @@ export default function DonatePage() {
                     Processing...
                   </>
                 ) : (
-                  `Donate ${formatCurrency(activeAmount)}`
+                  <>
+                    Donate <span className="numbers">{formatCurrency(activeAmount)}</span>
+                  </>
                 )}
               </button>
             </form>
@@ -532,7 +545,7 @@ export default function DonatePage() {
               </div>
               <p className="text-emerald-50">
                 Thank you, <span className="font-semibold">{name}</span>! Your {frequency === 'monthly' ? 'Monthly' : 'One-time'} gift of{' '}
-                <span className="font-semibold">{formatCurrency(activeAmount)}</span> has been successfully logged to our Supabase database.
+                <span className="font-semibold numbers">{formatCurrency(activeAmount)}</span> has been successfully logged to our Supabase database.
               </p>
               <p className="text-xs text-emerald-200">
                 Your generosity directly supports sustainable clean water infrastructure and community empowerment.

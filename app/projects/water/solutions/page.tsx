@@ -179,8 +179,8 @@ export default function WaterSolutionsPage() {
                 <Image src={item.image} alt={item.title} fill className="object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between rounded-xl bg-white/90 px-3 py-2 text-xs font-semibold text-[#0c4a6e] backdrop-blur">
-                  <span>{item.lifespan} expected life</span>
-                  <span>{item.peopleServed}</span>
+                  <span><span className="numbers">{item.lifespan}</span> expected life</span>
+                  <span><span className="numbers">{item.peopleServed}</span></span>
                 </div>
               </div>
 

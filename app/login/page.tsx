@@ -8,6 +8,7 @@ import { useSearchParams } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faEye, faEyeSlash, faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { supabase } from '@/lib/supabase';
+import TextWithNumbers from '../../components/TextWithNumbers';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -206,7 +207,7 @@ export default function LoginPage() {
                   onChange={(e) => setRememberMe(e.target.checked)}
                   className="h-4 w-4 rounded border-slate-300 text-[#0369a1] focus:ring-[#0369a1]"
                 />
-                <span className="text-sm font-medium text-slate-600">Remember me for 30 days</span>
+                <TextWithNumbers className="text-sm font-medium text-slate-600">Remember me for 30 days</TextWithNumbers>
               </label>
 
               <button

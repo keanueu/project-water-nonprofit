@@ -276,7 +276,7 @@ export default function CampaignPage() {
                   <input
                     type="text"
                     placeholder="$2,500"
-                    className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
+                    className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 numbers"
                   />
                 </label>
               </div>

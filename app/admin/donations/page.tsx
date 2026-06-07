@@ -2,6 +2,7 @@ import { faDownload, faArrowUpRightFromSquare } from '@fortawesome/free-solid-sv
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faFilter, faCreditCard, faUser } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
+import TextWithNumbers from '../../../components/TextWithNumbers';
 
 
 export default function DonationsPage() {
@@ -40,8 +41,8 @@ export default function DonationsPage() {
           </button>
           <select className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
             <option>All Time</option>
-            <option>Last 30 Days</option>
-            <option>Last 6 Months</option>
+            <option className="numbers">Last 30 Days</option>
+            <option className="numbers">Last 6 Months</option>
             <option>Last Year</option>
           </select>
         </div>
@@ -78,14 +79,14 @@ export default function DonationsPage() {
                     <span className="text-xs text-gray-500">{txn.email}</span>
                   </div>
                 </td>
-                <td className="px-6 py-4 font-semibold text-gray-900">{txn.amount}</td>
+                <td className="px-6 py-4 font-semibold text-gray-900"><span className="numbers">{txn.amount}</span></td>
                 <td className="px-6 py-4 text-gray-500">
                   <div className="flex items-center gap-2">
                     <FontAwesomeIcon icon={faCreditCard} className="w-5 h-5" />
                     {txn.method}
                   </div>
                 </td>
-                <td className="px-6 py-4 text-gray-500">{txn.date}</td>
+                <td className="px-6 py-4 text-gray-500"><TextWithNumbers>{txn.date}</TextWithNumbers></td>
                 <td className="px-6 py-4">
                   <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
                     txn.status === 'Succeeded' ? 'bg-green-100 text-green-700' : 
@@ -105,7 +106,7 @@ export default function DonationsPage() {
           </tbody>
         </table>
         <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex items-center justify-between">
-          <p className="text-sm text-gray-500">Showing 1-6 of 24 donations</p>
+          <p className="text-sm text-gray-500">Showing <span className="numbers">1-6</span> of <span className="numbers">24</span> donations</p>
           <div className="flex items-center gap-2">
             <button className="px-3 py-1 border border-gray-200 rounded bg-white text-sm disabled:opacity-50" disabled>Previous</button>
             <button className="px-3 py-1 border border-gray-200 rounded bg-white text-sm">Next</button>

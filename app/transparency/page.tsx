@@ -3,6 +3,7 @@ import { faArrowRight, faChartColumn, faFileLines, faShield, faArrowTrendUp } fr
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import TextWithNumbers from '../../components/TextWithNumbers';
 
 
 export const metadata: Metadata = {
@@ -169,7 +170,7 @@ export default function TransparencyPage() {
                     <p className="mt-3 text-base leading-7 text-slate-600">{report.description}</p>
                   </div>
                   <span className="ml-4 inline-flex rounded-full bg-cyan-50 px-4 py-2 text-sm font-semibold text-cyan-700 flex-shrink-0">
-                    {report.year}
+                    <TextWithNumbers>{report.year}</TextWithNumbers>
                   </span>
                 </div>
                 <button className="mt-6 inline-flex items-center text-sm font-semibold text-cyan-600 transition hover:text-cyan-700">

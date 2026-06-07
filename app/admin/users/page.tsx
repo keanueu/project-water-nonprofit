@@ -2,6 +2,7 @@ import { faUserPlus, faCircleCheck, faEllipsis, faClock } from '@fortawesome/fre
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faEnvelope, faShield, faUser } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
+import TextWithNumbers from '../../../components/TextWithNumbers';
 
 
 export default function UsersPage() {
@@ -86,7 +87,7 @@ export default function UsersPage() {
                   </span>
                 </td>
                 <td className="px-6 py-4 text-gray-500">
-                  {user.lastActive}
+                  <TextWithNumbers>{user.lastActive}</TextWithNumbers>
                 </td>
                 <td className="px-6 py-4 text-right">
                   <button className="text-gray-400 hover:text-gray-600 transition-colors">
