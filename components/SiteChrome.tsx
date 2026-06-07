@@ -1,9 +1,10 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import ChatbotWidget from '@/components/ChatbotWidget';
+const ChatbotWidget = dynamic(() => import('@/components/ChatbotWidget'), { ssr: false });
 import ScrollToTop from '@/components/ScrollToTop';
 import PageProgressBar from '@/components/PageProgressBar';
 

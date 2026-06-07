@@ -43,17 +43,18 @@ export default function AdminOverview() {
             <button className="text-indigo-600 text-sm font-medium hover:underline">View all</button>
           </div>
           <div className="p-0">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
-                  <th className="px-6 py-3 font-semibold">Donor</th>
-                  <th className="px-6 py-3 font-semibold">Campaign</th>
-                  <th className="px-6 py-3 font-semibold">Amount</th>
-                  <th className="px-6 py-3 font-semibold">Status</th>
-                  <th className="px-6 py-3 font-semibold">Date</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[700px] text-left">
+                <thead>
+                  <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+                    <th className="px-3 sm:px-6 py-3 font-semibold">Donor</th>
+                    <th className="px-3 sm:px-6 py-3 font-semibold">Campaign</th>
+                    <th className="px-3 sm:px-6 py-3 font-semibold">Amount</th>
+                    <th className="px-3 sm:px-6 py-3 font-semibold">Status</th>
+                    <th className="px-3 sm:px-6 py-3 font-semibold">Date</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
                 {[
                   { donor: 'Alex Johnson', campaign: 'Clean Water Initiative', amount: '$250.00', status: 'Completed', date: '2 hours ago' },
                   { donor: 'Maria Garcia', campaign: 'Education for All', amount: '$50.00', status: 'Completed', date: '5 hours ago' },
@@ -61,7 +62,7 @@ export default function AdminOverview() {
                   { donor: 'Sarah Chen', campaign: 'Clean Water Initiative', amount: '$75.00', status: 'Completed', date: 'Yesterday' },
                 ].map((row, i) => (
                   <tr key={i} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4">
+                    <td className="px-3 sm:px-6 py-4">
                       <div className="flex items-center">
                         <div className="w-8 h-8 rounded-full bg-gray-200 mr-3 flex items-center justify-center text-xs font-bold text-gray-600">
                           {row.donor.split(' ').map(n => n[0]).join('')}
@@ -69,20 +70,21 @@ export default function AdminOverview() {
                         <span className="text-sm font-medium text-gray-900">{row.donor}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-500">{row.campaign}</td>
-                    <td className="px-6 py-4 text-sm font-semibold text-gray-900"><span className="numbers">{row.amount}</span></td>
-                    <td className="px-6 py-4">
+                    <td className="px-3 sm:px-6 py-4 text-sm text-gray-500 max-w-[240px] break-words">{row.campaign}</td>
+                    <td className="px-3 sm:px-6 py-4 text-sm font-semibold text-gray-900"><span className="numbers">{row.amount}</span></td>
+                    <td className="px-3 sm:px-6 py-4">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                         row.status === 'Completed' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
                       }`}>
                         {row.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-500"><TextWithNumbers>{row.date}</TextWithNumbers></td>
+                    <td className="px-3 sm:px-6 py-4 text-sm text-gray-500"><TextWithNumbers>{row.date}</TextWithNumbers></td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         </div>
 

@@ -1,7 +1,8 @@
-'use client';
+"use client";
 
+import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight, faChevronLeft, faArrowRightFromBracket, faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromBracket, faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faGauge, faHandshakeAngle, faBullhorn, faUsers, faGear, faBell, faMagnifyingGlass, faUser, faHeart } from '@fortawesome/free-solid-svg-icons';
 
 import React from 'react';
@@ -77,14 +78,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         style={{ backgroundColor: 'var(--donate-blue)' }}
       >
         <div className="p-6 flex items-center justify-between">
-          {!isCollapsed && <span className="font-bold text-xl">Charity OS</span>}
+          <div className="flex items-center gap-3">
+            {!isCollapsed ? (
+              <Image src="/footer-logo.png" alt="Project Water" width={140} height={36} className="block" />
+            ) : (
+              <Image src="/footer-logo.png" alt="Project Water" width={36} height={36} className="block" />
+            )}
+          </div>
+
           <div className="flex items-center gap-2">
             <button 
               onClick={() => setIsCollapsed(!isCollapsed)}
               className="p-1 rounded-md transition-colors hidden lg:inline-flex"
               aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             >
-              {isCollapsed ? <FontAwesomeIcon icon={faChevronRight} className="w-5 h-5" /> : <FontAwesomeIcon icon={faChevronLeft} className="w-5 h-5" />}
+              <FontAwesomeIcon icon={isCollapsed ? faBars : faXmark} className="w-5 h-5" />
             </button>
             <button
               onClick={() => setIsMobileMenuOpen(false)}
