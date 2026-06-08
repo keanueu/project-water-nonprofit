@@ -80,7 +80,7 @@ export default function ImpactStats() {
           {stats.map((stat, index) => (
             <div
               key={index}
-              className={`group relative overflow-hidden p-8 shadow-sm transition-all duration-500 ease-out ${
+              className={`group relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-500 ease-out hover:border-[#0369a1]/40 hover:shadow-lg ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
               style={{
