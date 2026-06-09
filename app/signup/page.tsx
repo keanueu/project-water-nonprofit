@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -12,6 +12,11 @@ import { supabase } from '@/lib/supabase';
 export default function SignupPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const nextUrl = useMemo(() => searchParams?.get('next'), [searchParams]);
+  const loginUrl = useMemo(() => 
+    nextUrl ? `/login?next=${encodeURIComponent(nextUrl)}` : '/login',
+    [nextUrl]
+  );
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -23,11 +28,12 @@ export default function SignupPage() {
   const [agree, setAgree] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const update = (key: keyof typeof form, value: string) =>
     setForm((prev) => ({ ...prev, [key]: value }));
 
-  const pwStrength = (() => {
+  const pwStrength = useMemo(() => {
     const p = form.password;
     if (!p) return { label: '', pct: 0, color: 'bg-slate-200' };
     let score = 0;
@@ -43,7 +49,7 @@ export default function SignupPage() {
       { label: 'Excellent', pct: 100, color: 'bg-emerald-600' },
     ];
     return map[score];
-  })();
+  }, [form.password]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -74,7 +80,7 @@ export default function SignupPage() {
       if (signUpError) {
         setError(signUpError.message);
       } else {
-        const next = searchParams?.get('next');
+        const next = nextUrl;
         router.push(next || '/');
       }
     } catch (err: any) {
@@ -100,8 +106,13 @@ export default function SignupPage() {
                   className="h-10 w-auto object-contain"
                 />
               </Link>
-              <Link href={searchParams?.get('next') ? `/login?next=${encodeURIComponent(searchParams.get('next') || '')}` : '/login'} className="text-sm font-semibold text-[#0369a1] hover:text-[#0c4a6e]">
-                Sign in
+              <Link 
+                href={loginUrl} 
+                onClick={() => setIsNavigating(true)}
+                className="text-sm font-semibold text-[#0369a1] hover:text-[#0c4a6e] transition-opacity"
+                style={{ opacity: isNavigating ? 0.6 : 1 }}
+              >
+                {isNavigating ? 'Loading...' : 'Sign in'}
               </Link>
             </div>
 
@@ -250,8 +261,13 @@ export default function SignupPage() {
 
             <p className="mt-8 text-center text-sm text-slate-600">
               Already have an account?{' '}
-              <Link href={searchParams?.get('next') ? `/login?next=${encodeURIComponent(searchParams.get('next') || '')}` : '/login'} className="font-semibold text-[#0369a1] hover:text-[#0c4a6e]">
-                Sign in
+              <Link 
+                href={loginUrl} 
+                onClick={() => setIsNavigating(true)}
+                className="font-semibold text-[#0369a1] hover:text-[#0c4a6e] transition-opacity"
+                style={{ opacity: isNavigating ? 0.6 : 1 }}
+              >
+                {isNavigating ? 'Loading...' : 'Sign in'}
               </Link>
             </p>
           </div>
@@ -263,9 +279,9 @@ export default function SignupPage() {
             src="/home4.jpg"
             alt="Community benefiting from clean water"
             fill
-            priority
+            loading="lazy"
             className="object-cover opacity-60"
-            sizes="50vw"
+            sizes="(max-width: 1024px) 0vw, 50vw"
           />
           <div className="absolute inset-0 bg-gradient-to-bl from-[#091c37]/90 via-[#0c4a6e]/70 to-[#0d9488]/50" />
           <div className="relative flex h-full flex-col justify-between p-12">

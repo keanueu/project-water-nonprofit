@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -13,12 +13,18 @@ import TextWithNumbers from '../../components/TextWithNumbers';
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const nextUrl = useMemo(() => searchParams?.get('next'), [searchParams]);
+  const signupUrl = useMemo(() => 
+    nextUrl ? `/signup?next=${encodeURIComponent(nextUrl)}` : '/signup',
+    [nextUrl]
+  );
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -40,7 +46,7 @@ export default function LoginPage() {
         setError(signInError.message);
       } else {
           const role = email.toLowerCase().startsWith('admin') ? 'admin' : 'donor';
-          const next = searchParams?.get('next');
+          const next = nextUrl;
           if (role === 'admin') {
             router.push('/admin');
           } else {
@@ -63,9 +69,9 @@ export default function LoginPage() {
             src="/water.webp"
             alt="Clean water in a rural community"
             fill
-            priority
+            loading="lazy"
             className="object-cover opacity-60"
-            sizes="50vw"
+            sizes="(max-width: 1024px) 0vw, 50vw"
           />
           <div className="absolute inset-0 bg-gradient-to-br from-[#091c37]/90 via-[#0c4a6e]/70 to-[#0369a1]/60" />
           <div className="relative flex h-full flex-col justify-between p-12">
@@ -120,10 +126,12 @@ export default function LoginPage() {
                 />
               </Link>
               <Link
-                href={searchParams?.get('next') ? `/signup?next=${encodeURIComponent(searchParams.get('next') || '')}` : '/signup'}
-                className="text-sm font-semibold text-[#0369a1] hover:text-[#0c4a6e]"
+                href={signupUrl}
+                onClick={() => setIsNavigating(true)}
+                className="text-sm font-semibold text-[#0369a1] hover:text-[#0c4a6e] transition-opacity"
+                style={{ opacity: isNavigating ? 0.6 : 1 }}
               >
-                Create account
+                {isNavigating ? 'Loading...' : 'Create account'}
               </Link>
             </div>
 
@@ -231,8 +239,13 @@ export default function LoginPage() {
 
             <p className="mt-8 text-center text-sm text-slate-600">
               New to Project Water?{' '}
-              <Link href={searchParams?.get('next') ? `/signup?next=${encodeURIComponent(searchParams.get('next') || '')}` : '/signup'} className="font-semibold text-[#0369a1] hover:text-[#0c4a6e]">
-                Create an account
+              <Link 
+                href={signupUrl} 
+                onClick={() => setIsNavigating(true)}
+                className="font-semibold text-[#0369a1] hover:text-[#0c4a6e] transition-opacity"
+                style={{ opacity: isNavigating ? 0.6 : 1 }}
+              >
+                {isNavigating ? 'Loading...' : 'Create an account'}
               </Link>
             </p>
           </div>
