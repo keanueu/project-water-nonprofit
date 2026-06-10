@@ -3,14 +3,17 @@
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightFromBracket, faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { faGauge, faHandshakeAngle, faBullhorn, faUsers, faGear, faBell, faMagnifyingGlass, faUser, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faGauge, faHandshakeAngle, faBullhorn, faUsers, faGear, faMagnifyingGlass, faUser } from '@fortawesome/free-solid-svg-icons';
+import dynamic from 'next/dynamic';
 
 import React from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
 import { usePathname } from 'next/navigation';
 
-import { cn } from '@/lib/utils'; // Assuming this exists for tailwind classes merging
+import { cn } from '@/lib/utils';
+
+const NotificationDropdown = dynamic(() => import('../../components/admin/NotificationDropdown'), { ssr: false });
 
 const sidebarItems = [
   { icon: faGauge, label: 'Overview', href: '/admin' },
@@ -166,10 +169,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
 
           <div className="flex items-center space-x-4">
-            <button className="p-2 text-gray-500 hover:bg-gray-100 rounded-full relative">
-              <FontAwesomeIcon icon={faBell} className="w-5 h-5" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
-            </button>
+            <NotificationDropdown />
             <div className="h-8 w-px bg-gray-200 mx-2"></div>
             <div className="flex items-center space-x-3">
               <div className="text-right hidden sm:block">

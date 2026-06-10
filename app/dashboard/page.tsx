@@ -209,7 +209,28 @@ export default function DashboardPage() {
               </div>
             </div>
             
-            <div className="pt-2">
+            <div className="pt-2 space-y-3">
+              <Link
+                href="/dashboard/profile"
+                className="flex w-full items-center justify-center gap-2 rounded-2xl border border-[#0369a1] py-3 text-sm font-semibold text-[#0369a1] transition hover:bg-[#0369a1] hover:text-white"
+              >
+                <FontAwesomeIcon icon={faUser} className="h-4 w-4" />
+                Edit Profile
+              </Link>
+              <Link
+                href="/dashboard/impact"
+                className="flex w-full items-center justify-center gap-2 rounded-2xl border border-emerald-600 py-3 text-sm font-semibold text-emerald-600 transition hover:bg-emerald-600 hover:text-white"
+              >
+                <FontAwesomeIcon icon={faDroplet} className="h-4 w-4" />
+                View Impact
+              </Link>
+              <Link
+                href="/dashboard/recurring"
+                className="flex w-full items-center justify-center gap-2 rounded-2xl border border-purple-600 py-3 text-sm font-semibold text-purple-600 transition hover:bg-purple-600 hover:text-white"
+              >
+                <FontAwesomeIcon icon={faCalendarDays} className="h-4 w-4" />
+                Recurring Gifts
+              </Link>
               <Link
                 href="/take-action/donate"
                 className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#0369a1] py-3 text-sm font-semibold text-white transition hover:bg-[#0c4a6e]"

@@ -1,317 +1,291 @@
 'use client';
 
-import { useState, useEffect, FormEvent } from 'react';
-import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faUser,
-  faEnvelope,
-  faArrowLeft,
+import { 
+  faUser, 
+  faEnvelope, 
+  faLock, 
+  faImage,
+  faSave,
   faSpinner,
-  faCircleCheck,
-  faPen,
+  faCheckCircle,
+  faExclamationTriangle
 } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '@/lib/auth-context';
 import { supabase } from '@/lib/supabase';
 
 export default function ProfilePage() {
-  const { user, isLoading: authLoading, refreshUser } = useAuth();
+  const { user, refreshUser } = useAuth();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+  
+  const [form, setForm] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [avatarFile, setAvatarFile] = useState<File | null>(null);
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
-  const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [saveError, setSaveError] = useState('');
-
-  // Redirect if not logged in
-  useEffect(() => {
-    if (!authLoading && !user) {
-      router.push('/login');
-    }
-  }, [user, authLoading, router]);
-
-  // Pre-fill form from current user
   useEffect(() => {
     if (user) {
-      setFirstName(user.firstName || '');
-      setLastName(user.lastName || '');
-      setEmail(user.email || '');
+      setForm(prev => ({
+        ...prev,
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        email: user.email || '',
+      }));
     }
   }, [user]);
 
-  useEffect(() => {
-    if (!avatarFile) return;
-    const reader = new FileReader();
-    reader.onload = () => setAvatarPreview(String(reader.result));
-    reader.readAsDataURL(avatarFile);
-  }, [avatarFile]);
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleProfileUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSaveError('');
-    setSaved(false);
-    setSaving(true);
+    setLoading(true);
+    setMessage(null);
 
     try {
-      // If there's an avatar selected, upload it first to storage
-      let avatarUrl: string | undefined;
-      if (avatarFile) {
-        const { data: sbUserData } = await supabase.auth.getUser();
-        const sbUser = sbUserData?.user;
-        const userId = sbUser?.id || 'anon';
-        const filePath = `${userId}/avatar-${Date.now()}`;
+      const { error } = await supabase.auth.updateUser({
+        data: {
+          first_name: form.firstName,
+          last_name: form.lastName,
+        },
+      });
 
-        const { error: uploadErr } = await supabase.storage
-          .from('avatars')
-          .upload(filePath, avatarFile, { upsert: true });
+      if (error) throw error;
 
-        if (uploadErr) throw uploadErr;
-
-        const { data: urlData } = await supabase.storage.from('avatars').getPublicUrl(filePath) as any;
-        avatarUrl = urlData?.publicUrl || '';
-      }
-
-      const updatePayload: any = { data: { first_name: firstName.trim(), last_name: lastName.trim() } };
-      if (email && email !== user?.email) updatePayload.email = email.trim();
-      if (password) updatePayload.password = password;
-      if (avatarUrl) updatePayload.data.avatar_url = avatarUrl;
-
-      const { error } = await supabase.auth.updateUser(updatePayload);
-
-      if (error) {
-        setSaveError(error.message);
-      } else {
-        await refreshUser(); // Pull updated metadata back into auth context
-        setSaved(true);
-        setPassword('');
-        setTimeout(() => setSaved(false), 4000);
-      }
+      await refreshUser();
+      setMessage({ type: 'success', text: 'Profile updated successfully!' });
     } catch (err: any) {
-      setSaveError(err?.message || 'Failed to update profile.');
+      setMessage({ type: 'error', text: err?.message || 'Failed to update profile' });
     } finally {
-      setSaving(false);
+      setLoading(false);
     }
   };
 
-  if (authLoading) {
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!form.currentPassword || !form.newPassword) {
+      setMessage({ type: 'error', text: 'Please fill in all password fields' });
+      return;
+    }
+
+    if (form.newPassword !== form.confirmPassword) {
+      setMessage({ type: 'error', text: 'New passwords do not match' });
+      return;
+    }
+
+    if (form.newPassword.length < 8) {
+      setMessage({ type: 'error', text: 'Password must be at least 8 characters' });
+      return;
+    }
+
+    setLoading(true);
+    setMessage(null);
+
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: form.newPassword,
+      });
+
+      if (error) throw error;
+
+      setForm(prev => ({
+        ...prev,
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+      }));
+
+      setMessage({ type: 'success', text: 'Password changed successfully!' });
+    } catch (err: any) {
+      setMessage({ type: 'error', text: err?.message || 'Failed to change password' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!user) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center bg-white">
-        <FontAwesomeIcon icon={faSpinner} className="animate-spin text-sky-600 h-8 w-8" />
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <FontAwesomeIcon icon={faSpinner} className="animate-spin text-indigo-600 h-8 w-8" />
       </div>
     );
   }
 
-  if (!user) return null;
-
-  const displayName = [user.firstName, user.lastName].filter(Boolean).join(' ') || user.email.split('@')[0];
-
   return (
     <main className="min-h-screen bg-slate-50/50 text-[#091c37] py-12 px-6 sm:px-8 lg:px-12">
-      <div className="mx-auto max-w-3xl space-y-8">
+      <div className="mx-auto max-w-4xl space-y-8">
+        
+        {/* Header */}
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Profile Settings</h1>
+          <p className="text-gray-500 mt-2">Manage your account information and preferences</p>
+        </div>
 
-        {/* Back Link */}
-        <Link
-          href="/dashboard"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[#0369a1] transition-colors"
-        >
-          <FontAwesomeIcon icon={faArrowLeft} className="h-3.5 w-3.5" />
-          Back to Dashboard
-        </Link>
-
-        {/* Hero Banner */}
-        <section className="rounded-3xl bg-gradient-to-r from-slate-900 via-slate-950 to-[#0c4a6e] p-8 text-white shadow-md">
-          <div className="flex items-center gap-5">
-            <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-sky-500/20">
-              <FontAwesomeIcon icon={faUser} className="h-7 w-7 text-sky-300" />
-            </div>
-            <div>
-              <span className="inline-flex rounded-full bg-sky-500/20 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-sky-300">
-                Profile Settings
-              </span>
-              <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
-                {displayName}
-              </h1>
-              <p className="mt-1 text-sm text-slate-400">{user.email}</p>
-            </div>
-          </div>
-        </section>
-
-        {/* Edit Form Card */}
-        <div className="rounded-3xl border border-slate-200 bg-white shadow-sm">
-          <div className="border-b border-slate-100 px-8 py-5">
-            <div className="flex items-center gap-2">
-              <FontAwesomeIcon icon={faPen} className="h-4 w-4 text-slate-400" />
-              <h2 className="text-lg font-bold text-[#091c37]">Edit your details</h2>
-            </div>
-            <p className="mt-1 text-sm text-slate-500">
-              Update your name as it appears on your donor profile and donation records.
-            </p>
-          </div>
-
-          <form onSubmit={handleSubmit} className="p-8 space-y-6">
-            {/* Success Banner */}
-            {saved && (
-              <div className="flex items-center gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-3">
-                <FontAwesomeIcon icon={faCircleCheck} className="h-5 w-5 text-emerald-500 flex-shrink-0" />
-                <p className="text-sm font-semibold text-emerald-700">Profile updated successfully!</p>
-              </div>
-            )}
-
-            {/* Error Banner */}
-            {saveError && (
-              <div className="rounded-2xl border border-red-200 bg-red-50 px-5 py-3">
-                <p className="text-sm font-semibold text-red-700">{saveError}</p>
-              </div>
-            )}
-
-            <div className="grid gap-5 sm:grid-cols-2">
-              {/* First Name */}
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-slate-800">
-                  First name
-                </label>
-                <div className="relative">
-                  <FontAwesomeIcon
-                    icon={faUser}
-                    className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
-                  />
-                  <input
-                    id="profile-first-name"
-                    type="text"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    placeholder="Alex"
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-sm transition focus:border-[#0369a1] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20"
-                  />
-                </div>
-              </div>
-
-              {/* Last Name */}
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-slate-800">
-                  Last name
-                </label>
-                <input
-                  id="profile-last-name"
-                  type="text"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  placeholder="Rivers"
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 px-4 text-sm transition focus:border-[#0369a1] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20"
-                />
-              </div>
-            </div>
-
-            {/* Email (editable) */}
-            <div>
-              <label className="mb-2 block text-sm font-semibold text-slate-800">
-                Email address
-              </label>
-              <div className="relative">
-                <FontAwesomeIcon
-                  icon={faEnvelope}
-                  className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-300"
-                />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@domain.com"
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-sm transition focus:border-[#0369a1] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20"
-                />
-              </div>
-            </div>
-
-            {/* Password (optional) */}
-            <div>
-              <label className="mb-2 block text-sm font-semibold text-slate-800">New password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Leave blank to keep current password"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 px-4 text-sm transition focus:border-[#0369a1] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20"
+        {/* Message Alert */}
+        {message && (
+          <div className={`rounded-xl border p-4 ${
+            message.type === 'success' 
+              ? 'bg-green-50 border-green-200 text-green-700' 
+              : 'bg-red-50 border-red-200 text-red-700'
+          }`}>
+            <div className="flex items-center gap-3">
+              <FontAwesomeIcon 
+                icon={message.type === 'success' ? faCheckCircle : faExclamationTriangle} 
+                className="h-5 w-5" 
               />
+              <p className="font-medium">{message.text}</p>
             </div>
+          </div>
+        )}
 
-            {/* Avatar upload */}
-            <div>
-              <label className="mb-2 block text-sm font-semibold text-slate-800">Profile image</label>
-              <div className="flex items-center gap-4">
-                <div className="h-14 w-14 overflow-hidden rounded-full bg-slate-100">
-                  {avatarPreview ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={avatarPreview} alt="avatar preview" className="h-full w-full object-cover" />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center text-slate-400">—</div>
-                  )}
-                </div>
+        {/* Profile Information */}
+        <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-8">
+          <div className="flex items-center gap-4 mb-6">
+            <FontAwesomeIcon icon={faUser} className="h-6 w-6 text-indigo-600" />
+            <h2 className="text-xl font-bold text-gray-900">Personal Information</h2>
+          </div>
+
+          <form onSubmit={handleProfileUpdate} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  First Name
+                </label>
                 <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setAvatarFile(e.target.files ? e.target.files[0] : null)}
+                  type="text"
+                  value={form.firstName}
+                  onChange={(e) => setForm({ ...form, firstName: e.target.value })}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                  placeholder="John"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  value={form.lastName}
+                  onChange={(e) => setForm({ ...form, lastName: e.target.value })}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                  placeholder="Doe"
                 />
               </div>
             </div>
 
-            {/* Email — read-only */}
             <div>
-              <label className="mb-2 block text-sm font-semibold text-slate-800">
-                Email address
-                <span className="ml-2 text-xs font-normal text-slate-400">(cannot be changed here)</span>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Email Address
               </label>
-              <div className="relative">
-                <FontAwesomeIcon
-                  icon={faEnvelope}
-                  className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-300"
-                />
-                <input
-                  type="email"
-                  value={user?.email}
-                  readOnly
-                  disabled
-                  className="w-full cursor-not-allowed rounded-xl border border-slate-100 bg-slate-50/80 py-3 pl-11 pr-4 text-sm text-slate-400"
-                />
-              </div>
+              <input
+                type="email"
+                value={form.email}
+                disabled
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50 text-gray-500 cursor-not-allowed"
+              />
+              <p className="text-xs text-gray-500 mt-2">Email address cannot be changed</p>
             </div>
 
-            {/* Submit */}
-            <div className="flex items-center justify-end gap-4 border-t border-slate-100 pt-6">
-              <Link
-                href="/dashboard"
-                className="text-sm font-semibold text-slate-500 hover:text-[#091c37] transition-colors"
-              >
-                Cancel
-              </Link>
+            <div className="flex justify-end">
               <button
-                id="profile-save-btn"
                 type="submit"
-                disabled={saving}
-                className="inline-flex items-center gap-2 rounded-xl bg-[#0369a1] px-7 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0c4a6e] disabled:cursor-not-allowed disabled:opacity-60"
+                disabled={loading}
+                className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {saving ? (
+                {loading ? (
                   <>
-                    <FontAwesomeIcon icon={faSpinner} className="h-4 w-4 animate-spin" />
-                    Saving…
+                    <FontAwesomeIcon icon={faSpinner} className="animate-spin h-4 w-4" />
+                    Saving...
                   </>
                 ) : (
-                  'Save changes'
+                  <>
+                    <FontAwesomeIcon icon={faSave} className="h-4 w-4" />
+                    Save Changes
+                  </>
                 )}
               </button>
             </div>
           </form>
         </div>
 
-        {/* Info note */}
-        <p className="text-center text-xs text-slate-400">
-          Your name is stored securely in your Supabase Auth profile. To change your email address, please contact support.
-        </p>
+        {/* Change Password */}
+        <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-8">
+          <div className="flex items-center gap-4 mb-6">
+            <FontAwesomeIcon icon={faLock} className="h-6 w-6 text-indigo-600" />
+            <h2 className="text-xl font-bold text-gray-900">Change Password</h2>
+          </div>
+
+          <form onSubmit={handlePasswordChange} className="space-y-6">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Current Password
+              </label>
+              <input
+                type="password"
+                value={form.currentPassword}
+                onChange={(e) => setForm({ ...form, currentPassword: e.target.value })}
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                placeholder="Enter current password"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  New Password
+                </label>
+                <input
+                  type="password"
+                  value={form.newPassword}
+                  onChange={(e) => setForm({ ...form, newPassword: e.target.value })}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                  placeholder="At least 8 characters"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Confirm New Password
+                </label>
+                <input
+                  type="password"
+                  value={form.confirmPassword}
+                  onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                  placeholder="Re-enter new password"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? (
+                  <>
+                    <FontAwesomeIcon icon={faSpinner} className="animate-spin h-4 w-4" />
+                    Updating...
+                  </>
+                ) : (
+                  <>
+                    <FontAwesomeIcon icon={faLock} className="h-4 w-4" />
+                    Update Password
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
+
       </div>
     </main>
   );
