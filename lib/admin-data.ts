@@ -26,6 +26,7 @@ export interface Campaign {
   daysLeft: number;
   progress: number;
   status: 'active' | 'completed' | 'draft';
+  ends_at?: string;
 }
 
 export interface DashboardMetric {
@@ -280,6 +281,7 @@ function normalizeCampaign(row: Row, index: number): Campaign {
     daysLeft: daysUntil(endsAt),
     progress,
     status: normalizeCampaignStatus(row.status, progress),
+    ends_at: endsAt || undefined,
   };
 }
 
