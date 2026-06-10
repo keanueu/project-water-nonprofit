@@ -4,15 +4,7 @@ import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faSave, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { supabase } from '@/lib/supabase';
-
-interface Campaign {
-  id?: string;
-  title: string;
-  description: string;
-  goal: number;
-  ends_at: string;
-  status: 'active' | 'completed' | 'draft';
-}
+import type { Campaign } from '@/lib/admin-data';
 
 interface CampaignModalProps {
   campaign?: Campaign | null;
@@ -23,12 +15,12 @@ interface CampaignModalProps {
 export default function CampaignModal({ campaign, onClose, onSave }: CampaignModalProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [form, setForm] = useState<Campaign>({
+  const [form, setForm] = useState({
     title: '',
     description: '',
     goal: 10000,
     ends_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-    status: 'active',
+    status: 'active' as const,
   });
 
   useEffect(() => {
@@ -152,7 +144,7 @@ export default function CampaignModal({ campaign, onClose, onSave }: CampaignMod
             </label>
             <select
               value={form.status}
-              onChange={(e) => setForm({ ...form, status: e.target.value as Campaign['status'] })}
+              onChange={(e) => setForm({ ...form, status: e.target.value as 'active' | 'completed' | 'draft' })}
               className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <option value="draft">Draft</option>
