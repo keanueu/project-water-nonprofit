@@ -63,7 +63,7 @@ export default function UsersPage() {
     try {
       const { data: authData } = await supabase.auth.admin.listUsers();
       
-      const usersList: User[] = (authData?.users || []).map(u => ({
+      const usersList: User[] = (authData?.users || []).map((u: any) => ({
         id: u.id,
         email: u.email || '',
         role: u.email?.toLowerCase().startsWith('admin') ? 'admin' : 'donor',
