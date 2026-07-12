@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from 'next/server';
 import { genRequestId, logRequest, logResponse, logError, maskKey, summarizePayload, summarizeResponseShape } from '@/lib/llm-logger';
+import { rateLimit, getClientIp } from '@/lib/rate-limit';
 import type { JWTInput } from 'google-auth-library';
 
 let googleAuthModule: typeof import('google-auth-library') | null = null;
 
 type ChatRequestBody = {
   message?: string;
+  history?: Array<{ role: 'user' | 'model'; content: string }>;
 };
 
 type ModelFamily = 'gemini' | 'text' | 'unknown';
@@ -42,15 +44,39 @@ function buildEndpoint(model: string, customEndpoint?: string | null) {
   };
 }
 
-function buildPayload(modelFamily: ModelFamily, prompt: string, maxTokens: number) {
+const SYSTEM_PROMPT = `You are a friendly support assistant for Project Water, a non-profit charity dedicated to providing clean water access across sub-Saharan Africa.
+
+Key facts about Project Water:
+- Mission: Provide clean, reliable water access to communities across sub-Saharan Africa
+- We fund water wells, filtration systems, and water infrastructure projects
+- We accept one-time and recurring donations via our website
+- Volunteers can help through fundraising campaigns and community outreach
+- Impact reports are published regularly to show transparency and results
+- We have projects focused on water, health, hunger, education, and poverty
+
+Your role:
+- Help visitors with questions about donations, volunteering, our mission, and our projects
+- Guide users to the relevant pages: /take-action/donate for donations, /volunteer for volunteering, /faq for FAQs, /contact-us for contact, /our-mission for mission info, /impact-reports for impact data
+- Be warm, concise, and helpful
+- If you don't know something specific, direct them to our contact page
+- Keep responses under 3 sentences unless more detail is needed`;
+
+function buildPayload(modelFamily: ModelFamily, prompt: string, maxTokens: number, history: Array<{ role: 'user' | 'model'; content: string }> = []) {
+  const systemInstruction = {
+    parts: [{ text: SYSTEM_PROMPT }],
+  };
+
   if (modelFamily === 'gemini') {
+    const contents = [
+      ...history.map((msg) => ({
+        role: msg.role === 'user' ? 'user' as const : 'model' as const,
+        parts: [{ text: msg.content }],
+      })),
+      { role: 'user' as const, parts: [{ text: prompt }] },
+    ];
     return {
-      contents: [
-        {
-          role: 'user',
-          parts: [{ text: prompt }],
-        },
-      ],
+      contents,
+      systemInstruction,
       generationConfig: {
         temperature: 0.2,
         maxOutputTokens: maxTokens,
@@ -58,8 +84,11 @@ function buildPayload(modelFamily: ModelFamily, prompt: string, maxTokens: numbe
     };
   }
 
+  const historyBlock = history.length
+    ? history.map((m) => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content}`).join('\n') + '\n'
+    : '';
   return {
-    prompt: { text: prompt },
+    prompt: { text: `${SYSTEM_PROMPT}\n\n${historyBlock}User: ${prompt}\nAssistant:` },
     temperature: 0.2,
     maxOutputTokens: maxTokens,
   };
@@ -140,8 +169,15 @@ function getEndpointWarnings(model: string, endpointKind: string, customEndpoint
 
 export async function POST(request: Request) {
   try {
+    const ip = getClientIp(request);
+    const rl = rateLimit(`chat:${ip}`, 30, 60_000);
+    if (!rl.allowed) {
+      return NextResponse.json({ error: 'Too many requests. Please slow down.' }, { status: 429 });
+    }
+
     const body: ChatRequestBody = await request.json().catch(() => ({}));
     const prompt = body?.message;
+    const history = body?.history ?? [];
     if (!prompt) {
       return NextResponse.json({ error: 'Missing `message` in request body' }, { status: 400 });
     }
@@ -160,17 +196,13 @@ export async function POST(request: Request) {
 
     const endpointOverride = process.env.GEMINI_API_ENDPOINT?.trim() || null;
 
-    // Try a prioritized list of models so we can pick the best available free model
+    // Try a prioritized list of free-tier models
     const candidates: string[] = process.env.GEMINI_MODEL
       ? [process.env.GEMINI_MODEL]
       : [
-          // Prefer broadly-available / stable models first to avoid gated-model 404s
-          'gemini-1.5',
-          'gemini-1.5-flash',
-          'text-bison-001',
-          'gemini-1.5-mini',
-          // Less likely to be available to all projects; try last
-          'gemini-2.5-flash',
+          'gemini-3-flash-preview',
+          'gemini-3.5-flash',
+          'gemini-2.5-flash-lite',
         ];
 
     const maxTokens = Number(process.env.GEMINI_MAX_TOKENS || '256');
@@ -183,7 +215,7 @@ export async function POST(request: Request) {
         const endpoint = buildEndpoint(model, endpointOverride);
         const endpointWarnings = getEndpointWarnings(model, endpoint.endpointKind, endpointOverride);
       try {
-        const payload = buildPayload(modelFamily, prompt, maxTokens);
+        const payload = buildPayload(modelFamily, prompt, maxTokens, history);
 
         // Determine auth: prefer service account JSON -> Bearer token, else use API key header.
         const url = endpoint.url;
@@ -431,8 +463,8 @@ export async function POST(request: Request) {
       }
     }
 
-    return NextResponse.json({ error: String(lastError ?? 'No model produced a valid response') }, { status: 500 });
-  } catch (err: any) {
-    return NextResponse.json({ error: String(err?.message ?? err) }, { status: 500 });
+    return NextResponse.json({ error: 'Unable to generate a response right now. Please try again.' }, { status: 500 });
+  } catch {
+    return NextResponse.json({ error: 'An unexpected error occurred.' }, { status: 500 });
   }
 }

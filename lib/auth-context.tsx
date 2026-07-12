@@ -31,7 +31,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Helper to map email/metadata to user object
   const mapFirebaseUser = (sbUser: any): User => {
-    const role: UserRole = sbUser.email?.toLowerCase().startsWith('admin') ? 'admin' : 'donor';
+    const metaRole = sbUser.user_metadata?.role || sbUser.app_metadata?.role;
+    const role: UserRole = metaRole === 'admin' || metaRole === 'volunteer'
+      ? metaRole
+      : sbUser.email?.toLowerCase().startsWith('admin')
+        ? 'admin'
+        : 'donor';
     return {
       email: sbUser.email || '',
       role,
@@ -46,15 +51,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const { data } = await supabase.auth.getUser();
       const sbUser = data?.user;
-      // debug: helps when metadata doesn't appear to update in the UI
-      // console.debug('refreshUser -> sbUser', sbUser);
       if (sbUser) {
-        const mapped = mapFirebaseUser(sbUser);
-        setUser(mapped);
-        localStorage.setItem('pw_user', JSON.stringify(mapped));
+        setUser(mapFirebaseUser(sbUser));
       } else {
         setUser(null);
-        localStorage.removeItem('pw_user');
       }
     } catch (e) {
       // noop
@@ -68,15 +68,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (session?.user) {
         setUser(mapFirebaseUser(session.user));
       } else {
-        // Fallback to local storage if no Supabase session yet
-        const storedUser = localStorage.getItem('pw_user');
-        if (storedUser) {
-          try {
-            setUser(JSON.parse(storedUser));
-          } catch (e) {
-            localStorage.removeItem('pw_user');
-          }
-        }
+        setUser(null);
       }
       setIsLoading(false);
     });
@@ -84,12 +76,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // 2. Listen to auth state changes
     const onState = supabase.auth.onAuthStateChange((_event: any, session: any) => {
       if (session?.user) {
-        const newUser = mapFirebaseUser(session.user);
-        setUser(newUser);
-        localStorage.setItem('pw_user', JSON.stringify(newUser));
+        setUser(mapFirebaseUser(session.user));
       } else {
         setUser(null);
-        localStorage.removeItem('pw_user');
       }
       setIsLoading(false);
     });
@@ -103,26 +92,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Backwards compatible login function
   const login = (email: string, role: UserRole) => {
-    const newUser = { email, role };
-    setUser(newUser);
-    localStorage.setItem('pw_user', JSON.stringify(newUser));
+    setUser({ email, role });
   };
 
   const logout = async () => {
-    console.debug('Starting logout');
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) console.error('Supabase signOut error', error);
-    } catch (e) {
-      console.error('Exception during signOut', e);
+      await supabase.auth.signOut();
+    } catch {
+      // noop
     }
 
-    // Clear client state and storage
     setUser(null);
-    try { localStorage.removeItem('pw_user'); } catch {}
     try { await router.replace('/'); } catch {}
-
-    console.debug('Logout complete');
   };
 
   return (

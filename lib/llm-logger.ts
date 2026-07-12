@@ -102,8 +102,9 @@ async function write(entry: Record<string, any>) {
     ...entry,
   } as Record<string, any>;
   try {
-    // Print to console for immediate visibility in dev
-    console.log(JSON.stringify(obj));
+    if (process.env.NODE_ENV === 'development') {
+      console.log(JSON.stringify(obj));
+    }
   } catch {
     // ignore
   }
@@ -152,7 +153,7 @@ export async function logResponse(id: string, meta: Record<string, any>) {
     responseShape: meta.responseShape || (meta.raw ? summarizeResponseShape(meta.raw) : null),
     status: meta.status,
     statusText: meta.statusText,
-    rawPreview: meta.raw ? safeStringify(meta.raw, 4000) : null,
+    rawPreview: meta.raw ? safeStringify(meta.raw, 500) : null,
     parsedKeys: meta.parsedKeys || null,
     replyLength: typeof meta.reply === 'string' ? meta.reply.length : null,
     note: meta.note || null,

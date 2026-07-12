@@ -15,7 +15,7 @@ import {
   faEdit,
   faTrash
 } from '@fortawesome/free-solid-svg-icons';
-import { readDonations, readCampaigns, formatCurrency } from '@/lib/admin-data';
+import { formatCurrency } from '@/lib/admin-data';
 import type { Campaign } from '@/lib/admin-data';
 
 const CampaignModal = dynamic(() => import('../../../components/admin/CampaignModal'), { ssr: false });
@@ -33,9 +33,10 @@ export default function CampaignsPage() {
 
   const fetchData = async () => {
     try {
-      const donations = await readDonations();
-      const data = await readCampaigns(donations);
-      setCampaigns(data);
+      const res = await fetch('/api/admin/campaigns');
+      if (!res.ok) throw new Error('Failed to load campaigns');
+      const data = await res.json();
+      setCampaigns(data.campaigns || []);
     } catch (err) {
       console.error('Failed to load campaigns:', err);
     } finally {

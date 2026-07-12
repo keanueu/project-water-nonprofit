@@ -1,16 +1,23 @@
 import Stripe from 'stripe';
 import { NextResponse } from 'next/server';
+import { rateLimit, getClientIp } from '@/lib/rate-limit';
+
+const MAX_DONATION_AMOUNT = 100000;
+const MIN_DONATION_AMOUNT = 1;
 
 export async function POST(req: Request) {
+  const ip = getClientIp(req);
+  const rl = rateLimit(`checkout:${ip}`, 10, 60_000);
+  if (!rl.allowed) {
+    return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 });
+  }
+
   try {
     const stripeKey = process.env.STRIPE_SECRET_KEY;
     const appUrl = process.env.NEXT_PUBLIC_APP_URL;
 
     if (!stripeKey) {
-      return NextResponse.json(
-        { error: 'STRIPE_SECRET_KEY is not configured. Set it in .env.local' },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: 'Payment service is temporarily unavailable.' }, { status: 500 });
     }
 
     const stripe = new Stripe(stripeKey);
@@ -18,14 +25,18 @@ export async function POST(req: Request) {
     const body = await req.json();
     const amount = Number(body?.amount ?? 0);
     const currency = (body?.currency || 'usd').toLowerCase();
-    const description = body?.description || 'Charity Donation';
-    const email = body?.email;
-    const name = body?.name;
-    const message = body?.message;
-    const user_id = body?.user_id;
+    const description = String(body?.description || 'Charity Donation').slice(0, 500);
+    const email = body?.email ? String(body.email).slice(0, 254) : undefined;
+    const name = body?.name ? String(body.name).slice(0, 200) : undefined;
+    const message = body?.message ? String(body.message).slice(0, 1000) : undefined;
+    const user_id = body?.user_id ? String(body.user_id).slice(0, 100) : undefined;
 
-    if (!amount || isNaN(amount) || amount <= 0) {
-      return NextResponse.json({ error: 'Invalid amount' }, { status: 400 });
+    if (!amount || isNaN(amount) || amount < MIN_DONATION_AMOUNT || amount > MAX_DONATION_AMOUNT) {
+      return NextResponse.json({ error: 'Invalid donation amount.' }, { status: 400 });
+    }
+
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return NextResponse.json({ error: 'Invalid email address.' }, { status: 400 });
     }
 
     const baseUrl = appUrl || `http://localhost:3000`;
@@ -56,10 +67,9 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ url: session.url });
-  } catch (err: any) {
-    console.error('Checkout creation error', err?.message || err);
+  } catch {
     return NextResponse.json(
-      { error: err?.message || 'Server error' },
+      { error: 'Unable to process payment. Please try again.' },
       { status: 500 }
     );
   }

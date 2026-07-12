@@ -17,7 +17,7 @@ import {
   faInfoCircle,
   faCheckCircle
 } from '@fortawesome/free-solid-svg-icons';
-import { readDonations, readCampaigns, buildDashboard, formatCurrency } from '@/lib/admin-data';
+import { buildDashboard, formatCurrency } from '@/lib/admin-data';
 import type { Donation, DashboardMetric, OperationsAlert } from '@/lib/admin-data';
 
 export default function AdminOverview() {
@@ -30,10 +30,19 @@ export default function AdminOverview() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const donations = await readDonations();
-        const campaigns = await readCampaigns(donations);
+        const [donationsRes, campaignsRes] = await Promise.all([
+          fetch('/api/admin/donations'),
+          fetch('/api/admin/campaigns'),
+        ]);
+
+        if (!donationsRes.ok || !campaignsRes.ok) {
+          throw new Error('Failed to load dashboard data');
+        }
+
+        const { donations } = await donationsRes.json();
+        const { campaigns } = await campaignsRes.json();
         const dashboard = buildDashboard(donations, campaigns);
-        
+
         setMetrics(dashboard.metrics);
         setRecentDonations(dashboard.recentDonations);
         setAlerts(dashboard.alerts);

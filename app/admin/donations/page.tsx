@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faFilter, faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import React, { useEffect, useState } from 'react';
 import TextWithNumbers from '../../../components/TextWithNumbers';
-import { readDonations, filterDonations, donationsToCsv, formatCurrency } from '@/lib/admin-data';
+import { filterDonations, donationsToCsv, formatCurrency } from '@/lib/admin-data';
 import type { Donation } from '@/lib/admin-data';
 
 export default function DonationsPage() {
@@ -23,8 +23,10 @@ export default function DonationsPage() {
   useEffect(() => {
     const fetchDonations = async () => {
       try {
-        const data = await readDonations();
-        setAllDonations(data);
+        const res = await fetch('/api/admin/donations');
+        if (!res.ok) throw new Error('Failed to load donations');
+        const data = await res.json();
+        setAllDonations(data.donations || []);
       } catch (err) {
         console.error('Failed to load donations:', err);
       } finally {

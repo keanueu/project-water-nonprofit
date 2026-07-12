@@ -88,6 +88,24 @@ export default function ProfilePage() {
     setMessage(null);
 
     try {
+      // Re-authenticate with current password first
+      if (!user?.email) {
+        setMessage({ type: 'error', text: 'Unable to verify identity.' });
+        setLoading(false);
+        return;
+      }
+
+      const { error: authError } = await supabase.auth.signInWithPassword({
+        email: user.email,
+        password: form.currentPassword,
+      });
+
+      if (authError) {
+        setMessage({ type: 'error', text: 'Current password is incorrect.' });
+        setLoading(false);
+        return;
+      }
+
       const { error } = await supabase.auth.updateUser({
         password: form.newPassword,
       });

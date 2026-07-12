@@ -33,7 +33,7 @@ export default function LoginPage() {
     if (!email || !password) return setError('Please fill in all fields.');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       return setError('Please enter a valid email address.');
-    if (password.length < 6) return setError('Password must be at least 6 characters.');
+    if (password.length < 8) return setError('Password must be at least 8 characters.');
 
     setIsLoading(true);
     try {

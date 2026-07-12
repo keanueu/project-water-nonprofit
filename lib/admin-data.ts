@@ -126,9 +126,9 @@ export async function readCampaigns(donations: Donation[] = []): Promise<Campaig
     }
   }
 
-  const byCampaign = donations.reduce<Map<string, { raised: number; donors: Set<string> }>>((map, donation) => {
-    const key = donation.campaignName || 'General Fund';
-    const current = map.get(key) || { raised: 0, donors: new Set<string>() };
+  const byCampaign = donations.reduce<Map<string, { raised: number; donors: Set<string>; name: string }>>((map, donation) => {
+    const key = donation.campaignId || donation.campaignName || 'General Fund';
+    const current = map.get(key) || { raised: 0, donors: new Set<string>(), name: donation.campaignName || 'General Fund' };
     current.raised += donation.status === 'failed' ? 0 : donation.amount;
     current.donors.add(donation.donorEmail || donation.donorName || donation.id);
     map.set(key, current);
@@ -139,13 +139,13 @@ export async function readCampaigns(donations: Donation[] = []): Promise<Campaig
     return fallbackCampaigns;
   }
 
-  return Array.from(byCampaign.entries()).map(([title, summary], index) => {
+  return Array.from(byCampaign.entries()).map(([id, summary], index) => {
     const goal = Math.max(Math.ceil(summary.raised * 1.35), 10000);
     const progress = goal ? Math.min((summary.raised / goal) * 100, 100) : 0;
 
     return {
-      id: slugify(title) || `campaign-${index + 1}`,
-      title,
+      id: id === 'General Fund' ? `campaign-${index + 1}` : slugify(id) || `campaign-${index + 1}`,
+      title: summary.name,
       description: 'Campaign summary is generated from donation activity until campaign records are configured.',
       raised: summary.raised,
       goal,

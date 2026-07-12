@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faEnvelope, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import { supabase } from '@/lib/supabase';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -22,9 +23,16 @@ export default function ForgotPasswordPage() {
 
     setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1200));
-      setIsSubmitted(true);
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${appUrl}/reset-password`,
+      });
+
+      if (resetError) {
+        setError('Unable to send reset email. Please try again.');
+      } else {
+        setIsSubmitted(true);
+      }
     } catch {
       setError('An error occurred. Please try again.');
     } finally {
