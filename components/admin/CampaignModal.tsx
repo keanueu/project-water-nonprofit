@@ -15,12 +15,18 @@ interface CampaignModalProps {
 export default function CampaignModal({ campaign, onClose, onSave }: CampaignModalProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<{
+    title: string;
+    description: string;
+    goal: number;
+    ends_at: string;
+    status: 'active' | 'completed' | 'draft';
+  }>({
     title: '',
     description: '',
     goal: 10000,
     ends_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-    status: 'active' as const,
+    status: 'active',
   });
 
   useEffect(() => {
