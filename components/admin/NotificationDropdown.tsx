@@ -2,12 +2,11 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
+import {
   faBell,
   faCheckCircle,
   faExclamationTriangle,
   faInfoCircle,
-  faDollarSign
 } from '@fortawesome/free-solid-svg-icons';
 
 interface Notification {
@@ -67,7 +66,7 @@ export default function NotificationDropdown() {
   const unreadCount = notifications.filter(n => !n.read).length;
 
   const markAsRead = (id: string) => {
-    setNotifications(notifications.map(n => 
+    setNotifications(notifications.map(n =>
       n.id === id ? { ...n, read: true } : n
     ));
   };
@@ -84,11 +83,11 @@ export default function NotificationDropdown() {
     }
   };
 
-  const getColor = (type: Notification['type']) => {
+  const getIconColors = (type: Notification['type']) => {
     switch (type) {
-      case 'success': return 'text-green-600 bg-green-50';
-      case 'warning': return 'text-yellow-600 bg-yellow-50';
-      case 'info': return 'text-blue-600 bg-blue-50';
+      case 'success': return 'text-emerald-600 bg-emerald-50';
+      case 'warning': return 'text-amber-600 bg-amber-50';
+      case 'info': return 'text-sky-600 bg-sky-50';
     }
   };
 
@@ -106,63 +105,63 @@ export default function NotificationDropdown() {
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <button 
+      <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 text-gray-500 hover:bg-gray-100 rounded-full relative"
+        className="p-2 text-slate-400 hover:text-[#0369a1] hover:bg-[#0369a1]/10 rounded-full relative transition-colors"
       >
-        <FontAwesomeIcon icon={faBell} className="w-5 h-5" />
+        <FontAwesomeIcon icon={faBell} className="w-4.5 h-4.5" />
         {unreadCount > 0 && (
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white" />
         )}
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-96 bg-white rounded-xl shadow-lg border border-gray-200 z-50">
-          <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+        <div className="absolute right-0 mt-2 w-96 bg-white rounded-3xl shadow-2xl border border-slate-200 z-50 overflow-hidden">
+          <div className="p-5 border-b border-slate-100 flex items-center justify-between">
             <div>
-              <h3 className="font-bold text-gray-900">Notifications</h3>
-              {unreadCount > 0 && (
-                <p className="text-xs text-gray-500">{unreadCount} unread</p>
-              )}
+              <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-0.5">Notifications</p>
+              <h3 className="font-serif text-base font-bold text-[#091c37]">
+                {unreadCount > 0 ? `${unreadCount} unread` : 'All caught up'}
+              </h3>
             </div>
             {unreadCount > 0 && (
               <button
                 onClick={markAllAsRead}
-                className="text-xs text-indigo-600 font-semibold hover:text-indigo-700"
+                className="text-xs text-[#0369a1] font-semibold hover:text-[#0c4a6e] transition-colors"
               >
                 Mark all read
               </button>
             )}
           </div>
 
-          <div className="max-h-96 overflow-y-auto">
+          <div className="max-h-80 overflow-y-auto">
             {notifications.length === 0 ? (
-              <div className="p-8 text-center text-gray-500">
-                <FontAwesomeIcon icon={faBell} className="h-8 w-8 mb-2 opacity-50" />
-                <p>No notifications</p>
+              <div className="p-10 text-center text-slate-400">
+                <FontAwesomeIcon icon={faBell} className="h-7 w-7 mb-3 opacity-40" />
+                <p className="text-sm">No notifications</p>
               </div>
             ) : (
               notifications.map((notif) => (
                 <div
                   key={notif.id}
                   onClick={() => markAsRead(notif.id)}
-                  className={`p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition ${
-                    !notif.read ? 'bg-blue-50/30' : ''
+                  className={`px-5 py-3.5 border-b border-slate-50 hover:bg-slate-50/60 cursor-pointer transition-colors ${
+                    !notif.read ? 'bg-[#0369a1]/[0.02]' : ''
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className={`p-2 rounded-lg ${getColor(notif.type)}`}>
-                      <FontAwesomeIcon icon={getIcon(notif.type)} className="h-4 w-4" />
+                    <div className={`p-2 rounded-xl ${getIconColors(notif.type)} mt-0.5`}>
+                      <FontAwesomeIcon icon={getIcon(notif.type)} className="h-3.5 w-3.5" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
-                        <p className="font-semibold text-sm text-gray-900">{notif.title}</p>
+                        <p className="font-semibold text-sm text-[#091c37]">{notif.title}</p>
                         {!notif.read && (
-                          <span className="flex-shrink-0 w-2 h-2 bg-indigo-600 rounded-full mt-1.5"></span>
+                          <span className="flex-shrink-0 w-2 h-2 bg-[#0369a1] rounded-full mt-1.5" />
                         )}
                       </div>
-                      <p className="text-sm text-gray-600 mt-1">{notif.message}</p>
-                      <p className="text-xs text-gray-400 mt-2">{formatTimestamp(notif.timestamp)}</p>
+                      <p className="text-xs text-slate-500 mt-0.5">{notif.message}</p>
+                      <p className="text-[0.65rem] text-slate-400 mt-1.5">{formatTimestamp(notif.timestamp)}</p>
                     </div>
                   </div>
                 </div>
@@ -170,8 +169,8 @@ export default function NotificationDropdown() {
             )}
           </div>
 
-          <div className="p-3 border-t border-gray-200 text-center">
-            <button className="text-sm text-indigo-600 font-semibold hover:text-indigo-700">
+          <div className="p-3 border-t border-slate-100 text-center">
+            <button className="text-xs text-[#0369a1] font-semibold hover:text-[#0c4a6e] transition-colors">
               View all notifications
             </button>
           </div>

@@ -2,7 +2,7 @@
 
 import { faDownload, faArrowUpRightFromSquare, faSpinner, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faFilter, faCreditCard } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import React, { useEffect, useState } from 'react';
 import TextWithNumbers from '../../../components/TextWithNumbers';
 import { filterDonations, donationsToCsv, formatCurrency } from '@/lib/admin-data';
@@ -67,8 +67,8 @@ export default function DonationsPage() {
     return (
       <div className="flex items-center justify-center py-20">
         <div className="text-center space-y-4">
-          <FontAwesomeIcon icon={faSpinner} className="animate-spin text-indigo-600 h-8 w-8" />
-          <p className="text-sm font-semibold text-gray-500">Loading donations...</p>
+          <FontAwesomeIcon icon={faSpinner} className="animate-spin text-[#0369a1] h-7 w-7" />
+          <p className="text-sm font-medium text-slate-400">Loading donations...</p>
         </div>
       </div>
     );
@@ -78,57 +78,56 @@ export default function DonationsPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Donations</h1>
-          <p className="text-gray-500">Manage and track all incoming contributions.</p>
+          <p className="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-[#0369a1] mb-2">Administration</p>
+          <h1 className="font-serif text-3xl font-bold text-[#091c37]">Donations</h1>
+          <p className="text-slate-500 mt-1">Manage and track all incoming contributions.</p>
         </div>
-        <div className="flex items-center gap-3">
-          <button 
-            onClick={handleExport}
-            disabled={allDonations.length === 0}
-            className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <FontAwesomeIcon icon={faDownload} className="w-5 h-5" />
-            Export CSV
-          </button>
-        </div>
+        <button
+          onClick={handleExport}
+          disabled={allDonations.length === 0}
+          className="flex items-center gap-2 px-5 py-2.5 bg-[#0369a1] text-white rounded-full text-sm font-semibold hover:bg-[#0c4a6e] transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <FontAwesomeIcon icon={faDownload} className="w-4 h-4" />
+          Export CSV
+        </button>
       </div>
 
       {/* Filters & Search */}
-      <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row gap-4">
+      <div className="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-3">
         <div className="relative flex-1">
-          <FontAwesomeIcon icon={faMagnifyingGlass} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"  />
-          <input 
-            type="text" 
-            placeholder="Search by donor, email, or ID..." 
+          <FontAwesomeIcon icon={faMagnifyingGlass} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5" />
+          <input
+            type="text"
+            placeholder="Search by donor, email, or ID..."
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
               setPage(1);
             }}
-            className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20 focus:border-[#0369a1] transition-all text-[#091c37] placeholder:text-slate-400"
           />
         </div>
         <div className="flex items-center gap-3">
-          <select 
+          <select
             value={statusFilter}
             onChange={(e) => {
               setStatusFilter(e.target.value);
               setPage(1);
             }}
-            className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+            className="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-sm font-medium text-slate-600 focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20 focus:border-[#0369a1] transition-all appearance-none cursor-pointer"
           >
             <option value="all">All Status</option>
             <option value="succeeded">Succeeded</option>
             <option value="pending">Pending</option>
             <option value="failed">Failed</option>
           </select>
-          <select 
+          <select
             value={rangeFilter}
             onChange={(e) => {
               setRangeFilter(e.target.value);
               setPage(1);
             }}
-            className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+            className="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-sm font-medium text-slate-600 focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20 focus:border-[#0369a1] transition-all appearance-none cursor-pointer"
           >
             <option value="all">All Time</option>
             <option value="30d">Last 30 Days</option>
@@ -139,26 +138,26 @@ export default function DonationsPage() {
       </div>
 
       {/* Donations Table */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left min-w-[900px]">
             <thead>
-              <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
-                <th className="px-6 py-4 font-semibold">Transaction ID</th>
-                <th className="px-6 py-4 font-semibold">Donor</th>
-                <th className="px-6 py-4 font-semibold">Amount</th>
-                <th className="px-6 py-4 font-semibold">Campaign</th>
-                <th className="px-6 py-4 font-semibold">Method</th>
-                <th className="px-6 py-4 font-semibold">Date</th>
-                <th className="px-6 py-4 font-semibold">Status</th>
-                <th className="px-6 py-4 font-semibold"></th>
+              <tr className="border-b border-slate-100">
+                <th className="px-6 py-3.5 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-400">Transaction ID</th>
+                <th className="px-6 py-3.5 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-400">Donor</th>
+                <th className="px-6 py-3.5 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-400">Amount</th>
+                <th className="px-6 py-3.5 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-400">Campaign</th>
+                <th className="px-6 py-3.5 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-400">Method</th>
+                <th className="px-6 py-3.5 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-400">Date</th>
+                <th className="px-6 py-3.5 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-400">Status</th>
+                <th className="px-6 py-3.5 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-400"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 text-sm">
+            <tbody className="divide-y divide-slate-100 text-sm">
               {donations.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="px-6 py-12 text-center text-gray-500">
-                    {search || statusFilter !== 'all' || rangeFilter !== 'all' 
+                  <td colSpan={8} className="px-6 py-16 text-center text-slate-400">
+                    {search || statusFilter !== 'all' || rangeFilter !== 'all'
                       ? 'No donations match your filters'
                       : 'No donations yet'
                     }
@@ -166,40 +165,40 @@ export default function DonationsPage() {
                 </tr>
               ) : (
                 donations.map((txn) => (
-                  <tr key={txn.id} className="hover:bg-gray-50 transition-colors group">
-                    <td className="px-6 py-4 font-mono text-xs text-gray-500">{txn.id}</td>
-                    <td className="px-6 py-4">
+                  <tr key={txn.id} className="hover:bg-slate-50/60 transition-colors group">
+                    <td className="px-6 py-3.5 font-mono text-xs text-slate-400">{txn.id}</td>
+                    <td className="px-6 py-3.5">
                       <div className="flex flex-col">
-                        <span className="font-medium text-gray-900">{txn.donorName}</span>
-                        <span className="text-xs text-gray-500">{txn.donorEmail}</span>
+                        <span className="font-medium text-[#091c37]">{txn.donorName}</span>
+                        <span className="text-xs text-slate-400">{txn.donorEmail}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 font-semibold text-gray-900"><span className="numbers">{formatCurrency(txn.amount)}</span></td>
-                    <td className="px-6 py-4 text-gray-500 max-w-[200px] truncate">{txn.campaignName}</td>
-                    <td className="px-6 py-4 text-gray-500">
+                    <td className="px-6 py-3.5 font-semibold text-[#091c37]"><span className="numbers">{formatCurrency(txn.amount)}</span></td>
+                    <td className="px-6 py-3.5 text-slate-500 max-w-[200px] truncate">{txn.campaignName}</td>
+                    <td className="px-6 py-3.5 text-slate-500">
                       <div className="flex items-center gap-2">
-                        <FontAwesomeIcon icon={faCreditCard} className="w-4 h-4" />
+                        <FontAwesomeIcon icon={faCreditCard} className="w-3.5 h-3.5 text-slate-400" />
                         {txn.method}
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-gray-500">
+                    <td className="px-6 py-3.5 text-slate-500">
                       <TextWithNumbers>{new Date(txn.createdAt).toLocaleDateString()}</TextWithNumbers>
                     </td>
-                    <td className="px-6 py-4">
-                      <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        txn.status === 'succeeded' ? 'bg-green-100 text-green-700' : 
-                        txn.status === 'pending' ? 'bg-yellow-100 text-yellow-700' : 
-                        'bg-red-100 text-red-700'
+                    <td className="px-6 py-3.5">
+                      <span className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        txn.status === 'succeeded' ? 'bg-emerald-50 text-emerald-700' :
+                        txn.status === 'pending' ? 'bg-amber-50 text-amber-700' :
+                        'bg-red-50 text-red-700'
                       }`}>
                         {txn.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-right">
-                      <button 
+                    <td className="px-6 py-3.5 text-right">
+                      <button
                         onClick={() => setSelectedDonation(txn)}
-                        className="text-gray-400 hover:text-indigo-600 transition-colors p-1"
+                        className="text-slate-400 hover:text-[#0369a1] transition-colors p-1.5 rounded-full hover:bg-[#0369a1]/10"
                       >
-                        <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="w-5 h-5" />
+                        <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="w-4 h-4" />
                       </button>
                     </td>
                   </tr>
@@ -208,25 +207,25 @@ export default function DonationsPage() {
             </tbody>
           </table>
         </div>
-        <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex items-center justify-between">
-          <p className="text-sm text-gray-500">
-            Showing <span className="numbers">{donations.length ? ((page - 1) * pageSize) + 1 : 0}-{Math.min(page * pageSize, total)}</span> of <span className="numbers">{total}</span> donations
+        <div className="px-6 py-3.5 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between">
+          <p className="text-sm text-slate-500">
+            Showing <span className="numbers font-medium text-[#091c37]">{donations.length ? ((page - 1) * pageSize) + 1 : 0}–{Math.min(page * pageSize, total)}</span> of <span className="numbers font-medium text-[#091c37]">{total}</span> donations
           </p>
           <div className="flex items-center gap-2">
-            <button 
+            <button
               onClick={() => setPage(p => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="px-3 py-1 border border-gray-200 rounded bg-white text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+              className="px-3.5 py-1.5 border border-slate-200 rounded-full bg-white text-sm text-slate-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
             >
               Previous
             </button>
-            <span className="px-3 py-1 text-sm text-gray-600">
-              Page <span className="numbers">{page}</span> of <span className="numbers">{totalPages || 1}</span>
+            <span className="px-2 text-sm text-slate-500">
+              <span className="numbers font-medium text-[#091c37]">{page}</span> / <span className="numbers">{totalPages || 1}</span>
             </span>
-            <button 
+            <button
               onClick={() => setPage(p => Math.min(totalPages, p + 1))}
               disabled={page >= totalPages}
-              className="px-3 py-1 border border-gray-200 rounded bg-white text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+              className="px-3.5 py-1.5 border border-slate-200 rounded-full bg-white text-sm text-slate-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
             >
               Next
             </button>
@@ -236,74 +235,81 @@ export default function DonationsPage() {
 
       {/* Donation Details Modal */}
       {selectedDonation && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setSelectedDonation(null)}>
-          <div className="bg-white rounded-2xl max-w-2xl w-full p-6 space-y-4" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between border-b border-gray-200 pb-4">
-              <h2 className="text-xl font-bold text-gray-900">Donation Details</h2>
-              <button onClick={() => setSelectedDonation(null)} className="text-gray-400 hover:text-gray-600">
-                <FontAwesomeIcon icon={faXmark} className="h-5 w-5" />
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setSelectedDonation(null)}>
+          <div className="bg-white rounded-3xl max-w-2xl w-full p-8 space-y-5 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-[#0369a1] mb-1">Donation Details</p>
+                <h2 className="font-serif text-xl font-bold text-[#091c37]">Transaction Record</h2>
+              </div>
+              <button onClick={() => setSelectedDonation(null)} className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors">
+                <FontAwesomeIcon icon={faXmark} className="h-4 w-4" />
               </button>
             </div>
-            
+
+            <div className="h-px bg-slate-100" />
+
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Transaction ID</p>
-                <p className="font-mono text-sm text-gray-900">{selectedDonation.id}</p>
+                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-1">Transaction ID</p>
+                <p className="font-mono text-xs text-[#091c37]">{selectedDonation.id}</p>
               </div>
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Status</p>
-                <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                  selectedDonation.status === 'succeeded' ? 'bg-green-100 text-green-700' : 
-                  selectedDonation.status === 'pending' ? 'bg-yellow-100 text-yellow-700' : 
-                  'bg-red-100 text-red-700'
+                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-1">Status</p>
+                <span className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                  selectedDonation.status === 'succeeded' ? 'bg-emerald-50 text-emerald-700' :
+                  selectedDonation.status === 'pending' ? 'bg-amber-50 text-amber-700' :
+                  'bg-red-50 text-red-700'
                 }`}>
                   {selectedDonation.status}
                 </span>
               </div>
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Donor Name</p>
-                <p className="text-sm text-gray-900">{selectedDonation.donorName}</p>
+                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-1">Donor Name</p>
+                <p className="text-sm text-[#091c37] font-medium">{selectedDonation.donorName}</p>
               </div>
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Email</p>
-                <p className="text-sm text-gray-900">{selectedDonation.donorEmail}</p>
+                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-1">Email</p>
+                <p className="text-sm text-[#091c37]">{selectedDonation.donorEmail}</p>
               </div>
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Amount</p>
-                <p className="text-lg font-bold text-gray-900 numbers">{formatCurrency(selectedDonation.amount)}</p>
+                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-1">Amount</p>
+                <p className="text-xl font-bold text-[#091c37] font-serif numbers">{formatCurrency(selectedDonation.amount)}</p>
               </div>
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Payment Method</p>
-                <p className="text-sm text-gray-900">{selectedDonation.method}</p>
+                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-1">Payment Method</p>
+                <p className="text-sm text-[#091c37]">{selectedDonation.method}</p>
               </div>
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Campaign</p>
-                <p className="text-sm text-gray-900">{selectedDonation.campaignName}</p>
+                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-1">Campaign</p>
+                <p className="text-sm text-[#091c37]">{selectedDonation.campaignName}</p>
               </div>
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Date</p>
-                <p className="text-sm text-gray-900">
+                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-1">Date</p>
+                <p className="text-sm text-[#091c37]">
                   <TextWithNumbers>{new Date(selectedDonation.createdAt).toLocaleString()}</TextWithNumbers>
                 </p>
               </div>
               {selectedDonation.stripeSessionId && (
                 <div className="col-span-2">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Stripe Session ID</p>
-                  <p className="font-mono text-xs text-gray-600 break-all">{selectedDonation.stripeSessionId}</p>
+                  <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-1">Stripe Session ID</p>
+                  <p className="font-mono text-xs text-slate-500 break-all">{selectedDonation.stripeSessionId}</p>
                 </div>
               )}
               {selectedDonation.message && (
                 <div className="col-span-2">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Message</p>
-                  <p className="text-sm text-gray-900 italic">&ldquo;{selectedDonation.message}&rdquo;</p>
+                  <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-1">Message</p>
+                  <p className="text-sm text-[#091c37] italic">&ldquo;{selectedDonation.message}&rdquo;</p>
                 </div>
               )}
             </div>
 
-            <div className="border-t border-gray-200 pt-4 flex justify-end gap-3">
-              <button 
+            <div className="h-px bg-slate-100" />
+
+            <div className="flex justify-end">
+              <button
                 onClick={() => setSelectedDonation(null)}
-                className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50"
+                className="px-5 py-2 border border-slate-200 rounded-full text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors"
               >
                 Close
               </button>
