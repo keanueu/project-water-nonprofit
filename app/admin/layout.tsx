@@ -58,8 +58,13 @@ function LogoutButton({ isCollapsed }: { isCollapsed: boolean }) {
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [isCollapsed, setIsCollapsed] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const [hasMounted, setHasMounted] = React.useState(false);
   const pathname = usePathname();
   const { user } = useAuth();
+
+  React.useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -70,17 +75,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }, [isMobileMenuOpen]);
 
   const userInitials = React.useMemo(() => {
+    if (!hasMounted) return '';
     const first = user?.firstName?.[0] || '';
     const last = user?.lastName?.[0] || '';
     if (first || last) return (first + last).toUpperCase();
     const email = user?.email || '';
     return email.slice(0, 2).toUpperCase();
-  }, [user]);
+  }, [user, hasMounted]);
 
   const userName = React.useMemo(() => {
+    if (!hasMounted) return 'Admin';
     const name = [user?.firstName, user?.lastName].filter(Boolean).join(' ');
     return name || user?.email || 'Admin';
-  }, [user]);
+  }, [user, hasMounted]);
 
   return (
     <div className="flex h-screen bg-slate-50/50 overflow-hidden">
