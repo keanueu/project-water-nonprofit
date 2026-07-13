@@ -19,7 +19,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const supabase = createMiddlewareClient(request);
+  const response = NextResponse.next();
+  const supabase = createMiddlewareClient(request, response);
   if (!supabase) {
     if (isAdminApiRoute(pathname)) {
       return NextResponse.json({ error: 'Service unavailable' }, { status: 503 });
@@ -51,7 +52,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
-  return NextResponse.next();
+  return response;
 }
 
 export const config = {
