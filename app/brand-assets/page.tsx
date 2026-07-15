@@ -31,11 +31,11 @@ const logoVariants = [
   },
   {
     title: 'White logo (variant A)',
-    src: '/white logo.webp',
+    src: '/footer-logo.png',
   },
   {
     title: 'White logo (variant B)',
-    src: '/whitelogo.png',
+    src: '/logo-2016.png',
   },
 ];
 

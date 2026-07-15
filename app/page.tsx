@@ -52,7 +52,7 @@ export default function HomePage() {
         <div className="mx-auto grid max-w-6xl items-center gap-8 lg:grid-cols-[240px_1fr]">
           <div className="relative mx-auto h-20 w-52 lg:mx-0">
             <Image
-              src="/white logo.webp"
+              src="/footer-logo.png"
               alt="Project Water mark"
               fill
               className="object-contain"
