@@ -104,7 +104,7 @@ export default function DonationsPage() {
               setSearch(e.target.value);
               setPage(1);
             }}
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20 focus:border-[#0369a1] transition-all text-[#091c37] placeholder:text-slate-400"
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-sm focus:outline-none focus:border-[#0369a1] transition-all text-[#091c37] placeholder:text-slate-400"
           />
         </div>
         <div className="flex items-center gap-3">
@@ -114,7 +114,7 @@ export default function DonationsPage() {
               setStatusFilter(e.target.value);
               setPage(1);
             }}
-            className="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-sm font-medium text-slate-600 focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20 focus:border-[#0369a1] transition-all appearance-none cursor-pointer"
+            className="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-sm font-medium text-slate-600 focus:outline-none focus:border-[#0369a1] transition-all appearance-none cursor-pointer"
           >
             <option value="all">All Status</option>
             <option value="succeeded">Succeeded</option>
@@ -127,7 +127,7 @@ export default function DonationsPage() {
               setRangeFilter(e.target.value);
               setPage(1);
             }}
-            className="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-sm font-medium text-slate-600 focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20 focus:border-[#0369a1] transition-all appearance-none cursor-pointer"
+            className="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-sm font-medium text-slate-600 focus:outline-none focus:border-[#0369a1] transition-all appearance-none cursor-pointer"
           >
             <option value="all">All Time</option>
             <option value="30d">Last 30 Days</option>
@@ -235,8 +235,8 @@ export default function DonationsPage() {
 
       {/* Donation Details Modal */}
       {selectedDonation && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setSelectedDonation(null)}>
-          <div className="bg-white rounded-3xl max-w-2xl w-full p-8 space-y-5 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setSelectedDonation(null)}>
+          <div className="bg-white rounded-3xl max-w-2xl w-full p-8 space-y-5" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-[#0369a1] mb-1">Donation Details</p>

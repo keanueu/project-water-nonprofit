@@ -163,7 +163,7 @@ export default function SettingsPage() {
                   type="text"
                   value={settings.organization.name}
                   onChange={(e) => updateOrg('name', e.target.value)}
-                  className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20 focus:border-[#0369a1] text-sm text-[#091c37]"
+                  className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:border-[#0369a1] text-sm text-[#091c37]"
                 />
               </div>
 
@@ -175,7 +175,7 @@ export default function SettingsPage() {
                   type="text"
                   value={settings.organization.ein}
                   onChange={(e) => updateOrg('ein', e.target.value)}
-                  className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20 focus:border-[#0369a1] text-sm text-[#091c37]"
+                  className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:border-[#0369a1] text-sm text-[#091c37]"
                 />
               </div>
             </div>
@@ -189,7 +189,7 @@ export default function SettingsPage() {
                 type="email"
                 value={settings.organization.email}
                 onChange={(e) => updateOrg('email', e.target.value)}
-                className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20 focus:border-[#0369a1] text-sm text-[#091c37]"
+                className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:border-[#0369a1] text-sm text-[#091c37]"
               />
             </div>
 
@@ -202,7 +202,7 @@ export default function SettingsPage() {
                 type="tel"
                 value={settings.organization.phone}
                 onChange={(e) => updateOrg('phone', e.target.value)}
-                className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20 focus:border-[#0369a1] text-sm text-[#091c37]"
+                className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:border-[#0369a1] text-sm text-[#091c37]"
               />
             </div>
 
@@ -215,7 +215,7 @@ export default function SettingsPage() {
                 rows={3}
                 value={settings.organization.address}
                 onChange={(e) => updateOrg('address', e.target.value)}
-                className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20 focus:border-[#0369a1] text-sm text-[#091c37]"
+                className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:border-[#0369a1] text-sm text-[#091c37]"
               />
             </div>
           </div>
@@ -241,7 +241,7 @@ export default function SettingsPage() {
               <input
                 type="text"
                 placeholder="pk_live_..."
-                className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20 focus:border-[#0369a1] font-mono text-sm text-[#091c37]"
+                className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:border-[#0369a1] font-mono text-sm text-[#091c37]"
               />
             </div>
 
@@ -252,7 +252,7 @@ export default function SettingsPage() {
               <input
                 type="password"
                 placeholder="sk_live_..."
-                className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20 focus:border-[#0369a1] font-mono text-sm text-[#091c37]"
+                className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:border-[#0369a1] font-mono text-sm text-[#091c37]"
               />
               <p className="text-xs text-slate-400 mt-2">Keep this secure. Never share your secret key. Stripe keys are managed via environment variables.</p>
             </div>
@@ -283,7 +283,7 @@ export default function SettingsPage() {
                   type="checkbox"
                   checked={settings.notifications[item.key]}
                   onChange={(e) => updateNotification(item.key, e.target.checked)}
-                  className="mt-0.5 h-4.5 w-4.5 rounded border-slate-300 text-[#0369a1] focus:ring-[#0369a1]"
+                  className="mt-0.5 h-4.5 w-4.5 rounded border-slate-300 text-[#0369a1]"
                 />
                 <div>
                   <p className="font-semibold text-sm text-[#091c37]">{item.label}</p>

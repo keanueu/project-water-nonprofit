@@ -136,7 +136,7 @@ export default function UsersPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
+        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-20 h-20 bg-[#0369a1]/[0.03] rounded-full translate-x-6 -translate-y-6" />
           <div className="flex items-center gap-4">
             <div className="p-2.5 bg-[#0369a1]/10 text-[#0369a1] rounded-full group-hover:bg-[#0369a1] group-hover:text-white transition-colors">
@@ -148,7 +148,7 @@ export default function UsersPage() {
             </div>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
+        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-20 h-20 bg-emerald-50 rounded-full translate-x-6 -translate-y-6" />
           <div className="flex items-center gap-4">
             <div className="p-2.5 bg-emerald-50 text-emerald-600 rounded-full group-hover:bg-emerald-500 group-hover:text-white transition-colors">
@@ -162,7 +162,7 @@ export default function UsersPage() {
             </div>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
+        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-20 h-20 bg-[#0369a1]/[0.03] rounded-full translate-x-6 -translate-y-6" />
           <div className="flex items-center gap-4">
             <div className="p-2.5 bg-[#0369a1]/10 text-[#0369a1] rounded-full group-hover:bg-[#0369a1] group-hover:text-white transition-colors">

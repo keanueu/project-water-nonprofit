@@ -88,7 +88,7 @@ export default function CampaignsPage() {
             : null;
 
           return (
-            <div key={campaign.id} className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden flex flex-col group hover:shadow-md hover:border-[#0369a1]/20 transition-all relative">
+            <div key={campaign.id} className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden flex flex-col group relative">
               {/* Status badge + menu */}
               <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
                 <span className={`inline-flex px-2.5 py-0.5 rounded-full text-[0.65rem] font-semibold uppercase tracking-wider ${
@@ -106,7 +106,7 @@ export default function CampaignsPage() {
                     <FontAwesomeIcon icon={faEllipsisVertical} className="w-4 h-4" />
                   </button>
                   {menuOpen === campaign.id && (
-                    <div className="absolute right-0 mt-1 w-44 bg-white rounded-2xl shadow-xl border border-slate-200 z-20 overflow-hidden">
+                    <div className="absolute right-0 mt-1 w-44 bg-white rounded-2xl border border-slate-200 z-20 overflow-hidden">
                       <button
                         onClick={() => handleEdit(campaign)}
                         className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left"

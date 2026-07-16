@@ -69,8 +69,8 @@ export default function CampaignModal({ campaign, onClose, onSave }: CampaignMod
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="bg-white rounded-3xl max-w-2xl w-full p-8 space-y-5 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="bg-white rounded-3xl max-w-2xl w-full p-8 space-y-5" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between">
           <div>
             <p className="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-[#0369a1] mb-1">Campaign Details</p>
@@ -101,7 +101,7 @@ export default function CampaignModal({ campaign, onClose, onSave }: CampaignMod
               required
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
-              className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20 focus:border-[#0369a1] text-sm text-[#091c37]"
+              className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:border-[#0369a1] text-sm text-[#091c37]"
               placeholder="Clean Water Initiative"
             />
           </div>
@@ -115,7 +115,7 @@ export default function CampaignModal({ campaign, onClose, onSave }: CampaignMod
               rows={4}
               value={form.description}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
-              className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20 focus:border-[#0369a1] text-sm text-[#091c37]"
+              className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:border-[#0369a1] text-sm text-[#091c37]"
               placeholder="Describe the campaign goals and impact..."
             />
           </div>
@@ -131,7 +131,7 @@ export default function CampaignModal({ campaign, onClose, onSave }: CampaignMod
                 min="100"
                 value={form.goal}
                 onChange={(e) => setForm({ ...form, goal: Number(e.target.value) })}
-                className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20 focus:border-[#0369a1] text-sm text-[#091c37] numbers"
+                className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:border-[#0369a1] text-sm text-[#091c37] numbers"
               />
             </div>
 
@@ -144,7 +144,7 @@ export default function CampaignModal({ campaign, onClose, onSave }: CampaignMod
                 required
                 value={form.ends_at}
                 onChange={(e) => setForm({ ...form, ends_at: e.target.value })}
-                className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20 focus:border-[#0369a1] text-sm text-[#091c37]"
+                className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:border-[#0369a1] text-sm text-[#091c37]"
               />
             </div>
           </div>
@@ -156,7 +156,7 @@ export default function CampaignModal({ campaign, onClose, onSave }: CampaignMod
             <select
               value={form.status}
               onChange={(e) => setForm({ ...form, status: e.target.value as 'active' | 'completed' | 'draft' })}
-              className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20 focus:border-[#0369a1] text-sm text-[#091c37] appearance-none cursor-pointer"
+              className="w-full px-4 py-2.5 border border-slate-200 rounded-2xl focus:outline-none focus:border-[#0369a1] text-sm text-[#091c37] appearance-none cursor-pointer"
             >
               <option value="draft">Draft</option>
               <option value="active">Active</option>
