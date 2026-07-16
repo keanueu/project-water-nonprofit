@@ -144,7 +144,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 className={cn(
                   "flex items-center px-3 py-2.5 rounded-xl transition-all relative group",
                   isActive
-                    ? "bg-[#0369a1] text-white shadow-lg shadow-[#0369a1]/20"
+                    ? "bg-[#0369a1] text-white"
                     : "text-sky-300/60 hover:bg-white/[0.07] hover:text-sky-100"
                 )}
               >
@@ -171,13 +171,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Mobile overlay */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden" onClick={() => setIsMobileMenuOpen(false)} />
+        <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setIsMobileMenuOpen(false)} />
       )}
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Header */}
-        <header className="h-16 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-8 z-10">
+        <header className="h-16 bg-white/80 border-b border-slate-200 flex items-center justify-between px-8 z-10">
           <div className="flex items-center lg:hidden mr-4">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -188,7 +188,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <FontAwesomeIcon icon={isMobileMenuOpen ? faXmark : faChevronRight} className="w-4 h-4" />
             </button>
           </div>
-          <div className="hidden md:flex items-center bg-slate-50 border border-slate-200 px-4 py-2 rounded-full w-80 focus-within:border-[#0369a1] focus-within:ring-2 focus-within:ring-[#0369a1]/20 transition-all">
+          <div className="hidden md:flex items-center bg-slate-50 border border-slate-200 px-4 py-2 rounded-full w-80 focus-within:border-[#0369a1] transition-all">
             <FontAwesomeIcon icon={faMagnifyingGlass} className="text-slate-400 mr-2.5 w-3.5 h-3.5" />
             <input
               type="text"

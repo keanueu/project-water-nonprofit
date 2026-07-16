@@ -109,7 +109,7 @@ export default function AdminOverview() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         {metrics.map((stat, i) => (
-          <div key={i} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
+          <div key={i} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-20 h-20 bg-[#0369a1]/[0.03] rounded-full translate-x-6 -translate-y-6" />
             <div className="flex items-center justify-between mb-4">
               <div className="p-2.5 bg-[#0369a1]/10 text-[#0369a1] rounded-full group-hover:bg-[#0369a1] group-hover:text-white transition-colors">

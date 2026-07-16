@@ -188,13 +188,13 @@ export default function UsersPage() {
               placeholder="Search users..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20 focus:border-[#0369a1] text-[#091c37] placeholder:text-slate-400"
+              className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-full text-sm focus:outline-none focus:border-[#0369a1] text-[#091c37] placeholder:text-slate-400"
             />
           </div>
           <select
             value={roleFilter}
             onChange={(e) => setRoleFilter(e.target.value)}
-            className="px-4 py-2.5 bg-white border border-slate-200 rounded-full text-sm font-medium text-slate-600 focus:outline-none focus:ring-2 focus:ring-[#0369a1]/20 focus:border-[#0369a1] appearance-none cursor-pointer"
+            className="px-4 py-2.5 bg-white border border-slate-200 rounded-full text-sm font-medium text-slate-600 focus:outline-none focus:border-[#0369a1] appearance-none cursor-pointer"
           >
             <option value="all">All Roles</option>
             <option value="admin">Admin</option>
@@ -277,8 +277,8 @@ export default function UsersPage() {
 
       {/* User Details Modal */}
       {selectedUser && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setSelectedUser(null)}>
-          <div className="bg-white rounded-3xl max-w-2xl w-full p-8 space-y-5 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setSelectedUser(null)}>
+          <div className="bg-white rounded-3xl max-w-2xl w-full p-8 space-y-5" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-[#0369a1] mb-1">User Profile</p>
